@@ -1,37 +1,92 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  /**
+   * Directorio raíz para nuevos proyectos generados con Angular CLI.
+   */
   "newProjectRoot": "projects",
+  /**
+   * Definición de los proyectos incluidos en el workspace.
+   */
   "projects": {
+    /**
+     * Configuración principal para la aplicación MiniERP_Suministros.client.
+     */
     "MiniERP_Suministros.client": {
+      /**
+       * Tipo de proyecto: aplicación Angular.
+       */
       "projectType": "application",
+      /**
+       * Esquemáticos predeterminados para la generación de componentes.
+       */
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
         }
       },
+      /**
+       * Carpeta raíz del proyecto.
+       */
       "root": "",
+      /**
+       * Carpeta raíz del código fuente.
+       */
       "sourceRoot": "src",
+      /**
+       * Prefijo utilizado para los selectores de componentes.
+       */
       "prefix": "app",
+      /**
+       * Configuración de los diferentes targets de Angular CLI (build, serve, test, lint, etc.).
+       */
       "architect": {
+        /**
+         * Configuración para la compilación de la aplicación.
+         */
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            /**
+             * Carpeta de salida de la compilación.
+             */
             "outputPath": "dist/MiniERP_Suministros.client",
+            /**
+             * Archivo principal HTML.
+             */
             "index": "src/index.html",
+            /**
+             * Archivo principal TypeScript.
+             */
             "browser": "src/main.ts",
+            /**
+             * Polyfills requeridos por la aplicación.
+             */
             "polyfills": [
               "zone.js",
               "@angular/localize/init"
             ],
+            /**
+             * Archivo de configuración de TypeScript.
+             */
             "tsConfig": "tsconfig.app.json",
+            /**
+             * Lenguaje de estilos en línea predeterminado.
+             */
             "inlineStyleLanguage": "scss",
+            /**
+             * Archivos y carpetas de recursos estáticos.
+             */
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
               }
             ],
+            /**
+             * Archivos de estilos globales y temas adicionales.
+             * Los temas se incluyen pero no se inyectan automáticamente.
+             */
             "styles": [
               {
                 "input": "src/styles.scss"
@@ -89,19 +144,34 @@
                 "inject": false
               }
             ],
+            /**
+             * Opciones para el preprocesador de estilos (Sass).
+             */
             "stylePreprocessorOptions": {
               "sass": {
+                /**
+                 * Silencia advertencias de deprecación específicas de Sass.
+                 */
                 "silenceDeprecations": [
                   "import",
                   "global-builtin"
                 ]
               }
             },
+            /**
+             * Archivos de scripts adicionales a incluir.
+             */
             "scripts": [
               "src/app/assets/scripts/alertify.js"
             ]
           },
+          /**
+           * Configuraciones específicas para los entornos de producción y desarrollo.
+           */
           "configurations": {
+            /**
+             * Configuración para compilación en modo producción.
+             */
             "production": {
               "budgets": [
                 {
@@ -115,22 +185,37 @@
                   "maximumError": "8kb"
                 }
               ],
+              /**
+               * Reemplazo de archivos de entorno para producción.
+               */
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
+              /**
+               * Hashing de archivos de salida para cacheo.
+               */
               "outputHashing": "all"
             },
+            /**
+             * Configuración para compilación en modo desarrollo.
+             */
             "development": {
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
             }
           },
+          /**
+           * Configuración predeterminada de compilación.
+           */
           "defaultConfiguration": "production"
         },
+        /**
+         * Configuración para el servidor de desarrollo.
+         */
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
@@ -142,13 +227,22 @@
             }
           },
           "defaultConfiguration": "development",
+          /**
+           * Configuración de proxy para redirección de peticiones.
+           */
           "options": {
             "proxyConfig": "src/proxy.conf.js"
           }
         },
+        /**
+         * Configuración para extracción de internacionalización (i18n).
+         */
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
         },
+        /**
+         * Configuración para pruebas unitarias con Karma.
+         */
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
@@ -223,9 +317,15 @@
               }
             ],
             "scripts": [],
+            /**
+             * Archivo de configuración de Karma para pruebas.
+             */
             "karmaConfig": "karma.conf.js"
           }
         },
+        /**
+         * Configuración para análisis de linting con Angular ESLint.
+         */
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
@@ -238,10 +338,19 @@
       }
     }
   },
+  /**
+   * Configuración global de Angular CLI.
+   */
   "cli": {
+    /**
+     * Colecciones de esquemáticos adicionales a utilizar.
+     */
     "schematicCollections": [
       "angular-eslint"
     ],
+    /**
+     * Desactiva la analítica de Angular CLI.
+     */
     "analytics": false
   }
 }

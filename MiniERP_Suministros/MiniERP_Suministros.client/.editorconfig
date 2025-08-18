@@ -1,17 +1,27 @@
-# Editor configuration, see https://editorconfig.org
+# -----------------------------------------------------------------------------
+# Archivo .editorconfig para MiniERP_Suministros.client
+#
+# Este archivo define las reglas de formato y codificación para los editores compatibles.
+# Permite mantener un estilo de código consistente entre diferentes editores y entornos.
+# Más información: https://editorconfig.org
+# -----------------------------------------------------------------------------
+
 root = true
 
+# Reglas generales para todos los archivos
 [*]
-charset = utf-8
-indent_style = space
-indent_size = 2
-insert_final_newline = true
-trim_trailing_whitespace = true
+charset = utf-8                # Usa codificación UTF-8
+indent_style = space           # Usa espacios para la indentación
+indent_size = 2                # Tamaño de indentación: 2 espacios
+insert_final_newline = true    # Inserta una nueva línea al final de cada archivo
+trim_trailing_whitespace = true # Elimina espacios en blanco al final de cada línea
 
+# Reglas específicas para archivos TypeScript
 [*.ts]
-quote_type = single
-ij_typescript_use_double_quotes = false
+quote_type = single                # Prefiere comillas simples en TypeScript
+ij_typescript_use_double_quotes = false # Desactiva el uso de comillas dobles en TypeScript
 
+# Reglas específicas para archivos Markdown
 [*.md]
-max_line_length = off
-trim_trailing_whitespace = false
+max_line_length = off              # No limita la longitud máxima de línea en Markdown
+trim_trailing_whitespace = false   # No elimina espacios en blanco al final de línea en Markdown

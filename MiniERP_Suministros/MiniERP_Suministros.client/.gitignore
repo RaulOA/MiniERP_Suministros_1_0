@@ -1,17 +1,26 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+# -----------------------------------------------------------------------------
+# Archivo .gitignore para MiniERP_Suministros.client
+#
+# Este archivo especifica los archivos y carpetas que deben ser ignorados por Git
+# en el proyecto MiniERP_Suministros.client. Ignorar estos archivos ayuda a evitar
+# que archivos temporales, de compilación, dependencias y configuraciones locales
+# sean incluidos en el control de versiones.
+#
+# Referencia: https://docs.github.com/get-started/getting-started-with-git/ignoring-files
+# -----------------------------------------------------------------------------
 
-# Compiled output
+# Salida compilada de la aplicación Angular
 /dist
 /tmp
 /out-tsc
 /bazel-out
 
-# Node
+# Dependencias de Node.js
 /node_modules
 npm-debug.log
 yarn-error.log
 
-# IDEs and editors
+# Archivos y carpetas de configuración de IDEs y editores
 .idea/
 .project
 .classpath
@@ -21,7 +30,7 @@ yarn-error.log
 *.sublime-workspace
 /.vs
 
-# Visual Studio Code
+# Configuración de Visual Studio Code (excepto archivos de configuración recomendados)
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -29,7 +38,7 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
-# Miscellaneous
+# Archivos y carpetas misceláneos generados por herramientas de Angular y otros
 /.angular/cache
 .sass-cache/
 /connect.lock
@@ -38,6 +47,6 @@ yarn-error.log
 testem.log
 /typings
 
-# System files
+# Archivos de sistema generados por macOS y Windows
 .DS_Store
 Thumbs.db
