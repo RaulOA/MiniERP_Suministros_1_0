@@ -1,8 +1,8 @@
-// ---------------------------------------
-// Email: quickapp@ebenmonney.com
-// Templates: www.ebenmonney.com/templates
-// (c) 2024 www.ebenmonney.com/mit-license
-// ---------------------------------------
+
+
+
+
+
 
 import { Component } from '@angular/core';
 import { NgClass } from '@angular/common';
@@ -43,7 +43,7 @@ export class BannerDemoComponent {
       alt: 'Eben Monney',
       caption: 'Follow me on social media for updates and tips on using this startup project',
       class: 'btn btn-outline-secondary btn-sm',
-      link: 'https://www.ebenmonney.com/about'
+      link: 'https://www.test.com/about'
     }
   ];
 }

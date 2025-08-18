@@ -1,8 +1,8 @@
-﻿// ---------------------------------------
-// Email: quickapp@ebenmonney.com
-// Templates: www.ebenmonney.com/templates
-// (c) 2024 www.ebenmonney.com/mit-license
-// ---------------------------------------
+﻿
+
+
+
+
 
 using System.Diagnostics.CodeAnalysis;
 using MiniERP_Suministros.Core.Models.Account;

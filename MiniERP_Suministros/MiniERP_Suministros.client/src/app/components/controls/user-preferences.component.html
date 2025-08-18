@@ -22,15 +22,11 @@
     <div class="col-sm-4">
       <ng-select id="language" [(ngModel)]="configurations.language" [searchable]="false" [clearable]="false" class="form-control">
         <ng-option [value]="'en'">
-          {{'preferences.English' | translate}} <small class="text-muted"><i>({{'preferences.Default' | translate}})</i></small>
+          {{'preferences.English' | translate}} 
         </ng-option>
-        <ng-option [value]="'fr'">{{'preferences.French' | translate}}</ng-option>
-        <ng-option [value]="'de'">{{'preferences.German' | translate}}</ng-option>
-        <ng-option [value]="'es'">{{'preferences.Spanish' | translate}}</ng-option>
-        <ng-option [value]="'pt'">{{'preferences.Portuguese' | translate}}</ng-option>
-        <ng-option [value]="'zh'">{{'preferences.Chinese' | translate}}</ng-option>
-        <ng-option [value]="'ko'">{{'preferences.Korean' | translate}}</ng-option>
-        <ng-option [value]="'ar'">{{'preferences.Arabic' | translate}}</ng-option>
+        <ng-option [value]="'es'">
+          {{'preferences.Spanish' | translate}} <small class="text-muted"><i>({{'preferences.Default' | translate}})</i></small>
+        </ng-option>
       </ng-select>
     </div>
     <div class="col-sm-5">
@@ -53,13 +49,13 @@
           <small class="text-muted"><i>({{'preferences.Default' | translate}})</i></small>
         </ng-option>
         @if (canViewCustomers) {
-          <ng-option [value]="'/customers'"><i class=" fa fa-handshake-o"></i> {{'preferences.Customers' | translate}}</ng-option>
+        <ng-option [value]="'/customers'"><i class=" fa fa-handshake-o"></i> {{'preferences.Customers' | translate}}</ng-option>
         }
         @if (canViewProducts) {
-          <ng-option [value]="'/products'"><i class=" fa fa-truck"></i> {{'preferences.Products' | translate}}</ng-option>
+        <ng-option [value]="'/products'"><i class=" fa fa-truck"></i> {{'preferences.Products' | translate}}</ng-option>
         }
         @if (canViewOrders) {
-          <ng-option [value]="'/orders'"><i class=" fa fa-shopping-cart"></i> {{'preferences.Orders' | translate}}</ng-option>
+        <ng-option [value]="'/orders'"><i class=" fa fa-shopping-cart"></i> {{'preferences.Orders' | translate}}</ng-option>
         }
         <ng-option [value]="'/about'"><i class=" fa fa-info-circle"></i> {{'preferences.About' | translate}}</ng-option>
         <ng-option [value]="'/settings'"><i class=" fa fa-cog"></i> {{'preferences.Settings' | translate}}</ng-option>
@@ -81,11 +77,11 @@
     <div class="col-sm-4">
       <ng-select id="defaultTheme" [(ngModel)]="configurations.themeId" [searchable]="false" [clearable]="false" class="form-control theme-picker">
         @for (theme of themeManager.themes; track theme) {
-          <ng-option [value]="theme.id">
-            <div class="theme-item" style="background-color: {{theme.background}}; color: {{theme.color}}">
-              {{'preferences.' + theme.name + 'Theme' | translate}} <span class="small">{{theme.isDark ? '(Dark)' : ''}}</span>
-            </div>
-          </ng-option>
+        <ng-option [value]="theme.id">
+          <div class="theme-item" style="background-color: {{theme.background}}; color: {{theme.color}}">
+            {{'preferences.' + theme.name + 'Theme' | translate}} <span class="small">{{theme.isDark ? '(Dark)' : ''}}</span>
+          </div>
+        </ng-option>
         }
       </ng-select>
     </div>

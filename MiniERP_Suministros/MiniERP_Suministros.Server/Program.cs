@@ -1,9 +1,3 @@
-// ---------------------------------------
-// Email: quickapp@ebenmonney.com
-// Templates: www.ebenmonney.com/templates
-// (c) 2024 www.ebenmonney.com/mit-license
-// ---------------------------------------
-
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Authorization;
@@ -27,35 +21,36 @@ using static OpenIddict.Abstractions.OpenIddictConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
-/************* ADD SERVICES *************/
+/************* AGREGAR SERVICIOS *************/
 
 /// <summary>
-/// Retrieves the connection string named "DefaultConnection" from the application's configuration.
-/// Throws an <see cref="InvalidOperationException"/> if the connection string is not found.
+/// Obtiene la cadena de conexión llamada "DefaultConnection" de la configuración de la aplicación.
+/// Lanza una <see cref="InvalidOperationException"/> si no se encuentra la cadena de conexión.
 /// </summary>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-                throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+                throw new InvalidOperationException("No se encontró la cadena de conexión 'DefaultConnection'.");
 
 var migrationsAssembly = typeof(Program).GetTypeInfo().Assembly.GetName().Name;
 
+// Configuración del contexto de base de datos
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(connectionString, b => b.MigrationsAssembly(migrationsAssembly));
     options.UseOpenIddict();
 });
 
-// Add Identity
+// Agregar Identity
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-// Configure Identity options and password complexity here
+// Configuración de opciones de Identity y complejidad de contraseñas
 builder.Services.Configure<IdentityOptions>(options =>
 {
-    // User settings
+    // Configuración de usuario
     options.User.RequireUniqueEmail = true;
 
-    // Password settings
+    // Configuración de contraseña
     /*
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 8;
@@ -63,28 +58,29 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireUppercase = true;
     options.Password.RequireLowercase = false;
 
-    // Lockout settings
+    // Configuración de bloqueo
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
     options.Lockout.MaxFailedAccessAttempts = 10;
     */
 
-    // Configure Identity to use the same JWT claims as OpenIddict
+    // Configura Identity para usar los mismos claims JWT que OpenIddict
     options.ClaimsIdentity.UserNameClaimType = Claims.Name;
     options.ClaimsIdentity.UserIdClaimType = Claims.Subject;
     options.ClaimsIdentity.RoleClaimType = Claims.Role;
     options.ClaimsIdentity.EmailClaimType = Claims.Email;
 });
 
-// Configure OpenIddict periodic pruning of orphaned authorizations/tokens from the database.
+// Configuración de limpieza periódica de autorizaciones/tokens huérfanos en la base de datos con OpenIddict
 builder.Services.AddQuartz(options =>
 {
     options.UseSimpleTypeLoader();
     options.UseInMemoryStore();
 });
 
-// Register the Quartz.NET service and configure it to block shutdown until jobs are complete.
+// Registrar el servicio de Quartz.NET y configurarlo para bloquear el apagado hasta que los trabajos finalicen
 builder.Services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
 
+// Configuración de OpenIddict
 builder.Services.AddOpenIddict()
     .AddCore(options =>
     {
@@ -119,8 +115,8 @@ builder.Services.AddOpenIddict()
 
             if (string.IsNullOrWhiteSpace(oidcCertFileName))
             {
-                // You must configure persisted keys for Encryption and Signing.
-                // See https://documentation.openiddict.com/configuration/encryption-and-signing-credentials.html
+                // Debe configurar claves persistentes para Encriptación y Firma.
+                // Ver https://documentation.openiddict.com/configuration/encryption-and-signing-credentials.html
                 options.AddEphemeralEncryptionKey()
                        .AddEphemeralSigningKey();
             }
@@ -142,6 +138,7 @@ builder.Services.AddOpenIddict()
         options.UseAspNetCore();
     });
 
+// Configuración de autenticación
 builder.Services.AddAuthentication(o =>
 {
     o.DefaultScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme;
@@ -149,6 +146,7 @@ builder.Services.AddAuthentication(o =>
     o.DefaultChallengeScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme;
 });
 
+// Configuración de autorización y políticas personalizadas
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy(AuthPolicies.ViewAllUsersPolicy,
         policy => policy.RequireClaim(CustomClaims.Permission, ApplicationPermissions.ViewUsers))
@@ -163,12 +161,13 @@ builder.Services.AddAuthorizationBuilder()
     .AddPolicy(AuthPolicies.AssignAllowedRolesPolicy,
         policy => policy.Requirements.Add(new AssignRolesAuthorizationRequirement()));
 
-// Add cors
+// Agregar CORS
 builder.Services.AddCors();
 
 builder.Services.AddControllers();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Configuración de Swagger/OpenAPI
+// Más información: https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>
@@ -188,46 +187,48 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// Agregar AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
 
-// Configurations
+// Configuraciones generales
 builder.Services.Configure<AppSettings>(builder.Configuration);
 
-// Business Services
+// Servicios de negocio
 builder.Services.AddScoped<IUserAccountService, UserAccountService>();
 builder.Services.AddScoped<IUserRoleService, UserRoleService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrdersService, OrdersService>();
 
-// Other Services
+// Otros servicios
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IUserIdAccessor, UserIdAccessor>();
 
-// Auth Handlers
+// Manejadores de autorización
 builder.Services.AddSingleton<IAuthorizationHandler, ViewUserAuthorizationHandler>();
 builder.Services.AddSingleton<IAuthorizationHandler, ManageUserAuthorizationHandler>();
 builder.Services.AddSingleton<IAuthorizationHandler, ViewRoleAuthorizationHandler>();
 builder.Services.AddSingleton<IAuthorizationHandler, AssignRolesAuthorizationHandler>();
 
-// DB Creation and Seeding
+// Creación y siembra de la base de datos
 builder.Services.AddTransient<IDatabaseSeeder, DatabaseSeeder>();
 
-//File Logger
+// Logger de archivos
 builder.Logging.AddFile(builder.Configuration.GetSection("Logging"));
 
-//Email Templates
+// Plantillas de correo electrónico
 EmailTemplates.Initialize(builder.Environment);
 
 var app = builder.Build();
 
-/************* CONFIGURE REQUEST PIPELINE *************/
+/************* CONFIGURAR PIPELINE DE SOLICITUDES *************/
 
 app.UseDefaultFiles();
 app.MapStaticAssets();
 
 if (app.Environment.IsDevelopment())
 {
+    // Configuración de Swagger para desarrollo
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
@@ -240,13 +241,14 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    // The default HSTS value is 30 days.
-    // You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    // El valor predeterminado de HSTS es 30 días.
+    // Puede cambiar esto para escenarios de producción, ver https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 
+// Configuración de CORS para permitir cualquier origen, encabezado y método
 app.UseCors(builder => builder
     .AllowAnyOrigin()
     .AllowAnyHeader()
@@ -259,11 +261,12 @@ app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
 
-/************* SEED DATABASE *************/
+/************* SIEMBRA DE BASE DE DATOS *************/
 
 using var scope = app.Services.CreateScope();
 try
 {
+    // Ejecuta la siembra de la base de datos y el registro de aplicaciones cliente OIDC
     var dbSeeder = scope.ServiceProvider.GetRequiredService<IDatabaseSeeder>();
     await dbSeeder.SeedAsync();
 
@@ -272,12 +275,12 @@ try
 catch (Exception ex)
 {
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-    logger.LogCritical(ex, "An error occurred whilst creating/seeding database");
+    logger.LogCritical(ex, "Ocurrió un error al crear/sembrar la base de datos");
 
     throw;
 }
 
-/************* RUN APP *************/
+/************* EJECUTAR APLICACIÓN *************/
 
 app.Run();
 
