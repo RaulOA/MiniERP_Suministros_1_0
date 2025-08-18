@@ -1,0 +1,284 @@
+[
+  {
+    "ProductCategories": [
+      {
+        "Id": 1,
+        "Name": "Laptops",
+        "Description": "Laptops y portátiles para oficina y hogar.",
+        "Icon": null,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-10T08:00:00Z",
+        "UpdatedDate": "2024-01-10T08:00:00Z"
+      },
+      {
+        "Id": 2,
+        "Name": "Accesorios",
+        "Description": "Accesorios de computación y suministros.",
+        "Icon": null,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-10T08:00:00Z",
+        "UpdatedDate": "2024-01-10T08:00:00Z"
+      },
+      {
+        "Id": 3,
+        "Name": "Impresoras",
+        "Description": "Impresoras y multifuncionales.",
+        "Icon": null,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-12T08:00:00Z",
+        "UpdatedDate": "2024-01-12T08:00:00Z"
+      }
+    ],
+    "Products": [
+      {
+        "Id": 1,
+        "Name": "Laptop Dell Inspiron 15",
+        "Description": "Laptop para oficina, Intel i5, 8GB RAM, 256GB SSD.",
+        "Icon": null,
+        "BuyingPrice": 500000.00,
+        "SellingPrice": 550000.00,
+        "UnitsInStock": 10,
+        "IsActive": true,
+        "IsDiscontinued": false,
+        "ParentId": null,
+        "ProductCategoryId": 1,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-10T08:00:00Z",
+        "UpdatedDate": "2024-01-10T08:00:00Z"
+      },
+      {
+        "Id": 2,
+        "Name": "Mouse Logitech M185",
+        "Description": "Mouse inalámbrico, color negro.",
+        "Icon": null,
+        "BuyingPrice": 6000.00,
+        "SellingPrice": 8000.00,
+        "UnitsInStock": 50,
+        "IsActive": true,
+        "IsDiscontinued": false,
+        "ParentId": null,
+        "ProductCategoryId": 2,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-10T08:00:00Z",
+        "UpdatedDate": "2024-01-10T08:00:00Z"
+      },
+      {
+        "Id": 3,
+        "Name": "Teclado Microsoft Wired 600",
+        "Description": "Teclado alámbrico, español latino.",
+        "Icon": null,
+        "BuyingPrice": 7000.00,
+        "SellingPrice": 9500.00,
+        "UnitsInStock": 30,
+        "IsActive": true,
+        "IsDiscontinued": false,
+        "ParentId": null,
+        "ProductCategoryId": 2,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-10T08:00:00Z",
+        "UpdatedDate": "2024-01-10T08:00:00Z"
+      },
+      {
+        "Id": 4,
+        "Name": "Impresora HP DeskJet 2135",
+        "Description": "Impresora multifuncional, color.",
+        "Icon": null,
+        "BuyingPrice": 35000.00,
+        "SellingPrice": 42000.00,
+        "UnitsInStock": 15,
+        "IsActive": true,
+        "IsDiscontinued": false,
+        "ParentId": null,
+        "ProductCategoryId": 3,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-12T08:00:00Z",
+        "UpdatedDate": "2024-01-12T08:00:00Z"
+      },
+      {
+        "Id": 5,
+        "Name": "Cartucho HP 664XL Negro",
+        "Description": "Cartucho de tinta original HP.",
+        "Icon": null,
+        "BuyingPrice": 12000.00,
+        "SellingPrice": 15000.00,
+        "UnitsInStock": 40,
+        "IsActive": true,
+        "IsDiscontinued": false,
+        "ParentId": null,
+        "ProductCategoryId": 3,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-12T08:00:00Z",
+        "UpdatedDate": "2024-01-12T08:00:00Z"
+      }
+    ],
+    "Customers": [
+      {
+        "Id": 1,
+        "Name": "Carlos Jiménez",
+        "Email": "carlos.jimenez@suministroscr.com",
+        "PhoneNumber": "+50688881234",
+        "Address": "San José, Barrio Escalante",
+        "City": "San José",
+        "Gender": 1,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-10T08:00:00Z",
+        "UpdatedDate": "2024-01-10T08:00:00Z"
+      },
+      {
+        "Id": 2,
+        "Name": "María Rodríguez",
+        "Email": "maria.rodriguez@suministroscr.com",
+        "PhoneNumber": "+50689991234",
+        "Address": "Heredia, San Francisco",
+        "City": "Heredia",
+        "Gender": 2,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-11T09:00:00Z",
+        "UpdatedDate": "2024-01-11T09:00:00Z"
+      },
+      {
+        "Id": 3,
+        "Name": "Luis Brenes",
+        "Email": "luis.brenes@suministroscr.com",
+        "PhoneNumber": "+50688776655",
+        "Address": "Cartago, Centro",
+        "City": "Cartago",
+        "Gender": 1,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-12T10:00:00Z",
+        "UpdatedDate": "2024-01-12T10:00:00Z"
+      }
+    ],
+    "Orders": [
+      {
+        "Id": 1,
+        "Discount": 5000.00,
+        "Comments": "Venta mayorista.",
+        "CashierId": "d4925699-1c2c-479e-b750-ec048c765afd",
+        "CustomerId": 1,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-12T10:00:00Z",
+        "UpdatedDate": "2024-01-12T10:00:00Z"
+      },
+      {
+        "Id": 2,
+        "Discount": 0.00,
+        "Comments": "Venta mostrador.",
+        "CashierId": "b7de05eb-67fa-4ded-b8c2-355fc6602f12",
+        "CustomerId": 2,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-13T11:00:00Z",
+        "UpdatedDate": "2024-01-13T11:00:00Z"
+      },
+      {
+        "Id": 3,
+        "Discount": 1000.00,
+        "Comments": "Descuento especial por volumen.",
+        "CashierId": "d4925699-1c2c-479e-b750-ec048c765afd",
+        "CustomerId": 2,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-14T12:00:00Z",
+        "UpdatedDate": "2024-01-14T12:00:00Z"
+      },
+      {
+        "Id": 4,
+        "Discount": 2000.00,
+        "Comments": "Compra de insumos para oficina.",
+        "CashierId": "b7de05eb-67fa-4ded-b8c2-355fc6602f12",
+        "CustomerId": 3,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-15T13:00:00Z",
+        "UpdatedDate": "2024-01-15T13:00:00Z"
+      }
+    ],
+    "OrderDetails": [
+      {
+        "Id": 1,
+        "UnitPrice": 550000.00,
+        "Quantity": 2,
+        "Discount": 5000.00,
+        "ProductId": 1,
+        "OrderId": 1,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-12T10:00:00Z",
+        "UpdatedDate": "2024-01-12T10:00:00Z"
+      },
+      {
+        "Id": 2,
+        "UnitPrice": 8000.00,
+        "Quantity": 5,
+        "Discount": 0.00,
+        "ProductId": 2,
+        "OrderId": 1,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-12T10:00:00Z",
+        "UpdatedDate": "2024-01-12T10:00:00Z"
+      },
+      {
+        "Id": 3,
+        "UnitPrice": 9500.00,
+        "Quantity": 1,
+        "Discount": 0.00,
+        "ProductId": 3,
+        "OrderId": 2,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-13T11:00:00Z",
+        "UpdatedDate": "2024-01-13T11:00:00Z"
+      },
+      {
+        "Id": 4,
+        "UnitPrice": 8000.00,
+        "Quantity": 2,
+        "Discount": 1000.00,
+        "ProductId": 2,
+        "OrderId": 3,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-14T12:00:00Z",
+        "UpdatedDate": "2024-01-14T12:00:00Z"
+      },
+      {
+        "Id": 5,
+        "UnitPrice": 42000.00,
+        "Quantity": 1,
+        "Discount": 2000.00,
+        "ProductId": 4,
+        "OrderId": 4,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-15T13:00:00Z",
+        "UpdatedDate": "2024-01-15T13:00:00Z"
+      },
+      {
+        "Id": 6,
+        "UnitPrice": 15000.00,
+        "Quantity": 3,
+        "Discount": 0.00,
+        "ProductId": 5,
+        "OrderId": 4,
+        "CreatedBy": "SYSTEM",
+        "UpdatedBy": "SYSTEM",
+        "CreatedDate": "2024-01-15T13:00:00Z",
+        "UpdatedDate": "2024-01-15T13:00:00Z"
+      }
+    ]
+  }
+]
