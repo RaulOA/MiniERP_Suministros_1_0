@@ -1,27 +1,29 @@
-/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
-/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+/* Archivo de configuración de TypeScript.
+   Más información: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html */
 {
-  "compileOnSave": false,
+  "compileOnSave": false, // No recompila automáticamente al guardar archivos.
   "compilerOptions": {
-    "outDir": "./dist/out-tsc",
-    "strict": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "skipLibCheck": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "moduleResolution": "bundler",
-    "importHelpers": true,
-    "target": "ES2022",
-    "module": "ES2022"
+    "outDir": "./dist/out-tsc", // Directorio de salida para los archivos compilados.
+    "strict": true, // Habilita todas las comprobaciones estrictas de tipo.
+    "noImplicitOverride": true, // Requiere la palabra clave 'override' al sobrescribir métodos.
+    "noPropertyAccessFromIndexSignature": true, // Impide el acceso a propiedades a través de índices.
+    "noImplicitReturns": true, // Obliga a que todas las rutas de función devuelvan un valor.
+    "noFallthroughCasesInSwitch": true, // Evita la caída de casos en sentencias switch.
+    "skipLibCheck": true, // Omite la comprobación de tipos en archivos de definición de librerías.
+    "isolatedModules": true, // Asegura que cada archivo se pueda transpilar por separado.
+    "esModuleInterop": true, // Permite la interoperabilidad entre módulos CommonJS y ES Modules.
+    "experimentalDecorators": true, // Habilita el soporte para decoradores experimentales.
+    "moduleResolution": "bundler", // Estrategia de resolución de módulos para bundlers modernos.
+    "importHelpers": true, // Usa helpers de tslib para reducir el tamaño del bundle.
+    "target": "ES2022", // Versión de ECMAScript objetivo para la salida.
+    "module": "ES2022" // Sistema de módulos ECMAScript para la salida.
   },
   "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    /* Opciones específicas del compilador de Angular.
+       Más información: https://angular.dev/reference/configs/angular-compiler-options */
+    "enableI18nLegacyMessageIdFormat": false, // Desactiva el formato de ID de mensajes i18n heredado.
+    "strictInjectionParameters": true, // Requiere tipos estrictos en la inyección de dependencias.
+    "strictInputAccessModifiers": true, // Requiere modificadores de acceso explícitos en inputs.
+    "strictTemplates": true // Habilita comprobaciones estrictas en plantillas Angular.
   }
 }
