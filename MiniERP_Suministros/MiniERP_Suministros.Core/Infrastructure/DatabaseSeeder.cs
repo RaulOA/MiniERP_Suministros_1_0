@@ -1,10 +1,4 @@
-﻿// ---------------------------------------
-// Email: quickapp@ebenmonney.com
-// Templates: www.ebenmonney.com/templates
-// (c) 2024 www.ebenmonney.com/mit-license
-// ---------------------------------------
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MiniERP_Suministros.Core.Models;
 using MiniERP_Suministros.Core.Models.Account;
@@ -109,119 +103,298 @@ namespace MiniERP_Suministros.Core.Infrastructure
             {
                 logger.LogInformation("Seeding demo data");
 
-                var cust_1 = new Customer
+                // Product Categories
+                var catLaptops = new ProductCategory
                 {
-                    Name = "Ebenezer Monney",
-                    Email = "contact@ebenmonney.com",
-                    Gender = Gender.Male
+                    Id = 1,
+                    Name = "Laptops",
+                    Description = "Laptops y portátiles para oficina y hogar.",
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-10T08:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-10T08:00:00Z")
                 };
-
-                var cust_2 = new Customer
+                var catAccesorios = new ProductCategory
                 {
-                    Name = "Itachi Uchiha",
-                    Email = "uchiha@narutoverse.com",
-                    PhoneNumber = "+81123456789",
-                    Address = "Some fictional Address, Street 123, Konoha",
-                    City = "Konoha",
-                    Gender = Gender.Male
+                    Id = 2,
+                    Name = "Accesorios",
+                    Description = "Accesorios de computación y suministros.",
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-10T08:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-10T08:00:00Z")
                 };
-
-                var cust_3 = new Customer
+                var catImpresoras = new ProductCategory
                 {
-                    Name = "John Doe",
-                    Email = "johndoe@anonymous.com",
-                    PhoneNumber = "+18585858",
-                    Address = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.
-                    Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at elementum imperdiet",
-                    City = "Lorem Ipsum",
-                    Gender = Gender.Male
+                    Id = 3,
+                    Name = "Impresoras",
+                    Description = "Impresoras y multifuncionales.",
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-12T08:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-12T08:00:00Z")
                 };
+                dbContext.ProductCategories.AddRange(catLaptops, catAccesorios, catImpresoras);
 
-                var cust_4 = new Customer
+                // Products
+                var prod1 = new Product
                 {
-                    Name = "Jane Doe",
-                    Email = "Janedoe@anonymous.com",
-                    PhoneNumber = "+18585858",
-                    Address = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.
-                    Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at elementum imperdiet",
-                    City = "Lorem Ipsum",
-                    Gender = Gender.Male
-                };
-
-                var prodCat_1 = new ProductCategory
-                {
-                    Name = "None",
-                    Description = "Default category. Products that have not been assigned a category"
-                };
-
-                var prod_1 = new Product
-                {
-                    Name = "BMW M6",
-                    Description = "Yet another masterpiece from the world's best car manufacturer",
-                    BuyingPrice = 109775,
-                    SellingPrice = 114234,
-                    UnitsInStock = 12,
+                    Id = 1,
+                    Name = "Laptop Dell Inspiron 15",
+                    Description = "Laptop para oficina, Intel i5, 8GB RAM, 256GB SSD.",
+                    BuyingPrice = 500000.00m,
+                    SellingPrice = 550000.00m,
+                    UnitsInStock = 10,
                     IsActive = true,
-                    ProductCategory = prodCat_1
+                    IsDiscontinued = false,
+                    ProductCategoryId = 1,
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-10T08:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-10T08:00:00Z")
                 };
-
-                var prod_2 = new Product
+                var prod2 = new Product
                 {
-                    Name = "Nissan Patrol",
-                    Description = "A true man's choice",
-                    BuyingPrice = 78990,
-                    SellingPrice = 86990,
-                    UnitsInStock = 4,
+                    Id = 2,
+                    Name = "Mouse Logitech M185",
+                    Description = "Mouse inalámbrico, color negro.",
+                    BuyingPrice = 6000.00m,
+                    SellingPrice = 8000.00m,
+                    UnitsInStock = 50,
                     IsActive = true,
-                    ProductCategory = prodCat_1
+                    IsDiscontinued = false,
+                    ProductCategoryId = 2,
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-10T08:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-10T08:00:00Z")
                 };
-
-                var ordr_1 = new Order
+                var prod3 = new Product
                 {
-                    Discount = 500,
-                    Cashier = await dbContext.Users.OrderBy(u => u.UserName).FirstAsync(),
-                    Customer = cust_1
+                    Id = 3,
+                    Name = "Teclado Microsoft Wired 600",
+                    Description = "Teclado alámbrico, español latino.",
+                    BuyingPrice = 7000.00m,
+                    SellingPrice = 9500.00m,
+                    UnitsInStock = 30,
+                    IsActive = true,
+                    IsDiscontinued = false,
+                    ProductCategoryId = 2,
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-10T08:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-10T08:00:00Z")
                 };
-
-                var ordr_2 = new Order
+                var prod4 = new Product
                 {
-                    Cashier = await dbContext.Users.OrderBy(u => u.UserName).FirstAsync(),
-                    Customer = cust_2
+                    Id = 4,
+                    Name = "Impresora HP DeskJet 2135",
+                    Description = "Impresora multifuncional, color.",
+                    BuyingPrice = 35000.00m,
+                    SellingPrice = 42000.00m,
+                    UnitsInStock = 15,
+                    IsActive = true,
+                    IsDiscontinued = false,
+                    ProductCategoryId = 3,
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-12T08:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-12T08:00:00Z")
                 };
-
-                ordr_1.OrderDetails.Add(new()
+                var prod5 = new Product
                 {
-                    UnitPrice = prod_1.SellingPrice,
-                    Quantity = 1,
-                    Product = prod_1,
-                    Order = ordr_1
-                });
-                ordr_1.OrderDetails.Add(new()
+                    Id = 5,
+                    Name = "Cartucho HP 664XL Negro",
+                    Description = "Cartucho de tinta original HP.",
+                    BuyingPrice = 12000.00m,
+                    SellingPrice = 15000.00m,
+                    UnitsInStock = 40,
+                    IsActive = true,
+                    IsDiscontinued = false,
+                    ProductCategoryId = 3,
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-12T08:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-12T08:00:00Z")
+                };
+                dbContext.Products.AddRange(prod1, prod2, prod3, prod4, prod5);
+
+                // Customers
+                var cust1 = new Customer
                 {
-                    UnitPrice = prod_2.SellingPrice,
-                    Quantity = 1,
-                    Product = prod_2,
-                    Order = ordr_1
-                });
-
-                ordr_2.OrderDetails.Add(new()
+                    Id = 1,
+                    Name = "Carlos Jiménez",
+                    Email = "carlos.jimenez@suministroscr.com",
+                    PhoneNumber = "+50688881234",
+                    Address = "San José, Barrio Escalante",
+                    City = "San José",
+                    Gender = Gender.Male,
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-10T08:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-10T08:00:00Z")
+                };
+                var cust2 = new Customer
                 {
-                    UnitPrice = prod_2.SellingPrice,
+                    Id = 2,
+                    Name = "María Rodríguez",
+                    Email = "maria.rodriguez@suministroscr.com",
+                    PhoneNumber = "+50689991234",
+                    Address = "Heredia, San Francisco",
+                    City = "Heredia",
+                    Gender = Gender.Female,
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-11T09:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-11T09:00:00Z")
+                };
+                var cust3 = new Customer
+                {
+                    Id = 3,
+                    Name = "Luis Brenes",
+                    Email = "luis.brenes@suministroscr.com",
+                    PhoneNumber = "+50688776655",
+                    Address = "Cartago, Centro",
+                    City = "Cartago",
+                    Gender = Gender.Male,
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-12T10:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-12T10:00:00Z")
+                };
+                dbContext.Customers.AddRange(cust1, cust2, cust3);
+
+                // Orders
+                var order1 = new Order
+                {
+                    Id = 1,
+                    Discount = 5000.00m,
+                    Comments = "Venta mayorista.",
+                    CashierId = "d4925699-1c2c-479e-b750-ec048c765afd",
+                    CustomerId = 1,
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-12T10:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-12T10:00:00Z")
+                };
+                var order2 = new Order
+                {
+                    Id = 2,
+                    Discount = 0.00m,
+                    Comments = "Venta mostrador.",
+                    CashierId = "b7de05eb-67fa-4ded-b8c2-355fc6602f12",
+                    CustomerId = 2,
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-13T11:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-13T11:00:00Z")
+                };
+                var order3 = new Order
+                {
+                    Id = 3,
+                    Discount = 1000.00m,
+                    Comments = "Descuento especial por volumen.",
+                    CashierId = "d4925699-1c2c-479e-b750-ec048c765afd",
+                    CustomerId = 2,
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-14T12:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-14T12:00:00Z")
+                };
+                var order4 = new Order
+                {
+                    Id = 4,
+                    Discount = 2000.00m,
+                    Comments = "Compra de insumos para oficina.",
+                    CashierId = "b7de05eb-67fa-4ded-b8c2-355fc6602f12",
+                    CustomerId = 3,
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-15T13:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-15T13:00:00Z")
+                };
+                dbContext.Orders.AddRange(order1, order2, order3, order4);
+
+                // Order Details
+                var od1 = new OrderDetail
+                {
+                    Id = 1,
+                    UnitPrice = 550000.00m,
+                    Quantity = 2,
+                    Discount = 5000.00m,
+                    ProductId = 1,
+                    OrderId = 1,
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-12T10:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-12T10:00:00Z")
+                };
+                var od2 = new OrderDetail
+                {
+                    Id = 2,
+                    UnitPrice = 8000.00m,
+                    Quantity = 5,
+                    Discount = 0.00m,
+                    ProductId = 2,
+                    OrderId = 1,
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-12T10:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-12T10:00:00Z")
+                };
+                var od3 = new OrderDetail
+                {
+                    Id = 3,
+                    UnitPrice = 9500.00m,
                     Quantity = 1,
-                    Product = prod_2,
-                    Order = ordr_2
-                });
-
-                dbContext.Customers.Add(cust_1);
-                dbContext.Customers.Add(cust_2);
-                dbContext.Customers.Add(cust_3);
-                dbContext.Customers.Add(cust_4);
-
-                dbContext.Products.Add(prod_1);
-                dbContext.Products.Add(prod_2);
-
-                dbContext.Orders.Add(ordr_1);
-                dbContext.Orders.Add(ordr_2);
+                    Discount = 0.00m,
+                    ProductId = 3,
+                    OrderId = 2,
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-13T11:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-13T11:00:00Z")
+                };
+                var od4 = new OrderDetail
+                {
+                    Id = 4,
+                    UnitPrice = 8000.00m,
+                    Quantity = 2,
+                    Discount = 1000.00m,
+                    ProductId = 2,
+                    OrderId = 3,
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-14T12:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-14T12:00:00Z")
+                };
+                var od5 = new OrderDetail
+                {
+                    Id = 5,
+                    UnitPrice = 42000.00m,
+                    Quantity = 1,
+                    Discount = 2000.00m,
+                    ProductId = 4,
+                    OrderId = 4,
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-15T13:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-15T13:00:00Z")
+                };
+                var od6 = new OrderDetail
+                {
+                    Id = 6,
+                    UnitPrice = 15000.00m,
+                    Quantity = 3,
+                    Discount = 0.00m,
+                    ProductId = 5,
+                    OrderId = 4,
+                    CreatedBy = "SYSTEM",
+                    UpdatedBy = "SYSTEM",
+                    CreatedDate = DateTime.Parse("2024-01-15T13:00:00Z"),
+                    UpdatedDate = DateTime.Parse("2024-01-15T13:00:00Z")
+                };
+                dbContext.OrderDetails.AddRange(od1, od2, od3, od4, od5, od6);
 
                 await dbContext.SaveChangesAsync();
 
