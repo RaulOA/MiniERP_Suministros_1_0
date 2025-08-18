@@ -1,45 +1,25 @@
 {
-  // Ruta: MiniERP_Suministros\MiniERP_Suministros.client\.vscode\launch.json
-  // Archivo de configuración de lanzamiento para Visual Studio Code.
-  // Permite depurar la aplicación Angular MiniERP_Suministros.client en navegadores Chrome o Edge.
-  // Incluye configuraciones para iniciar la app en https://localhost:4200 y mapear los archivos fuente.
-  // 
-  // SECCIONES PRINCIPALES =======================================================
-  // - version: Versión del esquema de configuración de VS Code.
-  // - configurations: Lista de configuraciones de depuración disponibles.
-  // =============================================================================
-
+  // + RUTA: MiniERP_Suministros\MiniERP_Suministros.client\.vscode\launch.json
+  // - Configuración de perfiles de depuración para lanzar la aplicación cliente en navegadores Chrome y Edge.
   "version": "0.2.0",
   "configurations": [
     {
-      // CONFIGURACIÓN PARA CHROME ===============================================
-      // Permite iniciar y depurar la app en Google Chrome.
-      // - type: Define el depurador como Chrome.
-      // - request: Tipo de solicitud, "launch" inicia una nueva instancia.
-      // - name: Nombre visible en el menú de depuración.
-      // - url: Dirección local donde se ejecuta la app Angular.
-      // - webRoot: Carpeta raíz para mapear archivos fuente.
-      // ==========================================================================
-      "type": "chrome",
-      "request": "launch",
-      "name": "localhost (Chrome)",
-      "url": "https://localhost:4200",
-      "webRoot": "${workspaceFolder}"
+      // + PERFIL DE DEPURACIÓN: Chrome
+      // - Permite iniciar la aplicación en https://localhost:4200 usando Google Chrome.
+      "type": "chrome", // Tipo de depurador: Chrome.
+      "request": "launch", // Tipo de solicitud: lanzar una nueva instancia del navegador.
+      "name": "localhost (Chrome)", // Nombre descriptivo del perfil.
+      "url": "https://localhost:4200", // URL donde se ejecuta la aplicación Angular.
+      "webRoot": "${workspaceFolder}" // Carpeta raíz del proyecto para mapear archivos fuente.
     },
     {
-      // CONFIGURACIÓN PARA EDGE =================================================
-      // Permite iniciar y depurar la app en Microsoft Edge.
-      // - type: Define el depurador como Edge.
-      // - request: Tipo de solicitud, "launch" inicia una nueva instancia.
-      // - name: Nombre visible en el menú de depuración.
-      // - url: Dirección local donde se ejecuta la app Angular.
-      // - webRoot: Carpeta raíz para mapear archivos fuente.
-      // ==========================================================================
-      "type": "edge",
-      "request": "launch",
-      "name": "localhost (Edge)",
-      "url": "https://localhost:4200",
-      "webRoot": "${workspaceFolder}"
+      // + PERFIL DE DEPURACIÓN: Edge
+      // - Permite iniciar la aplicación en https://localhost:4200 usando Microsoft Edge.
+      "type": "edge", // Tipo de depurador: Edge.
+      "request": "launch", // Tipo de solicitud: lanzar una nueva instancia del navegador.
+      "name": "localhost (Edge)", // Nombre descriptivo del perfil.
+      "url": "https://localhost:4200", // URL donde se ejecuta la aplicación Angular.
+      "webRoot": "${workspaceFolder}" // Carpeta raíz del proyecto para mapear archivos fuente.
     }
   ]
 }

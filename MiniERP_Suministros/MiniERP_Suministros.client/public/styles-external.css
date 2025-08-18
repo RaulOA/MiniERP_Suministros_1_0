@@ -1,3 +1,7 @@
+/* Estilos globales personalizados para la pantalla de precarga, animación de loader y elementos visuales previos al arranque de la aplicación. Incluye animaciones y ajustes visuales para la experiencia de usuario durante la carga inicial. */
+
+/* + ESTILOS DE PANTALLA DE PRE-CARGA
+   - Define el fondo, posición y estilos generales del overlay de precarga que cubre toda la pantalla antes de que la aplicación esté lista. */
 #pre-bootstrap {
   background-color: #262626;
   bottom: 0;
@@ -8,6 +12,8 @@
   z-index: 999999;
 }
 
+/* + MENSAJE CENTRAL DE PRE-CARGA
+   - Estilos para el mensaje y textos centrales mostrados durante la precarga. */
   #pre-bootstrap div.messaging {
     color: #FFFFFF;
     font-family: monospace;
@@ -32,6 +38,8 @@
   }
 
 
+/* + TRANSICIONES DE VISIBILIDAD DE PRE-CARGA
+   - Controla la opacidad y transición de la pantalla de precarga para mostrar/ocultar suavemente. */
 .prebootShow {
   opacity: 1 !important;
 }
@@ -42,10 +50,8 @@
 }
 
 
-/*loader*/
-/* Absolute Center Spinner */
-
-
+/* + LOADER ANIMADO CENTRAL
+   - Estilos para el spinner animado que indica carga en progreso. Centra el loader y define su aspecto. */
 .cs-loader {
   height: 100%;
   width: 100%;
@@ -66,6 +72,8 @@
     color: gray;
   }
 
+/* + ANIMACIÓN DE LETRAS DEL LOADER
+   - Define la animación de entrada y salida de las letras del loader, creando un efecto de movimiento secuencial. */
 @keyframes lol {
   0% {
     opacity: 0;
@@ -110,6 +118,8 @@
   }
 }
 
+/* + ASIGNACIÓN DE RETRASOS EN ANIMACIÓN DE LETRAS
+   - Cada letra del loader tiene un retraso diferente para lograr el efecto de secuencia animada. */
 .cs-loader-inner span:nth-child(6) {
   -webkit-animation: lol 3s infinite ease-in-out;
   animation: lol 3s infinite ease-in-out;

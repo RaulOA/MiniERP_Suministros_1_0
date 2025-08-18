@@ -22,10 +22,10 @@
     <div class="col-sm-4">
       <ng-select id="language" [(ngModel)]="configurations.language" [searchable]="false" [clearable]="false" class="form-control">
         <ng-option [value]="'en'">
-          {{'preferences.English' | translate}} 
+          {{'preferences.English' | translate}} <small class="text-muted"><i>({{'preferences.Default' | translate}})</i></small>
         </ng-option>
         <ng-option [value]="'es'">
-          {{'preferences.Spanish' | translate}} <small class="text-muted"><i>({{'preferences.Default' | translate}})</i></small>
+          {{'preferences.Spanish' | translate}} 
         </ng-option>
       </ng-select>
     </div>
