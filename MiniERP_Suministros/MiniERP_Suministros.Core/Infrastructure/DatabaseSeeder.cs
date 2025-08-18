@@ -17,37 +17,37 @@ namespace MiniERP_Suministros.Core.Infrastructure
             await SeedDemoDataAsync();
         }
 
-        /************ DEFAULT USERS **************/
+        /************ USUARIOS POR DEFECTO **************/
 
         private async Task SeedDefaultUsersAsync()
         {
             if (!await dbContext.Users.AnyAsync())
             {
-                logger.LogInformation("Generating inbuilt accounts");
+                logger.LogInformation("Generando cuentas integradas");
 
                 const string adminRoleName = "administrator";
                 const string userRoleName = "user";
 
-                await EnsureRoleAsync(adminRoleName, "Default administrator",
+                await EnsureRoleAsync(adminRoleName, "Administrador por defecto",
                     ApplicationPermissions.GetAllPermissionValues());
 
-                await EnsureRoleAsync(userRoleName, "Default user", []);
+                await EnsureRoleAsync(userRoleName, "Usuario por defecto", []);
 
                 await CreateUserAsync("admin",
                                       "tempP@ss123",
-                                      "Inbuilt Administrator",
+                                      "Administrador Integrado",
                                       "admin@ebenmonney.com",
                                       "+1 (123) 000-0000",
                                       [adminRoleName]);
 
                 await CreateUserAsync("user",
                                       "tempP@ss123",
-                                      "Inbuilt Standard User",
+                                      "Usuario Estándar Integrado",
                                       "user@ebenmonney.com",
                                       "+1 (123) 000-0001",
                                       [userRoleName]);
 
-                logger.LogInformation("Inbuilt account generation completed");
+                logger.LogInformation("Generación de cuentas integradas completada");
             }
         }
 
@@ -55,7 +55,7 @@ namespace MiniERP_Suministros.Core.Infrastructure
         {
             if (await userRoleService.GetRoleByNameAsync(roleName) == null)
             {
-                logger.LogInformation("Generating default role: {roleName}", roleName);
+                logger.LogInformation("Generando rol por defecto: {roleName}", roleName);
 
                 var applicationRole = new ApplicationRole(roleName, description);
 
@@ -63,7 +63,7 @@ namespace MiniERP_Suministros.Core.Infrastructure
 
                 if (!result.Succeeded)
                 {
-                    throw new UserRoleException($"Seeding \"{description}\" role failed. Errors: " +
+                    throw new UserRoleException($"Error al sembrar el rol \"{description}\". Errores: " +
                         $"{string.Join(Environment.NewLine, result.Errors)}");
                 }
             }
@@ -72,7 +72,7 @@ namespace MiniERP_Suministros.Core.Infrastructure
         private async Task<ApplicationUser> CreateUserAsync(
             string userName, string password, string fullName, string email, string phoneNumber, string[] roles)
         {
-            logger.LogInformation("Generating default user: {userName}", userName);
+            logger.LogInformation("Generando usuario por defecto: {userName}", userName);
 
             var applicationUser = new ApplicationUser
             {
@@ -88,22 +88,22 @@ namespace MiniERP_Suministros.Core.Infrastructure
 
             if (!result.Succeeded)
             {
-                throw new UserAccountException($"Seeding \"{userName}\" user failed. Errors: " +
+                throw new UserAccountException($"Error al sembrar el usuario \"{userName}\". Errores: " +
                     $"{string.Join(Environment.NewLine, result.Errors)}");
             }
 
             return applicationUser;
         }
 
-        /************ DEMO DATA **************/
+        /************ DATOS DE DEMOSTRACIÓN **************/
 
         private async Task SeedDemoDataAsync()
         {
             if (!await dbContext.Customers.AnyAsync() && !await dbContext.ProductCategories.AnyAsync())
             {
-                logger.LogInformation("Seeding demo data");
+                logger.LogInformation("Sembrando datos de demostración");
 
-                // Product Categories
+                // Categorías de productos
                 var catLaptops = new ProductCategory
                 {
                     Id = 1,
@@ -136,7 +136,7 @@ namespace MiniERP_Suministros.Core.Infrastructure
                 };
                 dbContext.ProductCategories.AddRange(catLaptops, catAccesorios, catImpresoras);
 
-                // Products
+                // Productos
                 var prod1 = new Product
                 {
                     Id = 1,
@@ -224,7 +224,7 @@ namespace MiniERP_Suministros.Core.Infrastructure
                 };
                 dbContext.Products.AddRange(prod1, prod2, prod3, prod4, prod5);
 
-                // Customers
+                // Clientes
                 var cust1 = new Customer
                 {
                     Id = 1,
@@ -269,7 +269,7 @@ namespace MiniERP_Suministros.Core.Infrastructure
                 };
                 dbContext.Customers.AddRange(cust1, cust2, cust3);
 
-                // Orders
+                // Órdenes
                 var order1 = new Order
                 {
                     Id = 1,
@@ -324,7 +324,7 @@ namespace MiniERP_Suministros.Core.Infrastructure
                 };
                 dbContext.Orders.AddRange(order1, order2, order3, order4);
 
-                // Order Details
+                // Detalles de órdenes
                 var od1 = new OrderDetail
                 {
                     Id = 1,
@@ -419,7 +419,7 @@ namespace MiniERP_Suministros.Core.Infrastructure
 
                 await dbContext.SaveChangesAsync();
 
-                logger.LogInformation("Seeding demo data completed");
+                logger.LogInformation("Datos de demostración sembrados correctamente");
             }
         }
     }

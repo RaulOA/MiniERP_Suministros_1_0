@@ -4,7 +4,7 @@
       {
         "Id": 1,
         "Name": "Laptops",
-        "Description": "Laptops y portátiles para oficina y hogar.",
+        "Description": "Laptops y portï¿½tiles para oficina y hogar.",
         "Icon": null,
         "CreatedBy": "SYSTEM",
         "UpdatedBy": "SYSTEM",
@@ -14,7 +14,7 @@
       {
         "Id": 2,
         "Name": "Accesorios",
-        "Description": "Accesorios de computación y suministros.",
+        "Description": "Accesorios de computaciï¿½n y suministros.",
         "Icon": null,
         "CreatedBy": "SYSTEM",
         "UpdatedBy": "SYSTEM",
@@ -53,7 +53,7 @@
       {
         "Id": 2,
         "Name": "Mouse Logitech M185",
-        "Description": "Mouse inalámbrico, color negro.",
+        "Description": "Mouse inalï¿½mbrico, color negro.",
         "Icon": null,
         "BuyingPrice": 6000.00,
         "SellingPrice": 8000.00,
@@ -70,7 +70,7 @@
       {
         "Id": 3,
         "Name": "Teclado Microsoft Wired 600",
-        "Description": "Teclado alámbrico, español latino.",
+        "Description": "Teclado alï¿½mbrico, espaï¿½ol latino.",
         "Icon": null,
         "BuyingPrice": 7000.00,
         "SellingPrice": 9500.00,
@@ -122,11 +122,11 @@
     "Customers": [
       {
         "Id": 1,
-        "Name": "Carlos Jiménez",
+        "Name": "Carlos Jimï¿½nez",
         "Email": "carlos.jimenez@suministroscr.com",
         "PhoneNumber": "+50688881234",
-        "Address": "San José, Barrio Escalante",
-        "City": "San José",
+        "Address": "San Josï¿½, Barrio Escalante",
+        "City": "San Josï¿½",
         "Gender": 1,
         "CreatedBy": "SYSTEM",
         "UpdatedBy": "SYSTEM",
@@ -135,7 +135,7 @@
       },
       {
         "Id": 2,
-        "Name": "María Rodríguez",
+        "Name": "Marï¿½a Rodrï¿½guez",
         "Email": "maria.rodriguez@suministroscr.com",
         "PhoneNumber": "+50689991234",
         "Address": "Heredia, San Francisco",
