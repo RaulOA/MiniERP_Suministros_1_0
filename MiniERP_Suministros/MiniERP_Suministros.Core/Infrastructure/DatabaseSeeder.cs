@@ -36,15 +36,15 @@ namespace MiniERP_Suministros.Core.Infrastructure
                 await CreateUserAsync("admin",
                                       "tempP@ss123",
                                       "Administrador Integrado",
-                                      "admin@ebenmonney.com",
-                                      "+1 (123) 000-0000",
+                                      "admin@prueba.com",
+                                      "(506) 000-0000",
                                       [adminRoleName]);
 
                 await CreateUserAsync("user",
                                       "tempP@ss123",
                                       "Usuario Estándar Integrado",
-                                      "user@ebenmonney.com",
-                                      "+1 (123) 000-0001",
+                                      "user@prueba.com",
+                                      "(506) 000-0000",
                                       [userRoleName]);
 
                 logger.LogInformation("Generación de cuentas integradas completada");
@@ -253,12 +253,16 @@ namespace MiniERP_Suministros.Core.Infrastructure
                 };
                 dbContext.Customers.AddRange(cust1, cust2, cust3);
 
+                // Obtener el usuario admin y user para asignar como cajeros
+                var adminUser = await dbContext.Users.FirstOrDefaultAsync(u => u.UserName == "admin");
+                var normalUser = await dbContext.Users.FirstOrDefaultAsync(u => u.UserName == "user");
+
                 // Órdenes
                 var order1 = new Order
                 {
                     Discount = 5000.00m,
                     Comments = "Venta mayorista.",
-                    CashierId = "d4925699-1c2c-479e-b750-ec048c765afd",
+                    CashierId = adminUser?.Id, // admin
                     Customer = cust1,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
@@ -269,7 +273,7 @@ namespace MiniERP_Suministros.Core.Infrastructure
                 {
                     Discount = 0.00m,
                     Comments = "Venta mostrador.",
-                    CashierId = "b7de05eb-67fa-4ded-b8c2-355fc6602f12",
+                    CashierId = normalUser?.Id, // user
                     Customer = cust2,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
@@ -280,7 +284,7 @@ namespace MiniERP_Suministros.Core.Infrastructure
                 {
                     Discount = 1000.00m,
                     Comments = "Descuento especial por volumen.",
-                    CashierId = "d4925699-1c2c-479e-b750-ec048c765afd",
+                    CashierId = adminUser?.Id, // admin
                     Customer = cust2,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
@@ -291,7 +295,7 @@ namespace MiniERP_Suministros.Core.Infrastructure
                 {
                     Discount = 2000.00m,
                     Comments = "Compra de insumos para oficina.",
-                    CashierId = "b7de05eb-67fa-4ded-b8c2-355fc6602f12",
+                    CashierId = normalUser?.Id, // user
                     Customer = cust3,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
