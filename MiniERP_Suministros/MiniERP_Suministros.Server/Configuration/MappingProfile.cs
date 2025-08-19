@@ -1,10 +1,4 @@
-﻿
-
-
-
-
-
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using MiniERP_Suministros.Core.Models.Account;
 using MiniERP_Suministros.Core.Models.Shop;

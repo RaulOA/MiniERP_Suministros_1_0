@@ -58,8 +58,11 @@ Descripción: Registro de incidencias y soluciones aplicadas por Copilot para con
     - Backend: Se reimplementó CustomerController PUT para aceptar CustomerVM y delegar una actualización parcial sobre ICustomerService.UpdatePartial. Se agregó GET por id.
     - Core: Se extendió ICustomerService con GetById y UpdatePartial; se implementó en CustomerService aplicando únicamente campos no nulos, incluyendo parseo de Gender.
     - Cliente: Sin cambios de contrato; sigue enviando parches parciales y ahora el backend los aplica.
-  - Verificación:
-    - Build correcto de Client y Server. El flujo de PUT ahora debe devolver 200/OK sin 400.
+  - Verificación (confirmada):
+    - En /customers, la edición inline (nombre/email/teléfono) actualiza sin errores (DevTools: 200 OK).
+    - Al recargar, GET devuelve los cambios persistidos.
+    - No se requieren migraciones.
+    - Opcional: proteger CustomerController con [Authorize] si se necesitan restricciones por roles/claims.
 
 - Ajustes de lint en cliente
   - Mensajes:
