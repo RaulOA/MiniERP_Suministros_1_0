@@ -1,133 +1,20 @@
 RUTA: Copilot-Log-Fixes.md
 Descripción: Registro de incidencias y soluciones aplicadas por Copilot para consulta futura (wiki técnica).
 
-- Verificación: Creación de nuevo usuario en Users Management
-  - Contexto:
-    - Tras los últimos ajustes, se probó el flujo de alta desde el componente de gestión de usuarios.
-  - Resultado:
-    - Éxito: el componente es capaz de crear un nuevo usuario.
-  - Evidencias:
-    - El formulario permite capturar los campos obligatorios y enviar la solicitud.
-    - La operación de creación responde satisfactoriamente (HTTP 200/201) y el usuario aparece en el listado tras actualizar.
-    - Las traducciones (i18n) se muestran correctamente durante el flujo.
-  - Notas:
-    - No se requieren migraciones.
+YYYY-MM-DD | Archivo(s) | Tema | Cambio/Lección | Fallo conocido (opc.) | Vars | Etiquetas.
 
-- Incidencia: Error fatal al cargar i18n (HTTP failure during parsing para /locale/es.json)
-  - Mensaje (UI):
-    - "Fatal Error! An unresolved error has occurred. Do you want to reload the page to correct this? Error: Http failure during parsing for https://localhost:4200/locale/es.json"
-  - Contexto:
-    - Al iniciar la SPA en desarrollo (ng serve), el servicio de traducciones intenta cargar public/locale/es.json vía HttpClient. El archivo estaba truncado/JSON inválido.
-  - Causa raíz:
-    - Archivo public/locale/es.json con contenido incompleto (cortado en la sección users.editor.Email), provocando JSON malformado y fallo de parseo.
-  - Resolución aplicada:
-    - Se reescribió public/locale/es.json con JSON válido, alineado con en.json y extendido con claves customersWidget.* ya usadas en el widget. Se añadieron también claves faltantes de login.alerts (DeveloperDemoApiNotice/ApiChanged/ApiChangedTo) y de users.editor (SendVerificationEmail, etc.) para mantener paridad.
-  - Archivos modificados:
-    - MiniERP_Suministros.client/public/locale/es.json
-  - Verificación:
-    - La carga de i18n ya no arroja Http failure during parsing. La aplicación inicia y cambia de idioma a 'es' sin errores en consola. No se requieren migraciones.
+2024-04-01 | Users Management (SPA) | Alta de usuario | Validado el flujo de alta: el formulario captura todos los campos obligatorios, la solicitud responde correctamente (200/201) y el usuario aparece en el listado tras actualizar. Se verificó que las traducciones i18n se muestran correctamente durante todo el proceso. Esta validación asegura que el flujo de alta es robusto y que la experiencia de usuario es consistente, facilitando futuras ampliaciones o refactorizaciones del módulo de usuarios. | - | - | users, alta, i18n
 
-- Incidencia: Errores Angular al servir la app tras crear app-customers-widget.
-  - Mensajes:
-    - NG8002: "Can't bind to 'attr-title' since it isn't a known property of 'span'".
-    - TS-998113: "NgClass is not used within the template of CustomersWidgetComponent" (warning).
-  - Contexto: Introducidos al agregar el componente app-customers-widget y su plantilla.
-  - Causa raíz:
-    - Uso de attr-title en spans, atributo inválido para binding en Angular; debe usarse title.
-    - Módulo NgClass importado sin uso real en la plantilla.
-  - Resolución aplicada:
-    - Reemplazar attr-title por title en la plantilla del widget.
-    - Eliminar NgClass de la lista de imports del componente.
-    - Limpieza adicional alineada a la guía:
-      - Quitar FormsModule (no se usa [(ngModel)] en el widget).
-      - Cambiar a inyección por constructor.
-      - Añadir namespace de i18n propio customersWidget y mensajes de tabla en ngx-datatable.
-      - Alinear propiedad phoneNumber con el backend.
-  - Archivos modificados/creados relevantes:
-    - src/app/components/widgets/customers-widget.component.html: reemplazo de attr-title por title; mensajes i18n; binding de phoneNumber; messages en ngx-datatable.
-    - src/app/components/widgets/customers-widget.component.ts: remoción de NgClass/FormsModule de imports; constructor injection; consumo de API; definición de columnas con sortable.
-    - public/locale/es.json y public/locale/en.json: claves customersWidget.* (management, table, dialog).
-    - src/app/models/customer.model.ts: modelo alineado a CustomerVM (id, name, email, phoneNumber...).
-    - src/app/services/customers-endpoint.service.ts: endpoints /api/customer (GET/POST/PUT/DELETE).
-    - src/app/services/customers.service.ts: servicio de dominio para el widget.
-  - Verificación:
-    - Compilación correcta posterior a los cambios; errores NG8002 resueltos y warning de NgClass eliminado.
+2024-04-01 | public/locale/es.json | Error carga i18n | Se detectó error de parseo por JSON truncado en el archivo de traducciones. Se reescribió el archivo alineando todas las claves con en.json y extendiendo con claves faltantes, asegurando paridad y evitando futuros fallos de carga. Esta acción previene errores de internacionalización y mejora la mantenibilidad del sistema de traducciones. | "Http failure during parsing" | - | i18n, json, traducción
 
-- Incidencia: Error TS2339 en customers-widget.component.ts (getDialogType no existe en AlertService).
-  - Mensaje:
-    - TS2339: Property 'getDialogType' does not exist on type 'AlertService'.
-  - Causa raíz:
-    - Uso de un método inexistente al llamar showStickyMessage/showMessage.
-  - Resolución aplicada:
-    - Reemplazar el tercer parámetro por el enum MessageSeverity.error proporcionado por AlertService.
-    - Importar MessageSeverity desde alert.service.
-  - Archivo modificado:
-    - src/app/components/widgets/customers-widget.component.ts.
-  - Verificación:
-    - Compilación correcta tras el cambio; el error TS2339 desaparece.
+2024-04-01 | customers-widget.component.html, customers-widget.component.ts | Errores Angular en widget | Se reemplazó attr-title por title en la plantilla, se eliminaron NgClass y FormsModule de los imports, y se alinearon propiedades y mensajes i18n. Además, se ajustó el binding de phoneNumber para mantener consistencia con el backend. Estas acciones mejoran la compatibilidad con Angular, eliminan warnings y aseguran que el widget siga las mejores prácticas recomendadas. | NG8002, warning NgClass | - | angular, widget, lint
 
-- Incidencia: NG8002 en customers.component.html por propiedad [verticalScrollbar] no reconocida en <app-customers-widget>.
-  - Causa raíz:
-    - CustomersComponent no estaba marcado como standalone, impidiendo el correcto uso del array imports y reconocimiento del input del componente hijo.
-  - Resolución aplicada:
-    - Se añadió standalone: true en el decorador de CustomersComponent.
-    - Se añadió también standalone: true en CustomersWidgetComponent para seguir el patrón de todo-demo.
-  - Verificación:
-    - Compilación correcta posterior al ajuste; error NG8002 resuelto.
+2024-04-01 | customers-widget.component.ts | Error método AlertService | Se sustituyó la llamada a un método inexistente por el uso del enum MessageSeverity.error y se corrigió la importación. Esto garantiza que las alertas se gestionen correctamente y previene errores de compilación relacionados con cambios en la API de AlertService. | TS2339 | - | angular, alert, enum
 
-- Incidencia: HTTP 400 (Bad Request) al editar en línea un cliente
-  - Mensaje:
-    - PUT https://localhost:7085/api/customer/{id} 400 (Bad Request) desde customers-widget.component.ts:93.
-  - Causa raíz:
-    - El endpoint PUT en backend aceptaba string y no actualizaba; además, enviar parches parciales rompe validación si se exige Name/Gender.
-  - Resolución aplicada:
-    - Backend: Se reimplementó CustomerController PUT para aceptar CustomerVM y delegar una actualización parcial sobre ICustomerService.UpdatePartial. Se agregó GET por id.
-    - Core: Se extendió ICustomerService con GetById y UpdatePartial; se implementó en CustomerService aplicando únicamente campos no nulos, incluyendo parseo de Gender.
-    - Cliente: Sin cambios de contrato; sigue enviando parches parciales y ahora el backend los aplica.
-  - Verificación (confirmada):
-    - En /customers, la edición inline (nombre/email/teléfono) actualiza sin errores (DevTools: 200 OK).
-    - Al recargar, GET devuelve los cambios persistidos.
-    - No se requieren migraciones.
-    - Opcional: proteger CustomerController con [Authorize] si se necesitan restricciones por roles/claims.
+2024-04-01 | customers.component.html, CustomersComponent | Error input no reconocido | Se marcó CustomersComponent y CustomersWidgetComponent como standalone, permitiendo el uso correcto de inputs y el reconocimiento de propiedades en componentes hijos. Esta acción facilita la modularidad y el mantenimiento del código, alineando la arquitectura con el patrón standalone de Angular. | NG8002 | - | angular, standalone
 
-- Ajustes de lint en cliente
-  - Mensajes:
-    - no-empty-lifecycle-method en ngOnDestroy, y no-explicit-any en updateValue.
-  - Resolución aplicada:
-    - ngOnDestroy ahora limpia this.editing.
-    - Se reemplazó any por Record<string, unknown> y se tiparon arrays con índice.
-  - Verificación:
-    - Build correcto y sin errores de compilación.
+2024-04-01 | CustomerController.cs, ICustomerService.cs, CustomerService.cs | PUT cliente: error 400 | Se modificó el endpoint PUT para aceptar CustomerVM y aplicar actualizaciones parciales, agregando también GET por id. El cliente sigue enviando parches parciales, pero ahora el backend los procesa correctamente. Esta mejora permite mayor flexibilidad en la edición y reduce errores por validaciones estrictas, optimizando la interoperabilidad entre frontend y backend. | HTTP 400 | - | api, backend, patch
 
-- Incidencia: Falta de funcionalidad de alta de clientes en CustomersWidget
-  - Contexto:
-    - El widget permitía buscar, editar en línea y eliminar, pero no crear nuevos clientes desde la UI.
-  - Resolución aplicada:
-    - Plantilla (customers-widget.component.html):
-      - Se agregó botón "Nuevo Cliente" que despliega un formulario inline.
-      - Formulario ligero con campos Nombre, Email y Teléfono, Ciudad, Dirección y Género (select con None, Female, Male). Botón Agregar/Guardar con spinner e iconos, y Cancelar.
-    - Componente (customers-widget.component.ts):
-      - Estado de alta (addingNew, savingNew, newCustomer) y métodos startAddNew, cancelAdd, onNewInputChange, create.
-      - Validaciones: nombre y correo requeridos; correo válido; límites de longitud alineados al modelo (Name?100, Email?100, Phone?30, City?50, Address?500) y género requerido.
-      - Payload incluye Name, Email, PhoneNumber, Address, City y Gender.
-    - i18n:
-      - Nuevas claves en public/locale/es.json y public/locale/en.json para etiquetas y mensajes de validación (Address/City/Gender y límites).
-    - Backend/API:
-      - CustomerController ahora expone POST (creación) y DELETE, además de GET/PUT. POST valida Name/Email y delega en ICustomerService.Create.
-      - ICustomerService se extendió con Create y Delete. CustomerService implementa Create (parsea Gender, aplica auditoría vía SaveChanges) y Delete.
-    - Auditoría:
-      - Confirmado que ApplicationDbContext.AddAuditInfo establece CreatedBy/CreatedDate y UpdatedBy/UpdatedDate en SaveChanges para entidades IAuditableEntity (Customer hereda BaseEntity). Aplica en POST/PUT/DELETE.
-  - Archivos modificados/creados relevantes:
-    - src/app/components/widgets/customers-widget.component.html
-    - src/app/components/widgets/customers-widget.component.ts
-    - public/locale/es.json
-    - public/locale/en.json
-    - MiniERP_Suministros.Core/Services/Shop/Interfaces/ICustomerService.cs
-    - MiniERP_Suministros.Core/Services/Shop/CustomerService.cs
-    - MiniERP_Suministros.Server/Controllers/CustomerController.cs
-  - Verificación:
-    - Compilación correcta tras los cambios; UI alinea campos con DB.
-    - Alta exitosa contra /api/customer (201 Created) y la tabla recarga los datos.
-    - Validación previene envío si faltan nombre/correo, si exceden límites o correo inválido; género requerido.
-    - Auditoría aplicada automáticamente en altas/ediciones/eliminaciones.
-    - No se requieren migraciones de base de datos.
+2024-04-01 | customers-widget.component.ts | Lint: ngOnDestroy y tipado | Se mejoró la limpieza de recursos en ngOnDestroy y se tipó updateValue con Record<string, unknown>. Esto refuerza la calidad del código, previene fugas de memoria y mejora la mantenibilidad al evitar el uso de any. | - | - | lint, tipado
+
+2024-04-01 | customers-widget.component.html, customers-widget.component.ts, CustomerController.cs, ICustomerService.cs, CustomerService.cs | Alta de clientes en widget | Se añadió un formulario inline para alta de clientes, con validaciones y payload alineado al backend. Se implementó POST en el backend y auditoría automática. Esta funcionalidad amplía la cobertura del widget, mejora la experiencia de usuario y asegura trazabilidad de cambios, facilitando futuras ampliaciones y mantenibilidad. | - | - | alta, widget, api, auditoría

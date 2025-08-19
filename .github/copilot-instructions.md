@@ -7,11 +7,12 @@ applyTo: "**"
 - #file:'Copilot-Instructions.md' siempre revisar antes de editar.
 - #file:'Copilot-Log-Fixes.md', siempre utilizar como almacén de experiencia para consulta.
 
-- Reglas de inclusión en #file:'Copilot-Log-Fixes.md':
+- Reglas de inclusión en #file:'Copilot-Log-Fixes.md': 
         - Registrar solo entradas que aporten lecciones nuevas y relevantes.
+        - Descripcion de  Cambio/Lección detallado pero puntual que sirva para optimizar el procedimientro en futuros casos similares.
         - Crear nueva entrada solo si el tema es distinto; para refinamientos, actualizar entrada existente e indicar "última-revisión:YYYY-MM-DD".
-        - Formato de entrada (no mas de 5 lineas): YYYY-MM-DD | Archivo(s) | Tema | Cambio/Lección | Fallo conocido (opc.) | Vars | Etiquetas.
-        - Evitar entradas triviales o duplicadas; priorizar precisión y brevedad.
+        - Formato de entrada: YYYY-MM-DD | Archivo(s) | Tema | Cambio/Lección (puedes ampliar max 4 lineas por registro) | Fallo conocido (opc.) | Vars | Etiquetas.
+        - Evitar entradas triviales o duplicadas; priorizar precisión y brevedad. 
         - Si se necesita código, referenciar ubicaciones o líneas; no volcar fragmentos largos.
         - Mantener tono operativo, directo y conciso.
 
