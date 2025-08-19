@@ -372,5 +372,21 @@
       "Important": "Mark as important",
       "AddTask": "Add Task"
     }
+  },
+  "customersWidget": {
+    "management": {
+      "Search": "Search for customer...",
+      "Delete": "Delete customer"
+    },
+    "table": {
+      "Name": "Name",
+      "Email": "Email",
+      "Phone": "Phone",
+      "NoCustomers": "No customers found",
+      "Edit": "Double click to edit"
+    },
+    "dialog": {
+      "DeleteConfirm": "Are you sure you want to delete the customer?"
+    }
   }
 }

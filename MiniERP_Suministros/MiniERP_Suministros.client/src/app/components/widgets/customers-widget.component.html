@@ -5,7 +5,7 @@ Descripción: Plantilla del widget de clientes. Incluye buscador, tabla editable
 <div class="row control-box">
   <div class="col-lg-8">
     <div class="search-box">
-      <app-search-box (searchChange)="onSearchChanged($event)" placeholder="{{'customers.management.Search' | translate}}" />
+      <app-search-box (searchChange)="onSearchChanged($event)" placeholder="{{'customersWidget.management.Search' | translate}}" />
     </div>
   </div>
 </div>
@@ -17,6 +17,7 @@ Descripción: Plantilla del widget de clientes. Incluye buscador, tabla editable
                [headerHeight]="37"
                [footerHeight]="35"
                [columns]="columns"
+               [messages]="{ emptyMessage: ('customersWidget.table.NoCustomers' | translate), totalMessage: '', selectedMessage: '' }"
                [scrollbarV]="verticalScrollbar()"
                [columnMode]="'force'">
 </ngx-datatable>
@@ -29,7 +30,7 @@ Descripción: Plantilla del widget de clientes. Incluye buscador, tabla editable
            (keydown.escape)="editing[row.$$index + '-name'] = false"/>
   }
   @else {
-    <span class="inline-label" attr-title="Double click to edit - {{value}}"
+    <span class="inline-label" title="{{'customersWidget.table.Edit' | translate}} - {{value}}"
           (dblclick)="editing[row.$$index + '-name'] = true">
       {{value}}
     </span>
@@ -44,7 +45,7 @@ Descripción: Plantilla del widget de clientes. Incluye buscador, tabla editable
            (keydown.escape)="editing[row.$$index + '-email'] = false"/>
   }
   @else {
-    <span class="inline-label" attr-title="Double click to edit - {{value}}"
+    <span class="inline-label" title="{{'customersWidget.table.Edit' | translate}} - {{value}}"
           (dblclick)="editing[row.$$index + '-email'] = true">
       {{value}}
     </span>
@@ -52,22 +53,22 @@ Descripción: Plantilla del widget de clientes. Incluye buscador, tabla editable
 </ng-template>
 
 <ng-template #phoneTemplate let-row="row" let-value="value">
-  @if (editing[row.$$index + '-phone']) {
+  @if (editing[row.$$index + '-phoneNumber']) {
     <input class="inline-editor" appAutofocus type="text" [value]="value"
-           (blur)="updateValue($event, 'phone', row)"
-           (keydown.enter)="updateValue($event, 'phone', row)"
-           (keydown.escape)="editing[row.$$index + '-phone'] = false"/>
+           (blur)="updateValue($event, 'phoneNumber', row)"
+           (keydown.enter)="updateValue($event, 'phoneNumber', row)"
+           (keydown.escape)="editing[row.$$index + '-phoneNumber'] = false"/>
   }
   @else {
-    <span class="inline-label" attr-title="Double click to edit - {{value}}"
-          (dblclick)="editing[row.$$index + '-phone'] = true">
+    <span class="inline-label" title="{{'customersWidget.table.Edit' | translate}} - {{value}}"
+          (dblclick)="editing[row.$$index + '-phoneNumber'] = true">
       {{value}}
     </span>
   }
 </ng-template>
 
 <ng-template #actionsTemplate let-row="row">
-  <a class="btn btn-link btn-sm" href="javascript:;" ngbTooltip="{{'customers.management.Delete' | translate}}"
+  <a class="btn btn-link btn-sm" href="javascript:;" ngbTooltip="{{'customersWidget.management.Delete' | translate}}"
      container="body" (click)="delete(row)">
     <i class="fa fa-times"></i>
   </a>

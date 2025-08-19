@@ -372,5 +372,21 @@
       "Important": "Marcar como importante",
       "AddTask": "Agregar Tarea"
     }
+  },
+  "customersWidget": {
+    "management": {
+      "Search": "Buscar cliente...",
+      "Delete": "Eliminar cliente"
+    },
+    "table": {
+      "Name": "Nombre",
+      "Email": "Correo",
+      "Phone": "Teléfono",
+      "NoCustomers": "No se encontraron clientes",
+      "Edit": "Doble clic para editar"
+    },
+    "dialog": {
+      "DeleteConfirm": "¿Seguro que deseas eliminar el cliente?"
+    }
   }
 }

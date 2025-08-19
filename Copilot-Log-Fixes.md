@@ -1,0 +1,33 @@
+RUTA: Copilot-Log-Fixes.md
+Descripción: Registro de incidencias y soluciones aplicadas por Copilot para consulta futura (wiki técnica).
+
+- Incidencia: Errores Angular al servir la app tras crear app-customers-widget.
+  - Mensajes:
+    - NG8002: "Can't bind to 'attr-title' since it isn't a known property of 'span'".
+    - TS-998113: "NgClass is not used within the template of CustomersWidgetComponent" (warning).
+  - Contexto: Introducidos al agregar el componente app-customers-widget y su plantilla.
+  - Causa raíz:
+    - Uso de attr-title en spans, atributo inválido para binding en Angular; debe usarse title.
+    - Módulo NgClass importado sin uso real en la plantilla.
+  - Resolución aplicada:
+    - Reemplazar attr-title por title en la plantilla del widget.
+    - Eliminar NgClass de la lista de imports del componente.
+    - Limpieza adicional alineada a la guía:
+      - Quitar FormsModule (no se usa [(ngModel)] en el widget).
+      - Cambiar a inyección por constructor.
+      - Añadir namespace de i18n propio customersWidget y mensajes de tabla en ngx-datatable.
+      - Alinear propiedad phoneNumber con el backend.
+  - Archivos modificados/creados relevantes:
+    - src/app/components/widgets/customers-widget.component.html: reemplazo de attr-title por title; mensajes i18n; binding de phoneNumber; messages en ngx-datatable.
+    - src/app/components/widgets/customers-widget.component.ts: remoción de NgClass/FormsModule de imports; constructor injection; consumo de API; definición de columnas con sortable.
+    - public/locale/es.json y public/locale/en.json: claves customersWidget.* (management, table, dialog).
+    - src/app/models/customer.model.ts: modelo alineado a CustomerVM (id, name, email, phoneNumber...).
+    - src/app/services/customers-endpoint.service.ts: endpoints /api/customer (GET/POST/PUT/DELETE).
+    - src/app/services/customers.service.ts: servicio de dominio para el widget.
+  - Verificación:
+    - Compilación correcta posterior a los cambios; errores NG8002 resueltos y warning de NgClass eliminado.
+  - Referencia de buenas prácticas (Reglas de generación de componentes):
+    - Usar standalone con imports mínimos necesarios.
+    - Preferir inyección por constructor.
+    - Definir namespace i18n del widget y mensajes de tabla.
+    - Evitar importar módulos no utilizados.
