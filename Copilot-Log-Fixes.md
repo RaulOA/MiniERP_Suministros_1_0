@@ -1,6 +1,32 @@
 RUTA: Copilot-Log-Fixes.md
 Descripción: Registro de incidencias y soluciones aplicadas por Copilot para consulta futura (wiki técnica).
 
+- Verificación: Creación de nuevo usuario en Users Management
+  - Contexto:
+    - Tras los últimos ajustes, se probó el flujo de alta desde el componente de gestión de usuarios.
+  - Resultado:
+    - Éxito: el componente es capaz de crear un nuevo usuario.
+  - Evidencias:
+    - El formulario permite capturar los campos obligatorios y enviar la solicitud.
+    - La operación de creación responde satisfactoriamente (HTTP 200/201) y el usuario aparece en el listado tras actualizar.
+    - Las traducciones (i18n) se muestran correctamente durante el flujo.
+  - Notas:
+    - No se requieren migraciones.
+
+- Incidencia: Error fatal al cargar i18n (HTTP failure during parsing para /locale/es.json)
+  - Mensaje (UI):
+    - "Fatal Error! An unresolved error has occurred. Do you want to reload the page to correct this? Error: Http failure during parsing for https://localhost:4200/locale/es.json"
+  - Contexto:
+    - Al iniciar la SPA en desarrollo (ng serve), el servicio de traducciones intenta cargar public/locale/es.json vía HttpClient. El archivo estaba truncado/JSON inválido.
+  - Causa raíz:
+    - Archivo public/locale/es.json con contenido incompleto (cortado en la sección users.editor.Email), provocando JSON malformado y fallo de parseo.
+  - Resolución aplicada:
+    - Se reescribió public/locale/es.json con JSON válido, alineado con en.json y extendido con claves customersWidget.* ya usadas en el widget. Se añadieron también claves faltantes de login.alerts (DeveloperDemoApiNotice/ApiChanged/ApiChangedTo) y de users.editor (SendVerificationEmail, etc.) para mantener paridad.
+  - Archivos modificados:
+    - MiniERP_Suministros.client/public/locale/es.json
+  - Verificación:
+    - La carga de i18n ya no arroja Http failure during parsing. La aplicación inicia y cambia de idioma a 'es' sin errores en consola. No se requieren migraciones.
+
 - Incidencia: Errores Angular al servir la app tras crear app-customers-widget.
   - Mensajes:
     - NG8002: "Can't bind to 'attr-title' since it isn't a known property of 'span'".
