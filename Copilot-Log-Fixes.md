@@ -45,6 +45,6 @@ Descripción: Registro de incidencias y soluciones aplicadas por Copilot para con
     - CustomersComponent no estaba marcado como standalone, impidiendo el correcto uso del array imports y reconocimiento del input del componente hijo.
   - Resolución aplicada:
     - Se añadió standalone: true en el decorador de CustomersComponent.
-    - Confirmada la presencia de readonly verticalScrollbar = input(false) en el widget.
+    - Se añadió también standalone: true en CustomersWidgetComponent para seguir el patrón de todo-demo.
   - Verificación:
     - Compilación correcta posterior al ajuste; error NG8002 resuelto.

@@ -17,6 +17,7 @@ import { CustomersService } from '../../services/customers.service';
 import { Customer } from '../../models/customer.model';
 
 @Component({
+  standalone: true,
   selector: 'app-customers-widget',
   templateUrl: './customers-widget.component.html',
   styleUrl: './customers-widget.component.scss',
@@ -26,7 +27,7 @@ export class CustomersWidgetComponent implements OnInit, OnDestroy {
   columns: TableColumn[] = [];
   rows: Customer[] = [];
   rowsCache: Customer[] = [];
-  editing: Record<string, boolean] = {};
+  editing: Record<string, boolean> = {};
   loadingIndicator = true;
 
   readonly verticalScrollbar = input(false);
@@ -57,14 +58,11 @@ export class CustomersWidgetComponent implements OnInit, OnDestroy {
     ];
   }
 
-  ngOnDestroy(): void {
-    // No-op
-  }
+  ngOnDestroy(): void { }
 
   private loadCustomers() {
     this.customersService.getAll().subscribe({
       next: (data) => {
-        // Asegura índices para la edición inline
         this.rows = data.map((c, idx) => ({ ...c, $$index: idx }));
         this.rowsCache = [...this.rows];
         setTimeout(() => { this.loadingIndicator = false; }, 300);
@@ -94,14 +92,12 @@ export class CustomersWidgetComponent implements OnInit, OnDestroy {
 
     this.customersService.update(row.id, { [cell]: newValue }).subscribe({
       next: (updated) => {
-        // Sincroniza rowsCache
         const idx = this.rowsCache.findIndex(r => r.id === row.id);
         if (idx > -1) {
           this.rowsCache[idx] = { ...this.rowsCache[idx], ...updated };
         }
       },
       error: (err) => {
-        // Revertir valor y notificar
         (row as any)[cell] = previous;
         this.rows = [...this.rows];
         this.alertService.showMessage('Error', err?.message ?? 'Error updating customer', MessageSeverity.error);
