@@ -13,7 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{02EA681E-C
 	ProjectSection(SolutionItems) = preProject
 		Copilot-Log-Fixes.md = Copilot-Log-Fixes.md
 		Documentos\initial-records-test.json = Documentos\initial-records-test.json
-		Documentos\Reglas de generacion de componentes.md = Documentos\Reglas de generacion de componentes.md
 		Documentos\Tecnologias (Client).md = Documentos\Tecnologias (Client).md
 		Documentos\Tecnologias (Core).md = Documentos\Tecnologias (Core).md
 		Documentos\Tecnologías (Server).md = Documentos\Tecnologías (Server).md
