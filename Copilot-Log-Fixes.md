@@ -26,8 +26,16 @@ Descripción: Registro de incidencias y soluciones aplicadas por Copilot para con
     - src/app/services/customers.service.ts: servicio de dominio para el widget.
   - Verificación:
     - Compilación correcta posterior a los cambios; errores NG8002 resueltos y warning de NgClass eliminado.
-  - Referencia de buenas prácticas (Reglas de generación de componentes):
-    - Usar standalone con imports mínimos necesarios.
-    - Preferir inyección por constructor.
-    - Definir namespace i18n del widget y mensajes de tabla.
-    - Evitar importar módulos no utilizados.
+
+- Incidencia: Error TS2339 en customers-widget.component.ts (getDialogType no existe en AlertService).
+  - Mensaje:
+    - TS2339: Property 'getDialogType' does not exist on type 'AlertService'.
+  - Causa raíz:
+    - Uso de un método inexistente al llamar showStickyMessage/showMessage.
+  - Resolución aplicada:
+    - Reemplazar el tercer parámetro por el enum MessageSeverity.error proporcionado por AlertService.
+    - Importar MessageSeverity desde alert.service.
+  - Archivo modificado:
+    - src/app/components/widgets/customers-widget.component.ts.
+  - Verificación:
+    - Compilación correcta tras el cambio; el error TS2339 desaparece.

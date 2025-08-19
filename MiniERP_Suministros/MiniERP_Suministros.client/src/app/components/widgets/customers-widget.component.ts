@@ -8,7 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { NgxDatatableModule, TableColumn } from '@siemens/ngx-datatable';
 
-import { AlertService, DialogType } from '../../services/alert.service';
+import { AlertService, DialogType, MessageSeverity } from '../../services/alert.service';
 import { AppTranslationService } from '../../services/app-translation.service';
 import { Utilities } from '../../services/utilities';
 import { AutofocusDirective } from '../../directives/autofocus.directive';
@@ -26,7 +26,7 @@ export class CustomersWidgetComponent implements OnInit, OnDestroy {
   columns: TableColumn[] = [];
   rows: Customer[] = [];
   rowsCache: Customer[] = [];
-  editing: Record<string, boolean> = {};
+  editing: Record<string, boolean] = {};
   loadingIndicator = true;
 
   readonly verticalScrollbar = input(false);
@@ -74,7 +74,7 @@ export class CustomersWidgetComponent implements OnInit, OnDestroy {
         this.alertService.showStickyMessage(
           this.translationService.getTranslation('app.alerts.LoadingError'),
           err?.message ?? 'Error loading customers',
-          this.alertService.getDialogType(AlertService) as any // fallback; showStickyMessage signature compatible
+          MessageSeverity.error
         );
       }
     });
@@ -104,7 +104,7 @@ export class CustomersWidgetComponent implements OnInit, OnDestroy {
         // Revertir valor y notificar
         (row as any)[cell] = previous;
         this.rows = [...this.rows];
-        this.alertService.showMessage('Error', err?.message ?? 'Error updating customer', 3);
+        this.alertService.showMessage('Error', err?.message ?? 'Error updating customer', MessageSeverity.error);
       }
     });
   }
@@ -121,7 +121,7 @@ export class CustomersWidgetComponent implements OnInit, OnDestroy {
         this.rows = this.rows.filter(item => item !== row);
       },
       error: (err) => {
-        this.alertService.showMessage('Error', err?.message ?? 'Error deleting customer', 3);
+        this.alertService.showMessage('Error', err?.message ?? 'Error deleting customer', MessageSeverity.error);
       }
     });
   }
