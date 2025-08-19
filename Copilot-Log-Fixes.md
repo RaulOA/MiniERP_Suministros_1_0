@@ -39,3 +39,12 @@ Descripción: Registro de incidencias y soluciones aplicadas por Copilot para con
     - src/app/components/widgets/customers-widget.component.ts.
   - Verificación:
     - Compilación correcta tras el cambio; el error TS2339 desaparece.
+
+- Incidencia: NG8002 en customers.component.html por propiedad [verticalScrollbar] no reconocida en <app-customers-widget>.
+  - Causa raíz:
+    - CustomersComponent no estaba marcado como standalone, impidiendo el correcto uso del array imports y reconocimiento del input del componente hijo.
+  - Resolución aplicada:
+    - Se añadió standalone: true en el decorador de CustomersComponent.
+    - Confirmada la presencia de readonly verticalScrollbar = input(false) en el widget.
+  - Verificación:
+    - Compilación correcta posterior al ajuste; error NG8002 resuelto.

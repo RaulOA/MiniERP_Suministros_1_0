@@ -9,6 +9,7 @@ import { TodoDemoComponent } from '../controls/todo-demo.component';
 import { CustomersWidgetComponent } from '../widgets/customers-widget.component'; // Widget de clientes
 
 @Component({
+    standalone: true,
     selector: 'app-customers',
     templateUrl: './customers.component.html',
     styleUrl: './customers.component.scss',
