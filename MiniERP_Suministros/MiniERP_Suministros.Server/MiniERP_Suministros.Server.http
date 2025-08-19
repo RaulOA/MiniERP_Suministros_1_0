@@ -1,38 +1,52 @@
-@MiniERP_Suministros.Server_HostAddress = https://localhost:7085
-@MiniERP_Suministros.Client_HostAddress = https://localhost:4200
+### RUTA: MiniERP_Suministros/MiniERP_Suministros.Server/MiniERP_Suministros.Server.http
+### Descripción: Archivo de pruebas HTTP para MiniERP_Suministros. Permite autenticar y probar endpoints de cuentas (usuarios y roles) y clientes desde VS/VS Code usando el cliente HTTP.
+### USO RÁPIDO:
+### 1) Inicie el backend (.NET 9) en https://localhost:7085 y el frontend (Angular) en https://localhost:4200.
+### 2) Ajuste @username y @password si su usuario/contraseña son distintos.
+### 3) Ejecute la sección "Login" (Send Request) y reutilice el token en las demás peticiones.
+### 4) Si tiene problemas de autorización (401/403), confirme que el usuario tiene rol/permiso adecuado (p. ej. "administrator").
+### 5) Swagger: abra https://localhost:7085/swagger para explorar los endpoints interactivos.
+
+@MiniERP_Suministros.Server_HostAddress = https://localhost:7085   ### Backend ASP.NET Core (API)
+@MiniERP_Suministros.Client_HostAddress = https://localhost:4200    ### Frontend Angular (proxy/recursos públicos)
 @username = admin
 @password = tempP@ss123
 
-#### This file enables you to test the APIs of MiniERP_Suministros.
-#### You can also test the APIs with Swagger by appending "/swagger"" to the home url or by using postman
-#### See https://learn.microsoft.com/en-us/aspnet/core/test/http-files?view=aspnetcore-9.0 for more info on http files
-
+### NOTAS:
+### - Autenticación: flujo password (grant_type=password) contra /connect/token. Cliente predeterminado: client_id=swagger_ui.
+### - Token: el bloque @name login expone login.response.body.$.access_token para las cabeceras Authorization.
+### - Permisos: ciertas rutas pueden requerir permisos explícitos (p. ej. users.view, roles.view) o pertenecer al rol administrator.
+### - Estados esperados: 200/201 en éxito, 400 para solicitudes inválidas, 401 sin token/expirado, 403 sin permisos, 404 no encontrado.
 
 ###################################################
-### Login to get access token
+### Login para obtener access token
 ###################################################
 # @name login
 POST {{MiniERP_Suministros.Server_HostAddress}}/connect/token
 Content-Type: application/x-www-form-urlencoded
 
+### Campos estándar de OAuth2 (password flow). Agregue "&scope=api" si su servidor lo requiere.
 client_id=swagger_ui&grant_type=password&username={{username}}&password={{password}}
 
+### Respuestas típicas:
+### - 200 OK: { access_token, token_type, expires_in, ... }
+### - 400 invalid_grant: credenciales inválidas o usuario bloqueado/deshabilitado.
 
 ###################################################
 ### User APIs
 ###################################################
 
-### Get all users
+### Obtener todos los usuarios (requiere permiso users.view o rol adecuado)
 GET {{MiniERP_Suministros.Server_HostAddress}}/api/account/users
 Accept: application/json
 Authorization: Bearer {{login.response.body.$.access_token}}
 
-### Get current user
+### Obtener el usuario actual (perfil del token)
 GET {{MiniERP_Suministros.Server_HostAddress}}/api/account/users/me
 Accept: application/json
 Authorization: Bearer {{login.response.body.$.access_token}}
 
-### Register new user test_user_1
+### Registrar nuevo usuario (cuerpo mínimo: userName, email, newPassword, roles)
 POST {{MiniERP_Suministros.Server_HostAddress}}/api/account/users
 Authorization: Bearer {{login.response.body.$.access_token}}
 Content-Type: application/json
@@ -45,13 +59,13 @@ Content-Type: application/json
     "roles": ["administrator"]
 }
 
-### Get newly registered user with username "test_user_1"
+### Obtener usuario recién creado por nombre de usuario
 # @name testUser1
 GET {{MiniERP_Suministros.Server_HostAddress}}/api/account/users/username/test_user_1
 Accept: application/json
 Authorization: Bearer {{login.response.body.$.access_token}}
 
-### Update user with a specific id. E.g. test_user_1's id
+### Actualizar usuario por id (use el id de testUser1)
 PUT {{MiniERP_Suministros.Server_HostAddress}}/api/account/users/{{testUser1.response.body.$.id}}
 Authorization: Bearer {{login.response.body.$.access_token}}
 Content-Type: application/json
@@ -67,21 +81,22 @@ Content-Type: application/json
     "roles": ["administrator"]
 }
 
-### Delete user with a specific id. E.g. testUser1's id
+### Eliminar usuario por id (use el id de testUser1)
 DELETE {{MiniERP_Suministros.Server_HostAddress}}/api/account/users/{{testUser1.response.body.$.id}}
 Authorization: Bearer {{login.response.body.$.access_token}}
 
+### Estados esperados (Users): 200 OK, 201 Created (crear), 204 No Content (borrar/actualizar), 400/401/403/404 según caso.
 
 ###################################################
 ### Role APIs
 ###################################################
 
-### Get all roles
+### Obtener todos los roles (requiere roles.view)
 GET {{MiniERP_Suministros.Server_HostAddress}}/api/account/roles
 Accept: application/json
 Authorization: Bearer {{login.response.body.$.access_token}}
 
-### Register new role
+### Crear nuevo rol
 POST {{MiniERP_Suministros.Server_HostAddress}}/api/account/roles
 Authorization: Bearer {{login.response.body.$.access_token}}
 Content-Type: application/json
@@ -91,18 +106,18 @@ Content-Type: application/json
     "description": "This is the Test Role 1"
 }
 
-### Get newly registered role with role name "test_role_1"
+### Obtener rol por nombre
 # @name testRole1
 GET {{MiniERP_Suministros.Server_HostAddress}}/api/account/roles/name/test_role_1
 Accept: application/json
 Authorization: Bearer {{login.response.body.$.access_token}}
 
-### Get role with a specific id. E.g. test_role_1's id
+### Obtener rol por id
 GET {{MiniERP_Suministros.Server_HostAddress}}/api/account/roles/{{testRole1.response.body.$.id}}
 Accept: application/json
 Authorization: Bearer {{login.response.body.$.access_token}}
 
-### Update role with a specific id. E.g. test_role_1's id
+### Actualizar rol por id (incluye ejemplo de permisos)
 PUT {{MiniERP_Suministros.Server_HostAddress}}/api/account/roles/{{testRole1.response.body.$.id}}
 Authorization: Bearer {{login.response.body.$.access_token}}
 Content-Type: application/json
@@ -116,17 +131,27 @@ Content-Type: application/json
   ]
 }
 
-### Delete role with a specific id. E.g. test_role_1's id
+### Eliminar rol por id
 DELETE {{MiniERP_Suministros.Server_HostAddress}}/api/account/roles/{{testRole1.response.body.$.id}}
 Authorization: Bearer {{login.response.body.$.access_token}}
 
+### Estados esperados (Roles): 200/201/204 en éxito; 400/401/403/404 en error.
 
 ###################################################
 ### Customer APIs
 ###################################################
 
-### Get dummy customers
+### Obtener clientes de ejemplo (proxy del frontend)
 GET {{MiniERP_Suministros.Client_HostAddress}}/api/Customer
 Accept: */*
 
 ### ... Add more APIs here
+
+###################################################
+### Solución de problemas
+###################################################
+### - 400 invalid_grant en /connect/token: verifique username/password, estado del usuario (no bloqueado/deshabilitado).
+### - 401 Unauthorized: el token falta o expiró; vuelva a ejecutar la sección Login.
+### - 403 Forbidden: el token es válido pero carece de permisos/roles requeridos.
+### - 404 Not Found: id inexistente o ruta inválida; confirme valores de testUser1/testRole1.
+### - CORS: ejecute desde localhost y mantenga puertos coherentes; use Swagger para descartar problemas del cliente.

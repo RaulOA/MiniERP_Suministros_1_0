@@ -1,3 +1,7 @@
+<!--
+RUTA: MiniERP_Suministros/MiniERP_Suministros.client/src/app/components/customers/customers.component.html
+Vista principal de clientes. Contiene el encabezado de la página y el área para widgets relacionados, como el demo de tareas.
+-->
 <header class="pageHeader">
   <h3><i class="fa fa-handshake-o fa-lg page-caption" aria-hidden="true"></i> {{'pageHeader.Customers' | translate}}</h3>
 </header>
@@ -5,4 +9,5 @@
 <div [@fadeInOut]>
   <!---- Sample Page Content ---->
   <app-todo-demo [verticalScrollbar]="true"></app-todo-demo>
+  <app-customers-widget [verticalScrollbar]="true"></app-customers-widget>
 </div>

@@ -1,69 +1,58 @@
-// @ts-check
+// RUTA: MiniERP_Suministros/MiniERP_Suministros.client/eslint.config.js
+// Configuración principal de ESLint para el cliente Angular. 
+// Define reglas y extensiones para mantener la calidad y consistencia del código TypeScript y las plantillas HTML.
+// Incluye recomendaciones de ESLint, TypeScript y Angular, así como reglas de estilo para selectores de componentes y directivas.
 
-/**
- * Configuración de ESLint para el proyecto MiniERP_Suministros.client.
- *
- * Esta configuración aplica reglas recomendadas para JavaScript, TypeScript y Angular,
- * incluyendo estilos y buenas prácticas para archivos .ts y plantillas .html.
- *
- * - Para archivos TypeScript (*.ts):
- *   - Extiende las configuraciones recomendadas de ESLint, TypeScript y Angular.
- *   - Aplica reglas de estilo y convenciones para selectores de directivas y componentes Angular.
- *   - Usa el procesador para plantillas inline de Angular.
- *
- * - Para archivos de plantilla (*.html):
- *   - Extiende las configuraciones recomendadas de Angular para plantillas y accesibilidad.
- *
- * @see https://eslint.org/
- * @see https://typescript-eslint.io/
- * @see https://github.com/angular-eslint/angular-eslint
+/*
+ * Referencias:
+ *   - https://eslint.org/
+ *   - https://typescript-eslint.io/
+ *   - https://github.com/angular-eslint/angular-eslint
  */
 
-const eslint = require("@eslint/js");
-const tseslint = require("typescript-eslint");
-const angular = require("angular-eslint");
+const eslint = require("@eslint/js"); // Configuración base de ESLint
+const tseslint = require("typescript-eslint"); // Configuración para TypeScript
+const angular = require("angular-eslint"); // Configuración para Angular
 
 module.exports = tseslint.config(
+  // CONFIGURACIÓN PARA ARCHIVOS TYPESCRIPT
   {
-    files: ["**/*.ts"],
+    files: ["**/*.ts"], // Aplica a todos los archivos TypeScript
     extends: [
-      eslint.configs.recommended,
-      ...tseslint.configs.recommended,
-      ...tseslint.configs.stylistic,
-      ...angular.configs.tsRecommended,
+      eslint.configs.recommended, // Reglas recomendadas de ESLint
+      ...tseslint.configs.recommended, // Reglas recomendadas de TypeScript
+      ...tseslint.configs.stylistic, // Reglas de estilo para TypeScript
+      ...angular.configs.tsRecommended, // Reglas recomendadas de Angular para TypeScript
     ],
-    processor: angular.processInlineTemplates,
+    processor: angular.processInlineTemplates, // Procesa plantillas inline en componentes Angular
     rules: {
-      /**
-       * Enforce directive selectors to be camelCase and prefixed with 'app'.
-       */
+      // Reglas para los selectores de directivas Angular
       "@angular-eslint/directive-selector": [
         "error",
         {
-          type: "attribute",
-          prefix: "app",
-          style: "camelCase",
+          type: "attribute", // Debe usarse como atributo
+          prefix: "app", // Prefijo obligatorio
+          style: "camelCase", // Estilo camelCase
         },
       ],
-      /**
-       * Enforce component selectors to be kebab-case and prefixed with 'app'.
-       */
+      // Reglas para los selectores de componentes Angular
       "@angular-eslint/component-selector": [
         "error",
         {
-          type: "element",
-          prefix: "app",
-          style: "kebab-case",
+          type: "element", // Debe usarse como elemento
+          prefix: "app", // Prefijo obligatorio
+          style: "kebab-case", // Estilo kebab-case
         },
       ],
     },
   },
+  // CONFIGURACIÓN PARA ARCHIVOS DE PLANTILLA HTML
   {
-    files: ["**/*.html"],
+    files: ["**/*.html"], // Aplica a todos los archivos HTML de plantillas
     extends: [
-      ...angular.configs.templateRecommended,
-      ...angular.configs.templateAccessibility,
+      ...angular.configs.templateRecommended, // Reglas recomendadas para plantillas Angular
+      ...angular.configs.templateAccessibility, // Reglas de accesibilidad para plantillas Angular
     ],
-    rules: {},
+    rules: {}, // Se pueden agregar reglas adicionales específicas para plantillas aquí
   }
 );

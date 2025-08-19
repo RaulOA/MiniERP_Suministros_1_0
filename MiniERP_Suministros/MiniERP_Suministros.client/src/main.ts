@@ -1,23 +1,13 @@
 /// <reference types="@angular/localize" />
 
-/**
- * Importa la función para arrancar la aplicación Angular en el navegador.
- */
-import { bootstrapApplication } from '@angular/platform-browser';
+/*
+RUTA: MiniERP_Suministros/MiniERP_Suministros.client/src/main.ts
+Descripción: Punto de arranque de la aplicación Angular. Inicializa el AppComponent usando la configuración global de la app y registra errores de arranque en consola.
+*/
 
-/**
- * Importa la configuración global de la aplicación.
- */
-import { appConfig } from './app/app.config';
+import { bootstrapApplication } from '@angular/platform-browser'; // Importa la función para arrancar la aplicación Angular en el navegador.
+import { appConfig } from './app/app.config'; // Configuración global de la aplicación.
+import { AppComponent } from './app/app.component'; // Componente raíz de la aplicación.
 
-/**
- * Importa el componente raíz de la aplicación.
- */
-import { AppComponent } from './app/app.component';
-
-/**
- * Arranca la aplicación Angular utilizando el componente raíz y la configuración especificada.
- * Si ocurre un error durante el arranque, lo muestra en la consola.
- */
-bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+bootstrapApplication(AppComponent, appConfig) // Arranca la aplicación utilizando el componente raíz y la configuración especificada.
+  .catch((err) => console.error(err)); // Registra errores de arranque en la consola.
