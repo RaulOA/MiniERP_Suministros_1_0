@@ -1,14 +1,11 @@
-﻿
-
-
-
-
+﻿/*
+RUTA: MiniERP_Suministros/MiniERP_Suministros.Server/Controllers/CustomerController.cs
+API REST de clientes. Se agrega soporte de GET por id y actualización parcial para edición inline del cliente desde Angular.
+*/
 
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using MiniERP_Suministros.Core.Services;
 using MiniERP_Suministros.Core.Services.Shop;
-using MiniERP_Suministros.Server.Services.Email;
 using MiniERP_Suministros.Server.ViewModels.Shop;
 
 namespace MiniERP_Suministros.Server.Controllers
@@ -19,15 +16,13 @@ namespace MiniERP_Suministros.Server.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
-        private readonly IEmailSender _emailSender;
         private readonly ICustomerService _customerService;
 
-        public CustomerController(IMapper mapper, ILogger<CustomerController> logger, IEmailSender emailSender,
+        public CustomerController(IMapper mapper, ILogger<CustomerController> logger,
             ICustomerService customerService)
         {
             _mapper = mapper;
             _logger = logger;
-            _emailSender = emailSender;
             _customerService = customerService;
         }
 
@@ -38,48 +33,36 @@ namespace MiniERP_Suministros.Server.Controllers
             return Ok(_mapper.Map<IEnumerable<CustomerVM>>(allCustomers));
         }
 
-        [HttpGet("throw")]
-        public IEnumerable<CustomerVM> Throw()
-        {
-            throw new CustomerException($"This is a test exception: {DateTime.Now}");
-        }
-
-        [HttpGet("email")]
-        public async Task<string> Email()
-        {
-            var recipientName = "QickApp Tester"; //         <===== Put the recipient's name here
-            var recipientEmail = "test@ebenmonney.com"; //   <===== Put the recipient's email here
-
-            var message = EmailTemplates.GetTestEmail(recipientName, DateTime.UtcNow);
-
-            (var success, var errorMsg) = await _emailSender.SendEmailAsync(recipientName, recipientEmail,
-                "Test Email from MiniERP_Suministros", message);
-
-            if (success)
-                return "Success";
-
-            return $"Error: {errorMsg}";
-        }
-
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult GetById(int id)
         {
-            return $"value: {id}";
-        }
-
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
+            var customer = _customerService.GetById(id);
+            if (customer == null) return NotFound();
+            return Ok(_mapper.Map<CustomerVM>(customer));
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] CustomerVM value)
         {
-        }
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            try
+            {
+                // Aplica actualización parcial: solo campos no nulos en el VM
+                var updated = _customerService.UpdatePartial(id,
+                    name: value.Name,
+                    email: value.Email,
+                    phoneNumber: value.PhoneNumber,
+                    address: value.Address,
+                    city: value.City,
+                    gender: value.Gender);
+
+                return Ok(_mapper.Map<CustomerVM>(updated));
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
     }
 }

@@ -25,8 +25,8 @@ import { Customer } from '../../models/customer.model';
 })
 export class CustomersWidgetComponent implements OnInit, OnDestroy {
   columns: TableColumn[] = [];
-  rows: Customer[] = [];
-  rowsCache: Customer[] = [];
+  rows: (Customer & { $$index?: number })[] = [];
+  rowsCache: (Customer & { $$index?: number })[] = [];
   editing: Record<string, boolean> = {};
   loadingIndicator = true;
 
@@ -58,7 +58,8 @@ export class CustomersWidgetComponent implements OnInit, OnDestroy {
     ];
   }
 
-  ngOnDestroy(): void { }
+  // Sustituimos el método vacío para cumplir con eslint
+  ngOnDestroy(): void { this.editing = {}; }
 
   private loadCustomers() {
     this.customersService.getAll().subscribe({
@@ -83,11 +84,12 @@ export class CustomersWidgetComponent implements OnInit, OnDestroy {
   }
 
   updateValue(event: Event, cell: 'name' | 'email' | 'phoneNumber', row: Customer & { $$index?: number }) {
-    const previous = (row as any)[cell];
+    const obj = row as unknown as Record<string, unknown>;
+    const previous = obj[cell] as string | null | undefined;
     const newValue = (event.target as HTMLInputElement).value;
 
-    this.editing[row.$$index + '-' + cell] = false;
-    (row as any)[cell] = newValue;
+    this.editing[(row.$$index ?? 0) + '-' + cell] = false;
+    obj[cell] = newValue;
     this.rows = [...this.rows];
 
     this.customersService.update(row.id, { [cell]: newValue }).subscribe({
@@ -98,7 +100,7 @@ export class CustomersWidgetComponent implements OnInit, OnDestroy {
         }
       },
       error: (err) => {
-        (row as any)[cell] = previous;
+        obj[cell] = previous ?? null;
         this.rows = [...this.rows];
         this.alertService.showMessage('Error', err?.message ?? 'Error updating customer', MessageSeverity.error);
       }

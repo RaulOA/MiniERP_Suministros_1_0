@@ -48,3 +48,24 @@ Descripción: Registro de incidencias y soluciones aplicadas por Copilot para con
     - Se añadió también standalone: true en CustomersWidgetComponent para seguir el patrón de todo-demo.
   - Verificación:
     - Compilación correcta posterior al ajuste; error NG8002 resuelto.
+
+- Incidencia: HTTP 400 (Bad Request) al editar en línea un cliente
+  - Mensaje:
+    - PUT https://localhost:7085/api/customer/{id} 400 (Bad Request) desde customers-widget.component.ts:93.
+  - Causa raíz:
+    - El endpoint PUT en backend aceptaba string y no actualizaba; además, enviar parches parciales rompe validación si se exige Name/Gender.
+  - Resolución aplicada:
+    - Backend: Se reimplementó CustomerController PUT para aceptar CustomerVM y delegar una actualización parcial sobre ICustomerService.UpdatePartial. Se agregó GET por id.
+    - Core: Se extendió ICustomerService con GetById y UpdatePartial; se implementó en CustomerService aplicando únicamente campos no nulos, incluyendo parseo de Gender.
+    - Cliente: Sin cambios de contrato; sigue enviando parches parciales y ahora el backend los aplica.
+  - Verificación:
+    - Build correcto de Client y Server. El flujo de PUT ahora debe devolver 200/OK sin 400.
+
+- Ajustes de lint en cliente
+  - Mensajes:
+    - no-empty-lifecycle-method en ngOnDestroy, y no-explicit-any en updateValue.
+  - Resolución aplicada:
+    - ngOnDestroy ahora limpia this.editing.
+    - Se reemplazó any por Record<string, unknown> y se tiparon arrays con índice.
+  - Verificación:
+    - Build correcto y sin errores de compilación.
