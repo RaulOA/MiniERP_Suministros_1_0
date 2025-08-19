@@ -24,12 +24,12 @@ Descripción: Plantilla del widget de clientes. Incluye buscador, alta de nuevo 
 @if (addingNew) {
   <div class="card card-body bg-light mb-2">
     <div class="row g-2 align-items-end">
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label">{{'customersWidget.table.Name' | translate}}</label>
         <input appAutofocus type="text" class="form-control" [value]="newCustomer.name || ''"
                (input)="onNewInputChange($event, 'name')" placeholder="{{'customersWidget.table.Name' | translate}}" />
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label">{{'customersWidget.table.Email' | translate}}</label>
         <input type="email" class="form-control" [value]="newCustomer.email || ''"
                (input)="onNewInputChange($event, 'email')" placeholder="{{'customersWidget.table.Email' | translate}}" />
@@ -39,14 +39,36 @@ Descripción: Plantilla del widget de clientes. Incluye buscador, alta de nuevo 
         <input type="text" class="form-control" [value]="newCustomer.phoneNumber || ''"
                (input)="onNewInputChange($event, 'phoneNumber')" placeholder="{{'customersWidget.table.Phone' | translate}}" />
       </div>
-      <div class="col-md-1 text-end">
+      <div class="col-md-3">
+        <label class="form-label">{{'customersWidget.editor.City' | translate}}</label>
+        <input type="text" class="form-control" [value]="newCustomer.city || ''"
+               (input)="onNewInputChange($event, 'city')" placeholder="{{'customersWidget.editor.City' | translate}}" />
+      </div>
+    </div>
+    <div class="row g-2 mt-2 align-items-end">
+      <div class="col-md-6">
+        <label class="form-label">{{'customersWidget.editor.Address' | translate}}</label>
+        <input type="text" class="form-control" [value]="newCustomer.address || ''"
+               (input)="onNewInputChange($event, 'address')" placeholder="{{'customersWidget.editor.Address' | translate}}" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">{{'customersWidget.editor.Gender' | translate}}</label>
+        <select class="form-select" [value]="newCustomer.gender || ''" (change)="onNewInputChange($event, 'gender')">
+          <option value="">--</option>
+          <option value="None">{{'customersWidget.editor.GenderNone' | translate}}</option>
+          <option value="Female">{{'customersWidget.editor.GenderFemale' | translate}}</option>
+          <option value="Male">{{'customersWidget.editor.GenderMale' | translate}}</option>
+        </select>
+      </div>
+      <div class="col-md-3 text-end">
         <button type="button" class="btn btn-success w-100" (click)="create()" [disabled]="savingNew">
           @if (savingNew) {
             <i class="fa fa-circle-o-notch fa-spin"></i>
+            {{'customersWidget.editor.Saving' | translate}}
           } @else {
             <i class="fa fa-save"></i>
+            {{'customersWidget.editor.Add' | translate}}
           }
-          {{ savingNew ? ('customersWidget.editor.Saving' | translate) : ('customersWidget.editor.Add' | translate) }}
         </button>
       </div>
     </div>

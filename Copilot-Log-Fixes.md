@@ -79,21 +79,29 @@ Descripción: Registro de incidencias y soluciones aplicadas por Copilot para con
   - Resolución aplicada:
     - Plantilla (customers-widget.component.html):
       - Se agregó botón "Nuevo Cliente" que despliega un formulario inline.
-      - Formulario ligero con campos Nombre, Email y Teléfono, botón Agregar/Guardar con spinner e iconos, y Cancelar.
+      - Formulario ligero con campos Nombre, Email y Teléfono, Ciudad, Dirección y Género (select con None, Female, Male). Botón Agregar/Guardar con spinner e iconos, y Cancelar.
     - Componente (customers-widget.component.ts):
       - Estado de alta (addingNew, savingNew, newCustomer) y métodos startAddNew, cancelAdd, onNewInputChange, create.
-      - Validación básica: nombre requerido y email con regex; mensajes usando i18n y AlertService.
-      - Llamada a CustomersService.create(payload) y recarga de la grilla al éxito; reseteo de formulario.
-      - Ajuste de regex para pasar ESLint (no-useless-escape).
+      - Validaciones: nombre y correo requeridos; correo válido; límites de longitud alineados al modelo (Name?100, Email?100, Phone?30, City?50, Address?500) y género requerido.
+      - Payload incluye Name, Email, PhoneNumber, Address, City y Gender.
     - i18n:
-      - Nuevas claves en public/locale/es.json y public/locale/en.json: customersWidget.management.NewCustomer y customersWidget.editor.* (Add, Saving, NameRequired, EmailRequired, InvalidEmail).
+      - Nuevas claves en public/locale/es.json y public/locale/en.json para etiquetas y mensajes de validación (Address/City/Gender y límites).
+    - Backend/API:
+      - CustomerController ahora expone POST (creación) y DELETE, además de GET/PUT. POST valida Name/Email y delega en ICustomerService.Create.
+      - ICustomerService se extendió con Create y Delete. CustomerService implementa Create (parsea Gender, aplica auditoría vía SaveChanges) y Delete.
+    - Auditoría:
+      - Confirmado que ApplicationDbContext.AddAuditInfo establece CreatedBy/CreatedDate y UpdatedBy/UpdatedDate en SaveChanges para entidades IAuditableEntity (Customer hereda BaseEntity). Aplica en POST/PUT/DELETE.
   - Archivos modificados/creados relevantes:
     - src/app/components/widgets/customers-widget.component.html
     - src/app/components/widgets/customers-widget.component.ts
     - public/locale/es.json
     - public/locale/en.json
+    - MiniERP_Suministros.Core/Services/Shop/Interfaces/ICustomerService.cs
+    - MiniERP_Suministros.Core/Services/Shop/CustomerService.cs
+    - MiniERP_Suministros.Server/Controllers/CustomerController.cs
   - Verificación:
-    - Compilación correcta tras los cambios; el formulario se muestra/oculta correctamente.
-    - Alta exitosa contra /api/customer (201/200) y la tabla recarga los datos.
-    - Validación previene envío si faltan nombre/correo o correo inválido.
+    - Compilación correcta tras los cambios; UI alinea campos con DB.
+    - Alta exitosa contra /api/customer (201 Created) y la tabla recarga los datos.
+    - Validación previene envío si faltan nombre/correo, si exceden límites o correo inválido; género requerido.
+    - Auditoría aplicada automáticamente en altas/ediciones/eliminaciones.
     - No se requieren migraciones de base de datos.

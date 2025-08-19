@@ -33,7 +33,7 @@ export class CustomersWidgetComponent implements OnInit, OnDestroy {
   // Creación de nuevo cliente
   addingNew = false; // muestra/oculta formulario de alta
   savingNew = false; // estado de guardado
-  newCustomer: Partial<Customer> = { name: '', email: '', phoneNumber: '' };
+  newCustomer: Partial<Customer> = { name: '', email: '', phoneNumber: '', address: '', city: '', gender: '' };
 
   readonly verticalScrollbar = input(false);
 
@@ -92,16 +92,16 @@ export class CustomersWidgetComponent implements OnInit, OnDestroy {
   startAddNew() {
     this.addingNew = true;
     this.savingNew = false;
-    this.newCustomer = { name: '', email: '', phoneNumber: '' };
+    this.newCustomer = { name: '', email: '', phoneNumber: '', address: '', city: '', gender: '' };
   }
 
   cancelAdd() {
     this.addingNew = false;
     this.savingNew = false;
-    this.newCustomer = { name: '', email: '', phoneNumber: '' };
+    this.newCustomer = { name: '', email: '', phoneNumber: '', address: '', city: '', gender: '' };
   }
 
-  onNewInputChange(event: Event, field: 'name' | 'email' | 'phoneNumber') {
+  onNewInputChange(event: Event, field: 'name' | 'email' | 'phoneNumber' | 'address' | 'city' | 'gender') {
     const value = (event.target as HTMLInputElement).value;
     (this.newCustomer as Record<string, unknown>)[field] = value;
   }
@@ -109,19 +109,24 @@ export class CustomersWidgetComponent implements OnInit, OnDestroy {
   private validateNew(): string | null {
     const name = (this.newCustomer.name || '').trim();
     const email = (this.newCustomer.email || '').trim();
+    const phone = (this.newCustomer.phoneNumber ?? '').toString().trim();
+    const city = (this.newCustomer.city || '').trim();
+    const address = (this.newCustomer.address || '').trim();
+    const gender = (this.newCustomer.gender || '').trim();
 
-    if (!name) {
-      return this.translationService.getTranslation('customersWidget.editor.NameRequired') || 'Name is required';
-    }
+    if (!name) return this.translationService.getTranslation('customersWidget.editor.NameRequired') || 'Name is required';
+    if (name.length > 100) return this.translationService.getTranslation('customersWidget.editor.NameMax') || 'Name too long';
 
-    if (!email) {
-      return this.translationService.getTranslation('customersWidget.editor.EmailRequired') || 'Email is required';
-    }
-
+    if (!email) return this.translationService.getTranslation('customersWidget.editor.EmailRequired') || 'Email is required';
+    if (email.length > 100) return this.translationService.getTranslation('customersWidget.editor.EmailMax') || 'Email too long';
     const emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    if (!emailRegex.test(email)) {
-      return this.translationService.getTranslation('customersWidget.editor.InvalidEmail') || 'Invalid email';
-    }
+    if (!emailRegex.test(email)) return this.translationService.getTranslation('customersWidget.editor.InvalidEmail') || 'Invalid email';
+
+    if (phone && phone.length > 30) return this.translationService.getTranslation('customersWidget.editor.PhoneMax') || 'Phone too long';
+    if (city && city.length > 50) return this.translationService.getTranslation('customersWidget.editor.CityMax') || 'City too long';
+    if (address && address.length > 500) return this.translationService.getTranslation('customersWidget.editor.AddressMax') || 'Address too long';
+
+    if (!gender) return this.translationService.getTranslation('customersWidget.editor.GenderRequired') || 'Gender is required';
 
     return null;
   }
@@ -137,7 +142,10 @@ export class CustomersWidgetComponent implements OnInit, OnDestroy {
     const payload: Partial<Customer> = {
       name: (this.newCustomer.name || '').trim(),
       email: (this.newCustomer.email || '').trim(),
-      phoneNumber: (this.newCustomer.phoneNumber ?? '')?.toString().trim() || null
+      phoneNumber: (this.newCustomer.phoneNumber ?? '')?.toString().trim() || null,
+      address: (this.newCustomer.address || '').trim() || null,
+      city: (this.newCustomer.city || '').trim() || null,
+      gender: (this.newCustomer.gender || '').trim() || null
     };
 
     this.customersService.create(payload).subscribe({
@@ -146,7 +154,7 @@ export class CustomersWidgetComponent implements OnInit, OnDestroy {
         this.loadCustomers();
         this.addingNew = false;
         this.savingNew = false;
-        this.newCustomer = { name: '', email: '', phoneNumber: '' };
+        this.newCustomer = { name: '', email: '', phoneNumber: '', address: '', city: '', gender: '' };
       },
       error: (err) => {
         this.savingNew = false;

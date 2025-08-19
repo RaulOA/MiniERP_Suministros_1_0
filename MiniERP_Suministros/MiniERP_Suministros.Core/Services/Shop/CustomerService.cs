@@ -1,6 +1,6 @@
 ﻿/*
 RUTA: MiniERP_Suministros/MiniERP_Suministros.Core/Services/Shop/CustomerService.cs
-Implementación de ICustomerService. Se agregan métodos de consulta y actualización parcial.
+Implementación de ICustomerService. Se agregan métodos de consulta, creación, actualización parcial y eliminación.
 */
 
 using System;
@@ -24,6 +24,23 @@ namespace MiniERP_Suministros.Core.Services.Shop
 
         public Customer? GetById(int id) => dbContext.Customers.FirstOrDefault(c => c.Id == id);
 
+        public Customer Create(string name, string email, string? phoneNumber, string? address, string? city, string? gender)
+        {
+            var entity = new Customer
+            {
+                Name = name,
+                Email = email,
+                PhoneNumber = phoneNumber,
+                Address = address,
+                City = city,
+                Gender = ParseGender(gender)
+            };
+
+            dbContext.Customers.Add(entity); // audit se aplica en SaveChanges
+            dbContext.SaveChanges();
+            return entity;
+        }
+
         public Customer UpdatePartial(int id,
             string? name = null,
             string? email = null,
@@ -40,10 +57,25 @@ namespace MiniERP_Suministros.Core.Services.Shop
             if (phoneNumber != null) entity.PhoneNumber = phoneNumber;
             if (address != null) entity.Address = address;
             if (city != null) entity.City = city;
-            if (gender != null && Enum.TryParse<Gender>(gender, true, out var g)) entity.Gender = g;
+            if (gender != null) entity.Gender = ParseGender(gender);
 
             dbContext.SaveChanges();
             return entity;
+        }
+
+        public void Delete(int id)
+        {
+            var entity = dbContext.Customers.FirstOrDefault(c => c.Id == id)
+                ?? throw new KeyNotFoundException($"Customer {id} not found");
+
+            dbContext.Customers.Remove(entity);
+            dbContext.SaveChanges();
+        }
+
+        private static Gender ParseGender(string? gender)
+        {
+            if (string.IsNullOrWhiteSpace(gender)) return Gender.None;
+            return Enum.TryParse<Gender>(gender, true, out var g) ? g : Gender.None;
         }
     }
 }
