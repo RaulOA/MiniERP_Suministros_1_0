@@ -72,3 +72,28 @@ Descripción: Registro de incidencias y soluciones aplicadas por Copilot para con
     - Se reemplazó any por Record<string, unknown> y se tiparon arrays con índice.
   - Verificación:
     - Build correcto y sin errores de compilación.
+
+- Incidencia: Falta de funcionalidad de alta de clientes en CustomersWidget
+  - Contexto:
+    - El widget permitía buscar, editar en línea y eliminar, pero no crear nuevos clientes desde la UI.
+  - Resolución aplicada:
+    - Plantilla (customers-widget.component.html):
+      - Se agregó botón "Nuevo Cliente" que despliega un formulario inline.
+      - Formulario ligero con campos Nombre, Email y Teléfono, botón Agregar/Guardar con spinner e iconos, y Cancelar.
+    - Componente (customers-widget.component.ts):
+      - Estado de alta (addingNew, savingNew, newCustomer) y métodos startAddNew, cancelAdd, onNewInputChange, create.
+      - Validación básica: nombre requerido y email con regex; mensajes usando i18n y AlertService.
+      - Llamada a CustomersService.create(payload) y recarga de la grilla al éxito; reseteo de formulario.
+      - Ajuste de regex para pasar ESLint (no-useless-escape).
+    - i18n:
+      - Nuevas claves en public/locale/es.json y public/locale/en.json: customersWidget.management.NewCustomer y customersWidget.editor.* (Add, Saving, NameRequired, EmailRequired, InvalidEmail).
+  - Archivos modificados/creados relevantes:
+    - src/app/components/widgets/customers-widget.component.html
+    - src/app/components/widgets/customers-widget.component.ts
+    - public/locale/es.json
+    - public/locale/en.json
+  - Verificación:
+    - Compilación correcta tras los cambios; el formulario se muestra/oculta correctamente.
+    - Alta exitosa contra /api/customer (201/200) y la tabla recarga los datos.
+    - Validación previene envío si faltan nombre/correo o correo inválido.
+    - No se requieren migraciones de base de datos.

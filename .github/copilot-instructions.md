@@ -1,7 +1,11 @@
 ---
 applyTo: "**"
 ---
-
+- Agrega siempre #solution  como referencia.
+- Agrega siempre #file:'Copilot-Log-Fixes.md' como referencia.
+- Agrega #file:'Tecnologias (Client).md' como referencia unicamente cuando necesites informacion de la capa cliente/SPA (componentes Angular, servicios HTTP, rutas, i18n)..
+- Agrega #file:'Tecnologías (Server).md' como referencia unicamente cuando necesites informacion de la capa API/servidor (controladores, ViewModels/DTOs, AutoMapper, validación, autorización)..
+ - Agrega #file:'Tecnologias (Core).md'  como referencia unicamente cuando necesites informacion de la capa de dominio y servicios compartidos (entidades, interfaces, servicios de negocio, ApplicationDbContext)..  
 - Todos los archivos deben iniciar con un encabezado que incluya:
   - **RUTA** (ubicación relativa).
   - **Descripción** del propósito general (actualizar si cambia).

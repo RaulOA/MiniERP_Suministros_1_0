@@ -1,6 +1,6 @@
 /*
 RUTA: MiniERP_Suministros/MiniERP_Suministros.client/src/app/components/widgets/customers-widget.component.ts
-Descripción: Widget para visualizar, editar en línea y eliminar clientes usando ngx-datatable. Consume API backend de clientes y maneja i18n.
+Descripción: Widget para visualizar, crear, editar en línea y eliminar clientes usando ngx-datatable. Consume API backend de clientes y maneja i18n.
 */
 
 import { Component, OnDestroy, OnInit, TemplateRef, input, viewChild } from '@angular/core';
@@ -29,6 +29,11 @@ export class CustomersWidgetComponent implements OnInit, OnDestroy {
   rowsCache: (Customer & { $$index?: number })[] = [];
   editing: Record<string, boolean> = {};
   loadingIndicator = true;
+
+  // Creación de nuevo cliente
+  addingNew = false; // muestra/oculta formulario de alta
+  savingNew = false; // estado de guardado
+  newCustomer: Partial<Customer> = { name: '', email: '', phoneNumber: '' };
 
   readonly verticalScrollbar = input(false);
 
@@ -82,6 +87,74 @@ export class CustomersWidgetComponent implements OnInit, OnDestroy {
   onSearchChanged(value: string) {
     this.rows = this.rowsCache.filter(r => Utilities.searchArray(value, false, r.name || '', r.email || '', r.phoneNumber || ''));
   }
+
+  // ===================== Alta de nuevo cliente =====================
+  startAddNew() {
+    this.addingNew = true;
+    this.savingNew = false;
+    this.newCustomer = { name: '', email: '', phoneNumber: '' };
+  }
+
+  cancelAdd() {
+    this.addingNew = false;
+    this.savingNew = false;
+    this.newCustomer = { name: '', email: '', phoneNumber: '' };
+  }
+
+  onNewInputChange(event: Event, field: 'name' | 'email' | 'phoneNumber') {
+    const value = (event.target as HTMLInputElement).value;
+    (this.newCustomer as Record<string, unknown>)[field] = value;
+  }
+
+  private validateNew(): string | null {
+    const name = (this.newCustomer.name || '').trim();
+    const email = (this.newCustomer.email || '').trim();
+
+    if (!name) {
+      return this.translationService.getTranslation('customersWidget.editor.NameRequired') || 'Name is required';
+    }
+
+    if (!email) {
+      return this.translationService.getTranslation('customersWidget.editor.EmailRequired') || 'Email is required';
+    }
+
+    const emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    if (!emailRegex.test(email)) {
+      return this.translationService.getTranslation('customersWidget.editor.InvalidEmail') || 'Invalid email';
+    }
+
+    return null;
+  }
+
+  create() {
+    const validationError = this.validateNew();
+    if (validationError) {
+      this.alertService.showMessage(validationError, '', MessageSeverity.warn);
+      return;
+    }
+
+    this.savingNew = true;
+    const payload: Partial<Customer> = {
+      name: (this.newCustomer.name || '').trim(),
+      email: (this.newCustomer.email || '').trim(),
+      phoneNumber: (this.newCustomer.phoneNumber ?? '')?.toString().trim() || null
+    };
+
+    this.customersService.create(payload).subscribe({
+      next: () => {
+        // Recargamos para mantener consistencia e índices
+        this.loadCustomers();
+        this.addingNew = false;
+        this.savingNew = false;
+        this.newCustomer = { name: '', email: '', phoneNumber: '' };
+      },
+      error: (err) => {
+        this.savingNew = false;
+        this.alertService.showMessage('Error', err?.message ?? 'Error creating customer', MessageSeverity.error);
+      }
+    });
+  }
+  // ================================================================
 
   updateValue(event: Event, cell: 'name' | 'email' | 'phoneNumber', row: Customer & { $$index?: number }) {
     const obj = row as unknown as Record<string, unknown>;

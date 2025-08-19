@@ -376,7 +376,8 @@
   "customersWidget": {
     "management": {
       "Search": "Buscar cliente...",
-      "Delete": "Eliminar cliente"
+      "Delete": "Eliminar cliente",
+      "NewCustomer": "Nuevo Cliente"
     },
     "table": {
       "Name": "Nombre",
@@ -384,6 +385,13 @@
       "Phone": "Teléfono",
       "NoCustomers": "No se encontraron clientes",
       "Edit": "Doble clic para editar"
+    },
+    "editor": {
+      "Add": "Agregar",
+      "Saving": "Guardando...",
+      "NameRequired": "El nombre es obligatorio",
+      "EmailRequired": "El correo es obligatorio",
+      "InvalidEmail": "El correo especificado no es válido"
     },
     "dialog": {
       "DeleteConfirm": "¿Seguro que deseas eliminar el cliente?"

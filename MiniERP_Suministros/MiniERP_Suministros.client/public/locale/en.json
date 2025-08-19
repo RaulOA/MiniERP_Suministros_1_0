@@ -376,7 +376,8 @@
   "customersWidget": {
     "management": {
       "Search": "Search for customer...",
-      "Delete": "Delete customer"
+      "Delete": "Delete customer",
+      "NewCustomer": "New Customer"
     },
     "table": {
       "Name": "Name",
@@ -384,6 +385,13 @@
       "Phone": "Phone",
       "NoCustomers": "No customers found",
       "Edit": "Double click to edit"
+    },
+    "editor": {
+      "Add": "Add",
+      "Saving": "Saving...",
+      "NameRequired": "Name is required",
+      "EmailRequired": "Email is required",
+      "InvalidEmail": "Specified email is not valid"
     },
     "dialog": {
       "DeleteConfirm": "Are you sure you want to delete the customer?"
