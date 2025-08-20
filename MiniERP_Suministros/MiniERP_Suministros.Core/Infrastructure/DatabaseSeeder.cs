@@ -307,6 +307,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     UpdatedDate = DateTime.Parse("2024-01-12T08:00:00Z")
                 };
 
+                // Productos adicionales
+
                 // +10 productos adicionales
                 var prod6 = new Product
                 {
