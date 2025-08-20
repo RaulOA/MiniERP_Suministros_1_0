@@ -1,0 +1,121 @@
+<!--
+RUTA: MiniERP_Suministros/MiniERP_Suministros.client/src/app/components/widgets/product-categories-widget.component.html
+Descripción: Widget de categorías de producto. Incluye buscador, alta inline, edición inline (name, description, icon) y acciones por fila.
+-->
+<div class="row control-box">
+  <div class="col-lg-8">
+    <div class="search-box">
+      <app-search-box (searchChange)="onSearchChanged($event)" placeholder="{{'productsWidget.management.Search' | translate}}" />
+    </div>
+  </div>
+  <div class="col-lg-4 text-end">
+    @if (!addingNew) {
+      <button type="button" class="btn btn-primary btn-sm" (click)="startAddNew()">
+        <i class="fa fa-plus"></i> {{'productsWidget.management.NewCategory' | translate}}
+      </button>
+    } @else {
+      <button type="button" class="btn btn-outline-secondary btn-sm" (click)="cancelAdd()">
+        <i class="fa fa-times"></i> {{'users.editor.Cancel' | translate}}
+      </button>
+    }
+  </div>
+</div>
+
+@if (addingNew) {
+  <div class="card card-body bg-light mb-2">
+    <div class="row g-2 align-items-end">
+      <div class="col-md-4">
+        <label class="form-label">{{'productsWidget.table.Name' | translate}}</label>
+        <input appAutofocus type="text" class="form-control" [value]="newCategory.name || ''"
+               (input)="onNewInputChange($event, 'name')" placeholder="{{'productsWidget.table.Name' | translate}}" />
+      </div>
+      <div class="col-md-5">
+        <label class="form-label">{{'productsWidget.table.Description' | translate}}</label>
+        <input type="text" class="form-control" [value]="newCategory.description || ''"
+               (input)="onNewInputChange($event, 'description')" placeholder="{{'productsWidget.table.Description' | translate}}" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">{{'productsWidget.table.Icon' | translate}}</label>
+        <input type="text" class="form-control" [value]="newCategory.icon || ''"
+               (input)="onNewInputChange($event, 'icon')" placeholder="fa fa-tag" />
+      </div>
+    </div>
+    <div class="row g-2 mt-2 align-items-end">
+      <div class="col-md-3 ms-auto">
+        <button type="button" class="btn btn-success w-100" (click)="create()" [disabled]="savingNew">
+          @if (savingNew) {
+            <i class="fa fa-circle-o-notch fa-spin"></i>
+            {{'customersWidget.editor.Saving' | translate}}
+          } @else {
+            <i class="fa fa-save"></i>
+            {{'customersWidget.editor.Add' | translate}}
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<ngx-datatable class="material colored-header sm table-hover"
+               [loadingIndicator]="loadingIndicator"
+               [rows]="rows"
+               [rowHeight]="35"
+               [headerHeight]="37"
+               [footerHeight]="35"
+               [columns]="columns"
+               [messages]="{ emptyMessage: ('productsWidget.table.NoCategories' | translate), totalMessage: '', selectedMessage: '' }"
+               [scrollbarV]="verticalScrollbar()"
+               [columnMode]="'force'">
+</ngx-datatable>
+
+<ng-template #nameTemplate let-row="row" let-value="value">
+  @if (editing[row.$$index + '-name']) {
+    <input class="inline-editor" appAutofocus type="text" [value]="value"
+           (blur)="updateValue($event, 'name', row)"
+           (keydown.enter)="updateValue($event, 'name', row)"
+           (keydown.escape)="editing[row.$$index + '-name'] = false"/>
+  }
+  @else {
+    <span class="inline-label" title="{{'customersWidget.table.Edit' | translate}} - {{value}}"
+          (dblclick)="editing[row.$$index + '-name'] = true">
+      {{value}}
+    </span>
+  }
+</ng-template>
+
+<ng-template #descriptionTemplate let-row="row" let-value="value">
+  @if (editing[row.$$index + '-description']) {
+    <input class="inline-editor" appAutofocus type="text" [value]="value"
+           (blur)="updateValue($event, 'description', row)"
+           (keydown.enter)="updateValue($event, 'description', row)"
+           (keydown.escape)="editing[row.$$index + '-description'] = false"/>
+  }
+  @else {
+    <span class="inline-label"
+          (dblclick)="editing[row.$$index + '-description'] = true">
+      {{value}}
+    </span>
+  }
+</ng-template>
+
+<ng-template #iconTemplate let-row="row" let-value="value">
+  @if (editing[row.$$index + '-icon']) {
+    <input class="inline-editor" appAutofocus type="text" [value]="value"
+           (blur)="updateValue($event, 'icon', row)"
+           (keydown.enter)="updateValue($event, 'icon', row)"
+           (keydown.escape)="editing[row.$$index + '-icon'] = false"/>
+  }
+  @else {
+    <span class="inline-label"
+          (dblclick)="editing[row.$$index + '-icon'] = true">
+      {{value}}
+    </span>
+  }
+</ng-template>
+
+<ng-template #actionsTemplate let-row="row">
+  <a class="btn btn-link btn-sm" href="javascript:;" ngbTooltip="{{'customersWidget.management.Delete' | translate}}"
+     container="body" (click)="delete(row)">
+    <i class="fa fa-times"></i>
+  </a>
+</ng-template>
