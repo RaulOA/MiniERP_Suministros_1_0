@@ -1,3 +1,7 @@
+/*
+RUTA: MiniERP_Suministros/MiniERP_Suministros.Server/ViewModels/Shop/ProductCategoryVM.cs
+Descripción: ViewModel para exponer categorías de producto en la API (Server). Incluye validación de Name con FluentValidation.
+*/
 
 using FluentValidation;
 

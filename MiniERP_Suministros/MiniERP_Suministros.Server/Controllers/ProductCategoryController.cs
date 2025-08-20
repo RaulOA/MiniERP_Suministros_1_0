@@ -26,6 +26,7 @@ namespace MiniERP_Suministros.Server.Controllers
             _service = service;
         }
 
+        /// <summary>Obtiene todas las categorías con datos relacionados.</summary>
         [HttpGet]
         public IActionResult Get()
         {
@@ -33,6 +34,7 @@ namespace MiniERP_Suministros.Server.Controllers
             return Ok(_mapper.Map<IEnumerable<ProductCategoryVM>>(data));
         }
 
+        /// <summary>Obtiene una categoría por id.</summary>
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -41,6 +43,7 @@ namespace MiniERP_Suministros.Server.Controllers
             return Ok(_mapper.Map<ProductCategoryVM>(entity));
         }
 
+        /// <summary>Crea una nueva categoría.</summary>
         [HttpPost]
         public IActionResult Post([FromBody] ProductCategoryVM value)
         {
@@ -52,6 +55,7 @@ namespace MiniERP_Suministros.Server.Controllers
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, result);
         }
 
+        /// <summary>Actualiza parcialmente una categoría (solo campos no nulos).</summary>
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] ProductCategoryVM value)
         {
@@ -71,6 +75,7 @@ namespace MiniERP_Suministros.Server.Controllers
             }
         }
 
+        /// <summary>Elimina una categoría. Retorna 409/Conflict si tiene productos relacionados.</summary>
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
