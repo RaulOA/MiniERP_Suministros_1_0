@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{02EA681E-C
 		Documentos\Tecnologías (Server).md = Documentos\Tecnologías (Server).md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniERP_Suministros.Reports", "MiniERP_Suministros.Reports\MiniERP_Suministros.Reports.csproj", "{5325F068-345A-4AAB-8724-15AB0D1B32CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{0D33E78F-D46A-49AB-9F9D-756A54AFCAD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D33E78F-D46A-49AB-9F9D-756A54AFCAD4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0D33E78F-D46A-49AB-9F9D-756A54AFCAD4}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{5325F068-345A-4AAB-8724-15AB0D1B32CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5325F068-345A-4AAB-8724-15AB0D1B32CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5325F068-345A-4AAB-8724-15AB0D1B32CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5325F068-345A-4AAB-8724-15AB0D1B32CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
