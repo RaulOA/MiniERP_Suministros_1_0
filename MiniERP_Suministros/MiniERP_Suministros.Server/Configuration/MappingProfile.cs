@@ -53,6 +53,9 @@ namespace MiniERP_Suministros.Server.Configuration
 
             CreateMap<Order, OrderVM>()
                 .ReverseMap();
+
+            CreateMap<ProductCategory, ProductCategoryVM>()
+                .ReverseMap();
         }
     }
 }

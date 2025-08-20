@@ -199,6 +199,7 @@ builder.Services.AddScoped<IUserRoleService, UserRoleService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrdersService, OrdersService>();
+builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>(); // Registro de categorías de producto
 
 // Otros servicios
 builder.Services.AddScoped<IEmailSender, EmailSender>();

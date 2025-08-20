@@ -2,24 +2,21 @@
 applyTo: "**"
 ---
 
-- Referencias obligatorias:
-- #solution.
-- #file:'Copilot-Instructions.md' siempre revisar antes de editar.
-- #file:'Copilot-Log-Fixes.md', siempre utilizar como almacén de experiencia para consulta.
+- #solution - Referencia obligatoria
+- #file:'Copilot-Instructions.md' - Referencia obligatoria; siempre revisar antes de editar.
+- #file:'Copilot-Log-Fixes.md' - Referencia obligatoria; siempre revisar antes de editar; registrar experiencia al finalizar cualquier cambio..
+- #file:'Tecnologias (Client).md' - Referencia obligatoria para informacion de la capa cliente/SPA (componentes Angular, servicios HTTP, rutas, i18n).
+- #file:'Tecnologías (Server).md' - Referencia obligatoria para informacion de la capa API/servidor (controladores, ViewModels/DTOs, AutoMapper, validación, autorización).
+- #file:'Tecnologias (Core).md' - Referencia obligatoria para informacion de la capa de dominio y servicios compartidos (entidades, interfaces, servicios de negocio, ApplicationDbContext).
 
-- Reglas de inclusión en #file:'Copilot-Log-Fixes.md': 
+- Reglas de modificacion en #file:'Copilot-Log-Fixes.md': 
+        - Crear nueva entrada solo si el tema es distinto; para refinamientos, actualizar entrada existente e indicar "última-revisión:YYYY-MM-DD".
         - Registrar solo entradas que aporten lecciones nuevas y relevantes.
         - Descripcion de  Cambio/Lección detallado pero puntual que sirva para optimizar el procedimientro en futuros casos similares.
-        - Crear nueva entrada solo si el tema es distinto; para refinamientos, actualizar entrada existente e indicar "última-revisión:YYYY-MM-DD".
         - Formato de entrada: YYYY-MM-DD | Archivo(s) | Tema | Cambio/Lección (puedes ampliar max 4 lineas por registro) | Fallo conocido (opc.) | Vars | Etiquetas.
         - Evitar entradas triviales o duplicadas; priorizar precisión y brevedad. 
         - Si se necesita código, referenciar ubicaciones o líneas; no volcar fragmentos largos.
         - Mantener tono operativo, directo y conciso.
-
-- Referencias opcionales; urilizar en caso de necesidad de informacion de estructura y tecnologias aplicadas por capa:
-    - Referencia #file:'Tecnologias (Client).md' para informacion de la capa cliente/SPA (componentes Angular, servicios HTTP, rutas, i18n).
-    - Referencia #file:'Tecnologías (Server).md' para informacion de la capa API/servidor (controladores, ViewModels/DTOs, AutoMapper, validación, autorización).
-     - Referencia #file:'Tecnologias (Core).md' para informacion de la capa de dominio y servicios compartidos (entidades, interfaces, servicios de negocio, ApplicationDbContext).
 
 - Reglas generales:
     - Indicar cuando se detecte necesidad de nueva migración (las migraciones son manuales).
