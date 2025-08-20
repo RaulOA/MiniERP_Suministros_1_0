@@ -45,10 +45,10 @@ Descripción: Widget de categorías de producto. Incluye buscador, alta inline, 
         <button type="button" class="btn btn-success w-100" (click)="create()" [disabled]="savingNew">
           @if (savingNew) {
             <i class="fa fa-circle-o-notch fa-spin"></i>
-            {{'customersWidget.editor.Saving' | translate}}
+            {{'productsWidget.editor.Saving' | translate}}
           } @else {
             <i class="fa fa-save"></i>
-            {{'customersWidget.editor.Add' | translate}}
+            {{'productsWidget.editor.Add' | translate}}
           }
         </button>
       </div>
@@ -76,7 +76,7 @@ Descripción: Widget de categorías de producto. Incluye buscador, alta inline, 
            (keydown.escape)="editing[row.$$index + '-name'] = false"/>
   }
   @else {
-    <span class="inline-label" title="{{'customersWidget.table.Edit' | translate}} - {{value}}"
+    <span class="inline-label" title="{{'productsWidget.table.Edit' | translate}} - {{value}}"
           (dblclick)="editing[row.$$index + '-name'] = true">
       {{value}}
     </span>
@@ -114,7 +114,7 @@ Descripción: Widget de categorías de producto. Incluye buscador, alta inline, 
 </ng-template>
 
 <ng-template #actionsTemplate let-row="row">
-  <a class="btn btn-link btn-sm" href="javascript:;" ngbTooltip="{{'customersWidget.management.Delete' | translate}}"
+  <a class="btn btn-link btn-sm" href="javascript:;" ngbTooltip="{{'productsWidget.management.Delete' | translate}}"
      container="body" (click)="delete(row)">
     <i class="fa fa-times"></i>
   </a>

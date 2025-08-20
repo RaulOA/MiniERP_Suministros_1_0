@@ -13,7 +13,7 @@ applyTo: "**"
         - Crear nueva entrada solo si el tema es distinto; para refinamientos, actualizar entrada existente e indicar "última-revisión:YYYY-MM-DD".
         - Registrar solo entradas que aporten lecciones nuevas y relevantes.
         - Descripcion de  Cambio/Lección detallado pero puntual que sirva para optimizar el procedimientro en futuros casos similares.
-        - Formato de entrada: YYYY-MM-DD | Archivo(s) | Tema | Cambio/Lección (puedes ampliar max 4 lineas por registro) | Fallo conocido (opc.) | Vars | Etiquetas.
+        - Formato de entrada: YYYY-MM-DD | Archivo(s) | Tema | Cambio/Lección | Fallo conocido (opc.) | Vars | Etiquetas.
         - Evitar entradas triviales o duplicadas; priorizar precisión y brevedad. 
         - Si se necesita código, referenciar ubicaciones o líneas; no volcar fragmentos largos.
         - Mantener tono operativo, directo y conciso.

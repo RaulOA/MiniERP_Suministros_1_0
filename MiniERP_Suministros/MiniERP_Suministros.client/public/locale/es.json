@@ -408,5 +408,26 @@
     "dialog": {
       "DeleteConfirm": "¿Seguro que deseas eliminar el cliente?"
     }
+  },
+  "productsWidget": {
+    "management": {
+      "Search": "Buscar categoría...",
+      "Delete": "Eliminar categoría",
+      "NewCategory": "Nueva Categoría"
+    },
+    "table": {
+      "Name": "Nombre",
+      "Description": "Descripción",
+      "Icon": "Icono",
+      "Edit": "Doble clic para editar",
+      "NoCategories": "No se encontraron categorías"
+    },
+    "editor": {
+      "Add": "Agregar",
+      "Saving": "Guardando..."
+    },
+    "dialog": {
+      "DeleteConfirm": "¿Seguro que deseas eliminar la categoría?"
+    }
   }
 }
