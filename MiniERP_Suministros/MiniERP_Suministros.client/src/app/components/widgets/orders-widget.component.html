@@ -69,15 +69,15 @@ Descripción: Widget de pedidos (lista + editor simple en modal simulado inline)
           </tr>
         </thead>
         <tbody>
-          @for (let i = 0; i < editItems.length; i++) {
+          @for (item of editItems; track $index) {
             <tr>
-              <td><input type="number" class="form-control form-control-sm" [value]="editItems[i].productId" (input)="onItemChange(i, 'productId', $event)" /></td>
-              <td><input type="number" class="form-control form-control-sm" [value]="editItems[i].quantity" (input)="onItemChange(i, 'quantity', $event)" /></td>
-              <td><input type="number" class="form-control form-control-sm" [value]="editItems[i].unitPrice || 0" (input)="onItemChange(i, 'unitPrice', $event)" /></td>
-              <td><input type="number" class="form-control form-control-sm" [value]="editItems[i].discount || 0" (input)="onItemChange(i, 'discount', $event)" /></td>
-              <td>{{ getLineTotal(editItems[i]) | number:'1.2-2' }}</td>
+              <td><input type="number" class="form-control form-control-sm" [value]="item.productId" (input)="onItemChange($index, 'productId', $event)" /></td>
+              <td><input type="number" class="form-control form-control-sm" [value]="item.quantity" (input)="onItemChange($index, 'quantity', $event)" /></td>
+              <td><input type="number" class="form-control form-control-sm" [value]="item.unitPrice || 0" (input)="onItemChange($index, 'unitPrice', $event)" /></td>
+              <td><input type="number" class="form-control form-control-sm" [value]="item.discount || 0" (input)="onItemChange($index, 'discount', $event)" /></td>
+              <td>{{ getLineTotal(item) | number:'1.2-2' }}</td>
               <td>
-                <button class="btn btn-outline-danger btn-sm" (click)="removeItem(i)"><i class="fa fa-trash"></i></button>
+                <button class="btn btn-outline-danger btn-sm" (click)="removeItem($index)"><i class="fa fa-trash"></i></button>
               </td>
             </tr>
           }

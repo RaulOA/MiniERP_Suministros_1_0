@@ -4,9 +4,9 @@ Descripción: Widget para listar y editar/crear pedidos con encabezado + líneas
 */
 
 import { Component, OnInit, OnDestroy, TemplateRef, viewChild, input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { NgxDatatableModule, TableColumn } from '@siemens/ngx-datatable';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 import { OrdersService } from '../../services/orders.service';
 import { OrderCreateItemVM, OrderCreateVM, OrderItemVM, OrderVM } from '../../models/order.model';
@@ -19,7 +19,7 @@ import { AlertService, MessageSeverity } from '../../services/alert.service';
   selector: 'app-orders-widget',
   templateUrl: './orders-widget.component.html',
   styleUrl: './orders-widget.component.scss',
-  imports: [NgxDatatableModule, TranslateModule, NgbTooltip, SearchBoxComponent]
+  imports: [CommonModule, NgxDatatableModule, TranslateModule, SearchBoxComponent]
 })
 export class OrdersWidgetComponent implements OnInit, OnDestroy {
   rows: OrderVM[] = [];
