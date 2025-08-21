@@ -40,6 +40,7 @@ Alcance: .NET Core (servicios, DI, AutoMapper, API) + Angular (modelos, servicio
 	- ngx-datatable: si `scrollbarV` está habilitado, configurar `rowHeight` con un número (>0) o una función; no usar `auto`.
 	- ngx-datatable: evitar doble scroll. No aplicar overflow al contenedor externo; fijar altura en el propio `<ngx-datatable>` con `[style.height.px]=...` y dejar el scroll interno como único.
 	- i18n en componentes standalone: no usar pipes en expresiones de acción (click/submit); usar un método `t(key)` que llame a `AppTranslationService.getTranslation(key)` y renderizar textos con `{{ t('clave') }}`. En acciones usar `showMessage(t('clave'))`.
+	- Si una plantilla es compartida entre componentes (templateUrl común), exponer como públicos los helpers referenciados desde la vista (por ejemplo, `t(key)`, getters usados en bindings), para evitar errores de acceso desde el template.
 
 ### i18n
 - Claves separadas por widget/módulo (namespaces) y paridad entre `public/locale/es.json` y `public/locale/en.json`.
@@ -73,6 +74,7 @@ Alcance: .NET Core (servicios, DI, AutoMapper, API) + Angular (modelos, servicio
 - [ ] ngx-datatable: si `scrollbarV` está habilitado, definir `rowHeight` numérico (>0) o función; no usar `auto`.
 - [ ] ngx-datatable: fijar altura en `[style.height.px]` del `<ngx-datatable>` y no en contenedor externo para evitar doble scroll.
 - [ ] i18n en templates: no usar `| translate` en expresiones de acción (click, submit, etc.). Preferir `t('clave')` desde el componente; importar CommonModule solo si se usan pipes comunes (date/number) o el TranslatePipe en vistas, no en acciones.
+- [ ] En plantillas compartidas, asegurar que los métodos/propiedades usados desde HTML sean públicos en todos los componentes que las consumen.
 
 4) i18n
 - [ ] Añadir claves nuevas en `public/locale/es.json` y `public/locale/en.json` bajo un namespace del widget (p. ej. `productCategoriesWidget.*`).
@@ -101,6 +103,7 @@ Alcance: .NET Core (servicios, DI, AutoMapper, API) + Angular (modelos, servicio
 - Evitar `rowHeight='auto'` en ngx-datatable cuando `scrollbarV` esté activo; preferir número fijo o función.
 - Evitar doble scroll con ngx-datatable: altura en la tabla, no en el contenedor; un solo scroll interno.
 - i18n en acciones: nunca usar pipes en expresiones de acción; obtener el texto en TS y pasarlo al método/alerta.
+- Métodos/propiedades usados desde plantillas compartidas deben ser públicos para evitar NG1 por accesibilidad.
 
 ---
 
@@ -119,6 +122,7 @@ Alcance: .NET Core (servicios, DI, AutoMapper, API) + Angular (modelos, servicio
 - ngx-datatable: error "Row Height cache initialization failed" cuando `scrollbarV` y `rowHeight='auto'` coexisten.
 - Doble scroll por overflow en contenedor + scroll interno del `<ngx-datatable>`: fijar altura en la tabla y `overflow: hidden` en el contenedor.
 - Pipes en expresiones de acción (click/submit) causan NG5002/NG8004; usar `t()` desde el componente.
+- Métodos privados referenciados desde plantillas compartidas provocan NG1; hacerlos públicos.
 
 ---
 

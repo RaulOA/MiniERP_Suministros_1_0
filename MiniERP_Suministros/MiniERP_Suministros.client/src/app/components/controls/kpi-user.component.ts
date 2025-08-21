@@ -67,7 +67,7 @@ export class KpiUserComponent implements OnInit, OnDestroy {
     return labels;
   }
 
-  private t(key: string) { return this.translationService.getTranslation(key); }
+  public t(key: string) { return this.translationService.getTranslation(key); }
 
   private computeTotals(orders: OrderVM[]) {
     const months = this.getLastMonths(6);
