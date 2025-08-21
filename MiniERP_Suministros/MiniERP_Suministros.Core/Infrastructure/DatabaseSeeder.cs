@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿/*
+RUTA: MiniERP_Suministros/MiniERP_Suministros.Core/Infrastructure/DatabaseSeeder.cs
+Descripción: Siembra de base de datos. Crea usuarios/roles por defecto y datos de demostración (categorías, productos, clientes y pedidos). Las órdenes y sus detalles se distribuyen en los últimos 6 meses para generar KPIs realistas por mes.
+*/
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MiniERP_Suministros.Core.Models;
 using MiniERP_Suministros.Core.Models.Account;
@@ -650,7 +654,12 @@ namespace MiniERP_Suministros.Core.Infrastructure
                 var adminUser = await dbContext.Users.FirstOrDefaultAsync(u => u.UserName == "admin");
                 var normalUser = await dbContext.Users.FirstOrDefaultAsync(u => u.UserName == "user");
 
-                // Órdenes
+                // Utilidades de fecha: distribuir pedidos en los últimos 6 meses
+                var now = DateTime.UtcNow;
+                DateTime MonthStartUtc(int monthsAgo, int hour = 8) => new DateTime(now.Year, now.Month, 1, hour, 0, 0, DateTimeKind.Utc).AddMonths(-monthsAgo);
+                DateTime OnDay(DateTime monthStart, int day, int hour) => monthStart.AddDays(Math.Max(1, Math.Min(day, DateTime.DaysInMonth(monthStart.Year, monthStart.Month))) - 1).AddHours(hour - monthStart.Hour);
+
+                // Órdenes (fechas dinámicas por mes)
                 var order1 = new Order
                 {
                     Discount = 5000.00m,
@@ -659,8 +668,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Customer = cust1,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-12T10:00:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-12T10:00:00Z")
+                    CreatedDate = OnDay(MonthStartUtc(5, 10), 3, 10),
+                    UpdatedDate = OnDay(MonthStartUtc(5, 10), 3, 10)
                 };
                 var order2 = new Order
                 {
@@ -670,8 +679,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Customer = cust2,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-13T11:00:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-13T11:00:00Z")
+                    CreatedDate = OnDay(MonthStartUtc(5, 11), 7, 11),
+                    UpdatedDate = OnDay(MonthStartUtc(5, 11), 7, 11)
                 };
                 var order3 = new Order
                 {
@@ -681,8 +690,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Customer = cust2,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-14T12:00:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-14T12:00:00Z")
+                    CreatedDate = OnDay(MonthStartUtc(4, 12), 2, 12),
+                    UpdatedDate = OnDay(MonthStartUtc(4, 12), 2, 12)
                 };
                 var order4 = new Order
                 {
@@ -692,11 +701,11 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Customer = cust3,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-15T13:00:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-15T13:00:00Z")
+                    CreatedDate = OnDay(MonthStartUtc(4, 13), 9, 13),
+                    UpdatedDate = OnDay(MonthStartUtc(4, 13), 9, 13)
                 };
 
-                // +10 órdenes adicionales
+                // +10 órdenes adicionales con distribución
                 var order5 = new Order
                 {
                     Discount = 0.00m,
@@ -705,8 +714,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Customer = cust4,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-16T10:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-16T10:30:00Z")
+                    CreatedDate = OnDay(MonthStartUtc(3, 10), 5, 10),
+                    UpdatedDate = OnDay(MonthStartUtc(3, 10), 5, 10)
                 };
                 var order6 = new Order
                 {
@@ -716,8 +725,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Customer = cust5,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-17T11:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-17T11:30:00Z")
+                    CreatedDate = OnDay(MonthStartUtc(3, 11), 12, 11),
+                    UpdatedDate = OnDay(MonthStartUtc(3, 11), 12, 11)
                 };
                 var order7 = new Order
                 {
@@ -727,8 +736,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Customer = cust6,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-18T12:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-18T12:30:00Z")
+                    CreatedDate = OnDay(MonthStartUtc(3, 12), 20, 12),
+                    UpdatedDate = OnDay(MonthStartUtc(3, 12), 20, 12)
                 };
                 var order8 = new Order
                 {
@@ -738,8 +747,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Customer = cust7,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-19T13:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-19T13:30:00Z")
+                    CreatedDate = OnDay(MonthStartUtc(2, 13), 4, 13),
+                    UpdatedDate = OnDay(MonthStartUtc(2, 13), 4, 13)
                 };
                 var order9 = new Order
                 {
@@ -749,8 +758,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Customer = cust8,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-20T14:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-20T14:30:00Z")
+                    CreatedDate = OnDay(MonthStartUtc(2, 14), 17, 14),
+                    UpdatedDate = OnDay(MonthStartUtc(2, 14), 17, 14)
                 };
                 var order10 = new Order
                 {
@@ -760,8 +769,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Customer = cust9,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-21T15:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-21T15:30:00Z")
+                    CreatedDate = OnDay(MonthStartUtc(1, 15), 6, 15),
+                    UpdatedDate = OnDay(MonthStartUtc(1, 15), 6, 15)
                 };
                 var order11 = new Order
                 {
@@ -771,8 +780,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Customer = cust10,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-22T16:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-22T16:30:00Z")
+                    CreatedDate = OnDay(MonthStartUtc(1, 16), 15, 16),
+                    UpdatedDate = OnDay(MonthStartUtc(1, 16), 15, 16)
                 };
                 var order12 = new Order
                 {
@@ -782,8 +791,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Customer = cust11,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-23T17:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-23T17:30:00Z")
+                    CreatedDate = OnDay(MonthStartUtc(1, 17), 23, 17),
+                    UpdatedDate = OnDay(MonthStartUtc(1, 17), 23, 17)
                 };
                 var order13 = new Order
                 {
@@ -793,8 +802,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Customer = cust12,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-24T18:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-24T18:30:00Z")
+                    CreatedDate = OnDay(MonthStartUtc(0, 10), 5, 10),
+                    UpdatedDate = OnDay(MonthStartUtc(0, 10), 5, 10)
                 };
                 var order14 = new Order
                 {
@@ -804,8 +813,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Customer = cust13,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-25T19:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-25T19:30:00Z")
+                    CreatedDate = OnDay(MonthStartUtc(0, 19), 16, 19),
+                    UpdatedDate = OnDay(MonthStartUtc(0, 19), 16, 19)
                 };
 
                 dbContext.Orders.AddRange(
@@ -814,7 +823,7 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     order10, order11, order12, order13, order14
                 );
 
-                // Detalles de órdenes
+                // Detalles de órdenes (usar la misma fecha del encabezado para realismo)
                 var od1 = new OrderDetail
                 {
                     UnitPrice = 550000.00m,
@@ -824,8 +833,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Order = order1,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-12T10:00:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-12T10:00:00Z")
+                    CreatedDate = order1.CreatedDate,
+                    UpdatedDate = order1.UpdatedDate
                 };
                 var od2 = new OrderDetail
                 {
@@ -836,8 +845,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Order = order1,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-12T10:00:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-12T10:00:00Z")
+                    CreatedDate = order1.CreatedDate,
+                    UpdatedDate = order1.UpdatedDate
                 };
                 var od3 = new OrderDetail
                 {
@@ -848,8 +857,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Order = order2,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-13T11:00:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-13T11:00:00Z")
+                    CreatedDate = order2.CreatedDate,
+                    UpdatedDate = order2.UpdatedDate
                 };
                 var od4 = new OrderDetail
                 {
@@ -860,8 +869,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Order = order3,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-14T12:00:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-14T12:00:00Z")
+                    CreatedDate = order3.CreatedDate,
+                    UpdatedDate = order3.UpdatedDate
                 };
                 var od5 = new OrderDetail
                 {
@@ -872,8 +881,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Order = order4,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-15T13:00:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-15T13:00:00Z")
+                    CreatedDate = order4.CreatedDate,
+                    UpdatedDate = order4.UpdatedDate
                 };
                 var od6 = new OrderDetail
                 {
@@ -884,8 +893,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Order = order4,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-15T13:00:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-15T13:00:00Z")
+                    CreatedDate = order4.CreatedDate,
+                    UpdatedDate = order4.UpdatedDate
                 };
 
                 // +10 detalles adicionales (uno por cada nueva orden)
@@ -898,8 +907,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Order = order5,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-16T10:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-16T10:30:00Z")
+                    CreatedDate = order5.CreatedDate,
+                    UpdatedDate = order5.UpdatedDate
                 };
                 var od8 = new OrderDetail
                 {
@@ -910,8 +919,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Order = order6,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-17T11:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-17T11:30:00Z")
+                    CreatedDate = order6.CreatedDate,
+                    UpdatedDate = order6.UpdatedDate
                 };
                 var od9 = new OrderDetail
                 {
@@ -922,8 +931,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Order = order7,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-18T12:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-18T12:30:00Z")
+                    CreatedDate = order7.CreatedDate,
+                    UpdatedDate = order7.UpdatedDate
                 };
                 var od10 = new OrderDetail
                 {
@@ -934,8 +943,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Order = order8,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-19T13:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-19T13:30:00Z")
+                    CreatedDate = order8.CreatedDate,
+                    UpdatedDate = order8.UpdatedDate
                 };
                 var od11 = new OrderDetail
                 {
@@ -946,8 +955,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Order = order9,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-20T14:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-20T14:30:00Z")
+                    CreatedDate = order9.CreatedDate,
+                    UpdatedDate = order9.UpdatedDate
                 };
                 var od12 = new OrderDetail
                 {
@@ -958,8 +967,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Order = order10,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-21T15:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-21T15:30:00Z")
+                    CreatedDate = order10.CreatedDate,
+                    UpdatedDate = order10.UpdatedDate
                 };
                 var od13 = new OrderDetail
                 {
@@ -970,8 +979,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Order = order11,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-22T16:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-22T16:30:00Z")
+                    CreatedDate = order11.CreatedDate,
+                    UpdatedDate = order11.UpdatedDate
                 };
                 var od14 = new OrderDetail
                 {
@@ -982,8 +991,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Order = order12,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-23T17:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-23T17:30:00Z")
+                    CreatedDate = order12.CreatedDate,
+                    UpdatedDate = order12.UpdatedDate
                 };
                 var od15 = new OrderDetail
                 {
@@ -994,8 +1003,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Order = order13,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-24T18:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-24T18:30:00Z")
+                    CreatedDate = order13.CreatedDate,
+                    UpdatedDate = order13.UpdatedDate
                 };
                 var od16 = new OrderDetail
                 {
@@ -1006,8 +1015,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                     Order = order14,
                     CreatedBy = "SYSTEM",
                     UpdatedBy = "SYSTEM",
-                    CreatedDate = DateTime.Parse("2024-01-25T19:30:00Z"),
-                    UpdatedDate = DateTime.Parse("2024-01-25T19:30:00Z")
+                    CreatedDate = order14.CreatedDate,
+                    UpdatedDate = order14.UpdatedDate
                 };
 
                 dbContext.OrderDetails.AddRange(
