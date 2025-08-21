@@ -389,6 +389,7 @@
     "editor": {
       "Add": "Add",
       "Saving": "Saving...",
+      "Cancel": "Cancel",
       "NameRequired": "Name is required",
       "EmailRequired": "Email is required",
       "InvalidEmail": "Specified email is not valid",
@@ -405,9 +406,7 @@
       "AddressMax": "Address exceeds maximum length (500)",
       "GenderRequired": "Gender is required"
     },
-    "dialog": {
-      "DeleteConfirm": "Are you sure you want to delete the customer?"
-    }
+    "dialog": { "DeleteConfirm": "Are you sure you want to delete the customer?" }
   },
   "productsWidget": {
     "management": {
@@ -435,9 +434,7 @@
       "StockInvalid": "Stock must be 0 or more",
       "CategoryRequired": "Category (Id) is required"
     },
-    "dialog": {
-      "DeleteConfirm": "Are you sure you want to delete the product?"
-    }
+    "dialog": { "DeleteConfirm": "Are you sure you want to delete the product?" }
   },
   "ordersWidget": {
     "management": {
@@ -491,8 +488,6 @@
       "NameRequired": "Name is required",
       "NameMax": "Name exceeds maximum length (100)"
     },
-    "dialog": {
-      "DeleteConfirm": "Are you sure you want to delete the category?"
-    }
+    "dialog": { "DeleteConfirm": "Are you sure you want to delete the category?" }
   }
 }

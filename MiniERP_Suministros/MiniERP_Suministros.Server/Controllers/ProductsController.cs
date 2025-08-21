@@ -74,7 +74,7 @@ namespace MiniERP_Suministros.Server.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "administrator")] // Solo administradores pueden editar
-        public IActionResult Put(int id, [FromBody] ProductVM value)
+        public IActionResult Put(int id, [FromBody] ProductPatchVM value)
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
@@ -89,7 +89,7 @@ namespace MiniERP_Suministros.Server.Controllers
                     unitsInStock: value.UnitsInStock,
                     isActive: value.IsActive,
                     isDiscontinued: value.IsDiscontinued,
-                    productCategoryId: value.ProductCategoryId == 0 ? null : value.ProductCategoryId,
+                    productCategoryId: value.ProductCategoryId,
                     parentId: value.ParentId);
 
                 return Ok(_mapper.Map<ProductVM>(updated));

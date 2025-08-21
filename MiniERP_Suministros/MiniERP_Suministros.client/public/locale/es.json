@@ -389,6 +389,7 @@
     "editor": {
       "Add": "Agregar",
       "Saving": "Guardando...",
+      "Cancel": "Cancelar",
       "NameRequired": "El nombre es obligatorio",
       "EmailRequired": "El correo es obligatorio",
       "InvalidEmail": "El correo especificado no es válido",
