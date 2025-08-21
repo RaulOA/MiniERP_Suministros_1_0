@@ -1,15 +1,15 @@
 /*
 RUTA: MiniERP_Suministros/MiniERP_Suministros.client/src/app/components/widgets/orders-widget.component.ts
-Descripción: Widget para listar y editar/crear pedidos con encabezado + líneas.
+Descripción: Widget para listar y editar/crear pedidos con encabezado + líneas. Usa [(ngModel)] para enlazar selects del editor y preseleccionar Cliente/Productos al editar.
 */
-
 import { Component, OnInit, OnDestroy, TemplateRef, viewChild, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms'; // [(ngModel)]
 import { NgxDatatableModule, TableColumn } from '@siemens/ngx-datatable';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { OrdersService } from '../../services/orders.service';
-import { OrderCreateItemVM, OrderCreateVM, OrderItemVM, OrderVM } from '../../models/order.model';
+import { OrderCreateItemVM, OrderCreateVM, OrderVM } from '../../models/order.model';
 import { SearchBoxComponent } from '../controls/search-box.component';
 import { AppTranslationService } from '../../services/app-translation.service';
 import { AlertService, MessageSeverity } from '../../services/alert.service';
@@ -23,7 +23,7 @@ import { ProductVM } from '../../models/product.model';
   selector: 'app-orders-widget',
   templateUrl: './orders-widget.component.html',
   styleUrl: './orders-widget.component.scss',
-  imports: [CommonModule, NgxDatatableModule, TranslateModule, SearchBoxComponent]
+  imports: [CommonModule, FormsModule, NgxDatatableModule, TranslateModule, SearchBoxComponent]
 })
 export class OrdersWidgetComponent implements OnInit, OnDestroy {
   rows: OrderVM[] = [];
@@ -129,22 +129,21 @@ export class OrdersWidgetComponent implements OnInit, OnDestroy {
 
   cancelEdit() { this.editing = false; }
 
-  onHeaderChange(event: Event, field: 'customerId' | 'discount' | 'comments') {
-    const valueRaw = (event.target as HTMLSelectElement | HTMLInputElement).value;
-    if (field === 'customerId') this.editModel.customerId = Number(valueRaw);
-    if (field === 'discount') this.editModel.discount = Number(valueRaw);
-    if (field === 'comments') this.editModel.comments = valueRaw;
+  onHeaderChange(value: any, field: 'customerId' | 'discount' | 'comments') {
+    if (field === 'customerId') this.editModel.customerId = Number(value);
+    if (field === 'discount') this.editModel.discount = Number(value);
+    if (field === 'comments') this.editModel.comments = String(value ?? '');
   }
 
   addItem() { this.editItems.push({ productId: 0, quantity: 1, unitPrice: 0, discount: 0 }); }
   removeItem(index: number) { this.editItems.splice(index, 1); }
 
-  onProductChange(index: number, event: Event) {
-    const productId = Number((event.target as HTMLSelectElement).value);
+  onProductChange(index: number, value: any) {
+    const productId = Number(value);
     const p = this.products.find(x => x.id === productId);
     const item = this.editItems[index];
     item.productId = productId;
-    item.unitPrice = p ? p.sellingPrice : 0; // precio del catálogo; no editable
+    item.unitPrice = p ? p.sellingPrice : 0; // precio del catálogo
   }
 
   onItemChange(index: number, field: Exclude<keyof OrderCreateItemVM, 'productId' | 'unitPrice'>, event: Event) {

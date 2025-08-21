@@ -1,6 +1,6 @@
 <!--
 RUTA: MiniERP_Suministros/MiniERP_Suministros.client/src/app/components/widgets/orders-widget.component.html
-Descripción: Widget de pedidos (lista + editor simple en modal simulado inline).
+Descripción: Widget de pedidos (lista + editor simple en modal simulado inline). Usa [(ngModel)] en el editor.
 -->
 <div class="row control-box">
   <div class="col-lg-8">
@@ -44,18 +44,18 @@ Descripción: Widget de pedidos (lista + editor simple en modal simulado inline)
     <div class="row g-2 mt-2">
       <div class="col-md-4">
         <label class="form-label">{{'ordersWidget.editor.Customer' | translate}}</label>
-        <select class="form-select" [value]="editModel.customerId" (change)="onHeaderChange($event, 'customerId')">
+        <select class="form-select" [(ngModel)]="editModel.customerId" (ngModelChange)="onHeaderChange($event, 'customerId')">
           <option [value]="0">--</option>
           <option *ngFor="let c of customers" [value]="c.id">{{c.name}}</option>
         </select>
       </div>
       <div class="col-md-3">
         <label class="form-label">{{'ordersWidget.editor.Discount' | translate}}</label>
-        <input type="number" class="form-control" [value]="editModel.discount" (input)="onHeaderChange($event, 'discount')" />
+        <input type="number" class="form-control" [(ngModel)]="editModel.discount" (ngModelChange)="onHeaderChange($event, 'discount')" />
       </div>
       <div class="col-md-5">
         <label class="form-label">{{'ordersWidget.editor.Comments' | translate}}</label>
-        <input type="text" class="form-control" [value]="editModel.comments || ''" (input)="onHeaderChange($event, 'comments')" />
+        <input type="text" class="form-control" [(ngModel)]="editModel.comments" (ngModelChange)="onHeaderChange($event, 'comments')" />
       </div>
     </div>
 
@@ -63,7 +63,7 @@ Descripción: Widget de pedidos (lista + editor simple en modal simulado inline)
       <table class="table table-sm align-middle">
         <thead>
           <tr>
-            <th style="width: 30%;">{{'ordersWidget.table.ProductId' | translate}}</th>
+            <th style="width: 30%;">{{ 'ordersWidget.table.Product' | translate || 'Producto' }}</th>
             <th style="width: 20%;">{{'ordersWidget.table.Quantity' | translate}}</th>
             <th style="width: 25%;">{{'ordersWidget.table.UnitPrice' | translate}}</th>
             <th style="width: 25%;">{{'ordersWidget.table.LineTotal' | translate}}</th>
@@ -74,13 +74,15 @@ Descripción: Widget de pedidos (lista + editor simple en modal simulado inline)
           @for (item of editItems; track $index) {
             <tr>
               <td>
-                <select class="form-select form-select-sm" [value]="$any(item).productId || 0" (change)="onProductChange($index, $event)">
+                <select class="form-select form-select-sm"
+                        [(ngModel)]="editItems[$index].productId"
+                        (ngModelChange)="onProductChange($index, $event)">
                   <option [value]="0">--</option>
                   <option *ngFor="let p of products" [value]="p.id">{{p.name}}</option>
                 </select>
               </td>
               <td>
-                <input type="number" class="form-control form-control-sm" [value]="item.quantity" (input)="onItemChange($index, 'quantity', $event)" />
+                <input type="number" class="form-control form-control-sm" [(ngModel)]="editItems[$index].quantity" (input)="onItemChange($index, 'quantity', $event)" />
               </td>
               <td>
                 <input type="number" class="form-control form-control-sm" [value]="item.unitPrice || 0" disabled />
