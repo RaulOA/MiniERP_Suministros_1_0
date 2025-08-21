@@ -470,5 +470,29 @@
       "Comments": "Comments",
       "Validation": "Invalid data"
     }
+  },
+  "productCategoriesWidget": {
+    "management": {
+      "Search": "Search for category...",
+      "NewCategory": "New Category",
+      "Delete": "Delete category"
+    },
+    "table": {
+      "Name": "Name",
+      "Description": "Description",
+      "Icon": "Icon",
+      "Edit": "Double click to edit",
+      "NoCategories": "No categories found"
+    },
+    "editor": {
+      "Add": "Add",
+      "Saving": "Saving...",
+      "Cancel": "Cancel",
+      "NameRequired": "Name is required",
+      "NameMax": "Name exceeds maximum length (100)"
+    },
+    "dialog": {
+      "DeleteConfirm": "Are you sure you want to delete the category?"
+    }
   }
 }

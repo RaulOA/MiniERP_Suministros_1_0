@@ -470,5 +470,29 @@
       "Comments": "Comentarios",
       "Validation": "Datos inválidos"
     }
+  },
+  "productCategoriesWidget": {
+    "management": {
+      "Search": "Buscar categoría...",
+      "NewCategory": "Nueva Categoría",
+      "Delete": "Eliminar categoría"
+    },
+    "table": {
+      "Name": "Nombre",
+      "Description": "Descripción",
+      "Icon": "Icono",
+      "Edit": "Doble clic para editar",
+      "NoCategories": "No se encontraron categorías"
+    },
+    "editor": {
+      "Add": "Agregar",
+      "Saving": "Guardando...",
+      "Cancel": "Cancelar",
+      "NameRequired": "El nombre es obligatorio",
+      "NameMax": "El nombre excede la longitud máxima (100)"
+    },
+    "dialog": {
+      "DeleteConfirm": "¿Seguro que deseas eliminar la categoría?"
+    }
   }
 }
