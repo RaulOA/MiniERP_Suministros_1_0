@@ -55,9 +55,9 @@ export class ProductCategoriesWidgetComponent implements OnInit, OnDestroy {
     const gT = (key: string) => this.translationService.getTranslation(key);
 
     this.columns = [
-      { prop: 'name', name: gT('productsWidget.table.Name') || 'Name', width: 220, sortable: true, cellTemplate: this.nameTemplate() },
-      { prop: 'description', name: gT('productsWidget.table.Description') || 'Description', width: 420, sortable: false, cellTemplate: this.descriptionTemplate() },
-      { prop: 'icon', name: gT('productsWidget.table.Icon') || 'Icon', width: 150, sortable: false, cellTemplate: this.iconTemplate() },
+      { prop: 'name', name: gT('productCategoriesWidget.table.Name') || 'Name', width: 220, sortable: true, cellTemplate: this.nameTemplate() },
+      { prop: 'description', name: gT('productCategoriesWidget.table.Description') || 'Description', width: 420, sortable: false, cellTemplate: this.descriptionTemplate() },
+      { prop: 'icon', name: gT('productCategoriesWidget.table.Icon') || 'Icon', width: 150, sortable: false, cellTemplate: this.iconTemplate() },
       { name: '', width: 80, cellTemplate: this.actionsTemplate(), resizeable: false, canAutoResize: false, sortable: false, draggable: false }
     ];
   }
@@ -172,7 +172,7 @@ export class ProductCategoriesWidgetComponent implements OnInit, OnDestroy {
   }
 
   delete(row: ProductCategory) {
-    const confirmText = this.translationService.getTranslation('customersWidget.dialog.DeleteConfirm');
+    const confirmText = this.translationService.getTranslation('productCategoriesWidget.dialog.DeleteConfirm');
     this.alertService.showDialog(confirmText, DialogType.confirm, () => this.deleteHelper(row));
   }
 
