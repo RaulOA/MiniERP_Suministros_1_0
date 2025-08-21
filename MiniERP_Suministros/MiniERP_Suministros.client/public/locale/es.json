@@ -267,8 +267,8 @@
     "MintyTheme": "Minty",
     "PulseTheme": "Pulse",
     "ThemeHint": "Selecciona el tema de color predeterminado para tu cuenta",
-    "DashboardStatistics": "Estadísticas del Panel:",
-    "DashboardStatisticsHint": "Mostrar widget de gráficos de demostración en el panel",
+    "DashboardKpis": "Estadísticas del Panel (KPIs):",
+    "DashboardKpisHint": "Mostrar el widget de KPIs en el panel",
     "DashboardNotifications": "Notificaciones del Panel:",
     "DashboardNotificationsHint": "Mostrar notificaciones de la aplicación en el panel",
     "DashboardTodo": "Tareas Pendientes del Panel:",
@@ -499,6 +499,36 @@
     },
     "dialog": {
       "DeleteConfirm": "¿Seguro que deseas eliminar la categoría?"
+    }
+  },
+  "kpiWidget": {
+    "AdminTitle": "KPIs Ventas (Administrador)",
+    "UserTitle": "KPIs Ventas (Usuario)",
+    "Refresh": "REFRESH",
+    "menu": {
+      "Bar": "Barras",
+      "Pie": "Pastel",
+      "Doughnut": "Dona",
+      "PolarArea": "Área Polar",
+      "Radar": "Radar",
+      "Line": "Líneas"
+    },
+    "series": {
+      "TotalSales": "Ventas Totales",
+      "Orders": "Pedidos",
+      "AvgTicket": "Ticket Promedio"
+    },
+    "messages": {
+      "ManualRefresh": "Actualización manual",
+      "MenuClick": "Has hecho clic en el menú",
+      "SettingsPrompt": "Ingresa un valor para configurar...",
+      "Simulating": "Simulando...",
+      "SettingsSaved": "Tu configuración se guardó como \"{{value}}\"",
+      "Cancelled": "Operación cancelada por el usuario"
+    },
+    "errors": {
+      "LoadAdmin": "Error al cargar KPI de administrador",
+      "LoadUser": "Error al cargar KPI de usuario"
     }
   }
 }

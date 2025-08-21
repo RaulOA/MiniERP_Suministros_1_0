@@ -26,10 +26,14 @@
         <button type="button" class="btn-close" aria-label="Close" title="Close"
                 (click)="configurations.showDashboardStatistics = false"></button>
         <div class="card card-body bg-light">
-          <h5 class="text-muted d-inline-block">{{'home.StatisticsTitle' | translate}}</h5>
+          <h5 class="text-muted d-inline-block">{{ isAdmin ? ('kpiWidget.AdminTitle' | translate) : ('kpiWidget.UserTitle' | translate) }}</h5>
           <div #dragPlaceholder *cdkDragPlaceholder class="widget-container-placeholder mb-4"
                [style.minHeight.px]="getPlaceholderMinHeight(dragPlaceholder, dashboardStatistics)"></div>
-          <app-statistics-demo></app-statistics-demo>
+          @if (isAdmin) {
+            <app-kpi-admin></app-kpi-admin>
+          } @else {
+            <app-kpi-user></app-kpi-user>
+          }
         </div>
       </div>
     }

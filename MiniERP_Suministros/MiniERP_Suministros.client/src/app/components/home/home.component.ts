@@ -1,9 +1,3 @@
-
-
-
-
-
-
 import { AfterViewInit, Component, ElementRef, inject, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CdkDragDrop, moveItemInArray, CdkDropList, CdkDrag, CdkDragPlaceholder } from '@angular/cdk/drag-drop';
@@ -12,10 +6,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { fadeInOut } from '../../services/animations';
 import { ConfigurationService } from '../../services/configuration.service';
 import { AuthService } from '../../services/auth.service';
-import { StatisticsDemoComponent } from '../controls/statistics-demo.component';
 import { NotificationsViewerComponent } from '../controls/notifications-viewer.component';
 import { TodoDemoComponent } from '../controls/todo-demo.component';
 import { BannerDemoComponent } from '../controls/banner-demo.component';
+import { KpiAdminComponent } from '../controls/kpi-admin.component';
+import { KpiUserComponent } from '../controls/kpi-user.component';
 
 interface WidgetIndex { element: string, index: number }
 
@@ -25,8 +20,8 @@ interface WidgetIndex { element: string, index: number }
   styleUrl: './home.component.scss',
   animations: [fadeInOut],
   imports: [
-    CdkDropList, RouterLink, CdkDrag, CdkDragPlaceholder, StatisticsDemoComponent, NotificationsViewerComponent,
-    TodoDemoComponent, BannerDemoComponent, TranslateModule
+    CdkDropList, RouterLink, CdkDrag, CdkDragPlaceholder, NotificationsViewerComponent,
+    TodoDemoComponent, BannerDemoComponent, TranslateModule, KpiAdminComponent, KpiUserComponent
   ]
 })
 export class HomeComponent implements AfterViewInit {
@@ -37,6 +32,11 @@ export class HomeComponent implements AfterViewInit {
   readonly DBKeyWidgetsOrder = 'home-component.widgets_order';
 
   readonly widgetsContainer = viewChild.required<ElementRef<HTMLDivElement>>('widgetsContainer');
+
+  get isAdmin() {
+    const roles = this.authService.currentUser?.roles || [];
+    return roles.some(r => r.toLowerCase() === 'administrator' || r.toLowerCase() === 'admin');
+  }
 
   ngAfterViewInit(): void {
     this.restoreWidgetsOrder();

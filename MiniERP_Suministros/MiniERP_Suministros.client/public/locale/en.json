@@ -267,8 +267,8 @@
     "MintyTheme": "Minty",
     "PulseTheme": "Pulse",
     "ThemeHint": "Select the default color theme for your account",
-    "DashboardStatistics": "Dashboard Statistics:",
-    "DashboardStatisticsHint": "Show demo graph widget on the dashboard",
+    "DashboardKpis": "Dashboard KPIs:",
+    "DashboardKpisHint": "Show KPIs widget on the dashboard",
     "DashboardNotifications": "Dashboard Notifications:",
     "DashboardNotificationsHint": "Show application notifications on the dashboard",
     "DashboardTodo": "Dashboard Todo:",
@@ -494,5 +494,35 @@
       "NameMax": "Name exceeds maximum length (100)"
     },
     "dialog": { "DeleteConfirm": "Are you sure you want to delete the category?" }
+  },
+  "kpiWidget": {
+    "AdminTitle": "Sales KPIs (Administrator)",
+    "UserTitle": "Sales KPIs (User)",
+    "Refresh": "REFRESH",
+    "menu": {
+      "Bar": "Bar Chart",
+      "Pie": "Pie Chart",
+      "Doughnut": "Doughnut Chart",
+      "PolarArea": "Polar Area Chart",
+      "Radar": "Radar Chart",
+      "Line": "Line Chart"
+    },
+    "series": {
+      "TotalSales": "Total Sales",
+      "Orders": "Orders",
+      "AvgTicket": "Average Ticket"
+    },
+    "messages": {
+      "ManualRefresh": "Manual refresh!",
+      "MenuClick": "You've clicked on the menu",
+      "SettingsPrompt": "Enter some value to do serious configuration...",
+      "Simulating": "Simulating...",
+      "SettingsSaved": "Your settings was successfully configured to \"{{value}}\"",
+      "Cancelled": "Operation cancelled by user"
+    },
+    "errors": {
+      "LoadAdmin": "Error loading admin KPI",
+      "LoadUser": "Error loading user KPI"
+    }
   }
 }

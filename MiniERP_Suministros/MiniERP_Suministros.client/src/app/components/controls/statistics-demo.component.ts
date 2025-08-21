@@ -1,9 +1,3 @@
-
-
-
-
-
-
 import { Component, OnInit, OnDestroy, inject, viewChild } from '@angular/core';
 import { AlertService, DialogType, MessageSeverity } from '../../services/alert.service';
 import { BaseChartDirective } from 'ng2-charts';
