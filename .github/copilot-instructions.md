@@ -10,9 +10,8 @@ applyTo: "**"
 - #file:'Tecnologias (Core).md' - Referencia obligatoria para informacion de la capa de dominio y servicios compartidos (entidades, interfaces, servicios de negocio, ApplicationDbContext).
 
 - Reglas de modificacion en #file:'Copilot-Log-Fixes.md': 
-        - Crear nueva entrada solo si el tema es distinto; para refinamientos, actualizar entrada existente e indicar "última-revisión:YYYY-MM-DD".
         - Registrar solo entradas que aporten lecciones nuevas y relevantes.
-        - Descripcion de  Cambio/Lección detallado pero puntual que sirva para optimizar el procedimientro en futuros casos similares.
+        - Descripcion de  Cambio/Lección puntual que sirva para ser leida coo prompt y optimizar el procedimientro en futuros casos similares.
         - Formato de entrada: YYYY-MM-DD | Archivo(s) | Tema | Cambio/Lección | Fallo conocido (opc.) | Vars | Etiquetas.
         - Evitar entradas triviales o duplicadas; priorizar precisión y brevedad. 
         - Si se necesita código, referenciar ubicaciones o líneas; no volcar fragmentos largos.
