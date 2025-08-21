@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MiniERP_Suministros.Core.Infrastructure;
 
@@ -11,9 +12,11 @@ using MiniERP_Suministros.Core.Infrastructure;
 namespace MiniERP_Suministros.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250821112354_ConfigureDeleteBehaviors_Order_OrderDetail")]
+    partial class ConfigureDeleteBehaviors_Order_OrderDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
