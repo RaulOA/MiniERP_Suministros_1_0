@@ -11,143 +11,108 @@ Los formularios ya están creados en el sitio y se conectan a la misma base de da
 
 ---
 
-## 1) Verificar la base de datos con datos (semillas)
-1. Abre la solución en Visual Studio.
-2. Establece como proyecto de inicio: MiniERP_Suministros.Server.
-3. Ejecuta el proyecto (F5) y espera a que inicie al menos una vez. Esto ejecuta migraciones y siembra datos demo.
-   - La base debe llamarse: MiniERP_Suministros (SQL Server local).
-
-Si ya la tenías creada/sembrada, puedes saltar este paso.
+## 1) Verificar base de datos lista (una sola vez)
+1. Establece como proyecto de inicio: MiniERP_Suministros.Server.
+2. Ejecuta el proyecto (F5) una vez. Esto aplica migraciones y, si la BD está vacía, siembra datos demo.
+   - Nombre BD: MiniERP_Suministros en (localdb)\\MSSQLLocalDB.
+3. Si ya tienes la BD con datos, no hace nada adicional.
 
 ---
 
-## 2) Probar el flujo sin Crystal (CSV de prueba)
-Antes de instalar Crystal, puedes probar el flujo exportando CSV:
+## 2) (Opcional) Probar el flujo sin Crystal
+Ya validaste que se generan TXT/CSV correctamente. Si quieres repetir:
 1. Establece como proyecto de inicio: MiniERP_Suministros.Reports.
-2. Ejecuta el sitio (F5). Se abrirá la página de inicio.
-3. En la página principal, entra a:
+2. Ejecuta (F5) y entra a:
    - Reportes > Ventas por Período y Categoría
    - Reportes > Resumen de Compras por Cliente
-4. En cada formulario, selecciona un rango amplio (por ejemplo, desde el 1 del mes de hace 6 meses hasta hoy).
-5. Clic en Exportar. Se descargará un .csv de prueba. Esto confirma que la conexión a BD y filtros funcionan.
+3. Elige un rango que cubra los últimos 6 meses y Exportar (descargará CSV de prueba).
 
 ---
 
 ## 3) Instalar Crystal Reports para exportar PDF
-Crystal no está en NuGet. Debes instalarlo en tu equipo de desarrollo:
-1. Descarga e instala "SAP Crystal Reports, developer version for Microsoft Visual Studio" (Add-in y Runtime) desde el sitio oficial de SAP.
-2. Cierra y reabre Visual Studio después de instalar.
-
-Sugerencia de plataforma:
-- Elige una única arquitectura para todo (x64 recomendado). Instala el runtime x64 y compila el sitio en x64.
+Crystal no está en NuGet; instálalo en tu equipo de desarrollo:
+1. Descarga e instala "SAP Crystal Reports, developer version for Microsoft Visual Studio" (Add-in y Runtime) desde el sitio de SAP.
+2. Reinicia Visual Studio al finalizar.
+3. Arquitectura recomendada: x64 (usa runtime x64 y compila el proyecto en x64).
 
 ---
 
-## 4) Agregar referencias Crystal al proyecto MVC (si el add-in no lo hace solo)
-1. En MiniERP_Suministros.Reports, clic derecho en Referencias > Agregar Referencia.
+## 4) Agregar referencias Crystal al proyecto MVC (si no aparecen solas)
+1. En MiniERP_Suministros.Reports: Referencias > Agregar Referencia…
 2. Agrega:
    - CrystalDecisions.CrystalReports.Engine
    - CrystalDecisions.Shared
    - CrystalDecisions.ReportSource
 
-Si ya aparecen tras instalar el add-in, no necesitas hacer nada aquí.
-
 ---
 
-## 5) Habilitar exportación a PDF en el código
-Por defecto, el proyecto exporta CSV. Para habilitar PDF:
-1. Propiedades del proyecto (MiniERP_Suministros.Reports) > Compilación.
+## 5) Habilitar exportación a PDF
+1. Propiedades del proyecto (MiniERP_Suministros.Reports) > Compilar.
 2. En "Símbolos de compilación condicional" agrega: USE_CRYSTAL
 3. Guarda y recompila.
 
-Con esto, las acciones de exportación usarán Crystal y generarán PDF.
+Con esto, las acciones de exportación generarán PDF en lugar de CSV.
 
 ---
 
-## 6) Preparar los archivos .rpt
-Los reportes deben existir en:
-- C:\Users\User\source\repos\MiniERP_Suministros_1_0\MiniERP_Suministros.Reports\Reports\
+## 6) Colocar los archivos .rpt en la carpeta Reports
+Ruta esperada:
+- C:\\Users\\User\\source\\repos\\MiniERP_Suministros_1_0\\MiniERP_Suministros.Reports\\Reports\\
 
-Crea o copia estos archivos (desde Crystal Reports Designer):
+Archivos y definición de datasets/tablas:
 1) VentasPorPeriodoYCategoria.rpt
-   - Fuente de datos en diseño: ADO.NET (XML o XSD) o Dataset tipado equivalente.
-   - Dataset esperado: VentasPeriodoCategoria con tabla Items.
-   - Campos en Items:
-     - CategoryName (string)
-     - OrderId (int)
-     - OrderDate (DateTime)
-     - CustomerName (string)
-     - ProductName (string)
-     - Quantity (int)
-     - UnitPrice (decimal)
-     - DetailTotal (decimal)
-     - OrderDiscount (decimal)
-   - Parámetros en el .rpt:
-     - FechaInicio (DateTime), FechaFin (DateTime)
-     - CategoriaId (Number, opcional), CustomerId (Number, opcional)
-   - Diseño sugerido: Grupo 1 por CategoryName, Grupo 2 por OrderId; detalle con ProductName, Quantity, UnitPrice, DetailTotal; totales por pedido y categoría; total general en pie de reporte.
+   - Dataset: VentasPeriodoCategoria
+   - Tabla: Items
+   - Campos (Items): CategoryName, OrderId, OrderDate, CustomerName, ProductName, Quantity, UnitPrice, DetailTotal, OrderDiscount
+   - Parámetros: FechaInicio, FechaFin, CategoriaId (opcional), CustomerId (opcional)
+   - Diseño sugerido: Grupo por CategoryName y por OrderId; detalle con ProductName, Quantity, UnitPrice, DetailTotal; totales por pedido y categoría; total general.
 
 2) ResumenComprasPorCliente.rpt
-   - Dataset esperado: ResumenClientes con tabla Clientes.
-   - Campos en Clientes:
-     - CustomerId (int)
-     - CustomerName (string)
-     - OrdersCount (int)
-     - OrdersTotal (decimal)
-     - AvgPerOrder (decimal)
-     - LastOrderDate (DateTime)
-   - Parámetros en el .rpt:
-     - FechaInicio (DateTime), FechaFin (DateTime)
-     - CustomerId (Number, opcional), MontoMinimo (Currency, opcional)
-   - Diseño sugerido: Grupo por CustomerName; mostrar OrdersCount, OrdersTotal, AvgPerOrder y LastOrderDate; ordenar por OrdersTotal desc; gráfico de barras opcional.
+   - Dataset: ResumenClientes
+   - Tabla: Clientes
+   - Campos (Clientes): CustomerId, CustomerName, OrdersCount, OrdersTotal, AvgPerOrder, LastOrderDate
+   - Parámetros: FechaInicio, FechaFin, CustomerId (opcional), MontoMinimo (opcional)
+   - Diseño sugerido: Grupo por CustomerName; ordenar por OrdersTotal desc; gráfico de barras opcional.
 
-Nota: Si prefieres diseñar con esquema, puedes crear un .xsd con estas tablas y enlazarlo en el diseñador. No es obligatorio, porque el proyecto pasa DataSet con estos nombres en tiempo de ejecución.
+Nota: Puedes diseñar enlazando un .xsd con estas tablas o confiar en el DataSet que pasa la app en tiempo de ejecución.
 
 ---
 
-## 7) Ejecutar y exportar a PDF
+## 7) Ejecutar y descargar PDF
 1. Establece MiniERP_Suministros.Reports como proyecto de inicio.
 2. Ejecuta (F5) y navega a:
    - /Reports/VentasPeriodoCategoria
    - /Reports/ResumenClientes
-3. Selecciona rango de fechas (ej.: desde el primer día de hace 6 meses hasta hoy). Los datos demo se distribuyen en los últimos 6 meses.
-4. Clic en Exportar. Debes obtener un PDF descargable. Si no definiste USE_CRYSTAL, verás un CSV.
+3. Selecciona un rango de fechas (últimos 6 meses) y Exportar. Debes obtener un PDF.
 
 ---
 
-## 8) Configuración de conexión (ya lista)
-- El proyecto MiniERP_Suministros.Reports ya tiene en Web.config:
-  - connectionStrings > DefaultConnection: Server=(local);Database=MiniERP_Suministros;Trusted_Connection=True;TrustServerCertificate=true;MultipleActiveResultSets=true
-- No necesitas cambiar las conexiones en los .rpt porque el proyecto inyecta DataSet directamente.
+## 8) Conexión a base de datos (ya configurada)
+- Web.config de MiniERP_Suministros.Reports usa:
+  - DefaultConnection = Server=(localdb)\\MSSQLLocalDB;Database=MiniERP_Suministros;Trusted_Connection=True;TrustServerCertificate=true;MultipleActiveResultSets=true
+- No necesitas configurar conexión dentro del .rpt: la app inyecta DataSet.
 
 ---
 
-## 9) Enlaces útiles dentro del proyecto
+## 9) Rutas útiles en el proyecto
 - Formularios de filtros:
   - Views/Reports/VentasPeriodoCategoria.cshtml
   - Views/Reports/ResumenClientes.cshtml
 - Controlador:
-  - Controllers/ReportsController.cs (acciones ...Export llaman a Crystal si USE_CRYSTAL)
+  - Controllers/ReportsController.cs (acciones ...Export usan Crystal si USE_CRYSTAL está definido)
 - Consultas SQL (ADO.NET):
-  - Services/ReportsQueryService.cs (mismo esquema que espera cada .rpt)
+  - Services/ReportsQueryService.cs
 - Carpeta de reportes:
   - Reports/ (colocar aquí los .rpt)
-- Guías rápidas:
-  - Reports/ReadMe.txt (datasets/columnas)
-  - Docs/Guia-Reportes-Crystal-PDF.md (este archivo)
 
 ---
 
-## 10) Problemas comunes y soluciones rápidas
-- Error: No se encuentra CrystalDecisions.*
-  - Revisa que instalaste el add-in y agregaste referencias. Limpia y recompila.
-- Error en servidor x64/x86:
-  - Alinea arquitectura: instala runtime Crystal x64 y compila el proyecto como x64 (Propiedades > Compilar > Plataforma de destino).
-- PDF vacío o sin datos:
-  - Verifica que el rango de fechas cubra los últimos 6 meses y que existan pedidos.
-- Cadena de conexión distinta:
-  - Ajusta Web.config > connectionStrings > DefaultConnection y prueba de nuevo.
+## 10) Problemas comunes
+- Falta de CrystalDecisions.*: instala el add-in/runtime y agrega referencias. Limpia y recompila.
+- Conflicto x64/x86: usa runtime Crystal x64 y compila el proyecto en x64.
+- PDF vacío: revisa el rango de fechas y que existan datos.
+- Conexión: si usas otra instancia, ajusta Web.config > connectionStrings > DefaultConnection.
 
 ---
 
-Listo. Con estos pasos deberías poder diseñar/colocar los .rpt y descargar los reportes finales en PDF desde el navegador.
+Listo. Con estos pasos podrás colocar los .rpt y descargar los reportes finales en PDF desde el navegador.

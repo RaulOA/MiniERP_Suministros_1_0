@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="VentasPeriodoCategoria" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="VentasPeriodoCategoria" msdata:IsDataSet="true">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Items">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CategoryName" type="xs:string" minOccurs="0" />
+              <xs:element name="OrderId" type="xs:int" minOccurs="0" />
+              <xs:element name="OrderDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CustomerName" type="xs:string" minOccurs="0" />
+              <xs:element name="ProductName" type="xs:string" minOccurs="0" />
+              <xs:element name="Quantity" type="xs:int" minOccurs="0" />
+              <xs:element name="UnitPrice" type="xs:decimal" minOccurs="0" />
+              <xs:element name="DetailTotal" type="xs:decimal" minOccurs="0" />
+              <xs:element name="OrderDiscount" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

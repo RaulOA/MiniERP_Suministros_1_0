@@ -25,11 +25,11 @@ SELECT
     od.UnitPrice,
     (od.UnitPrice * od.Quantity - od.Discount) AS DetailTotal,
     o.Discount AS OrderDiscount
-FROM [dbo].[Orders] o
-JOIN [dbo].[OrderDetails] od ON od.OrderId = o.Id
-JOIN [dbo].[Products] p ON p.Id = od.ProductId
-JOIN [dbo].[ProductCategories] pc ON pc.Id = p.ProductCategoryId
-JOIN [dbo].[Customers] c ON c.Id = o.CustomerId
+FROM [dbo].[AppOrders] o
+JOIN [dbo].[AppOrderDetails] od ON od.OrderId = o.Id
+JOIN [dbo].[AppProducts] p ON p.Id = od.ProductId
+JOIN [dbo].[AppProductCategories] pc ON pc.Id = p.ProductCategoryId
+JOIN [dbo].[AppCustomers] c ON c.Id = o.CustomerId
 WHERE o.CreatedDate >= @fi AND o.CreatedDate < @ff
   AND (@catId IS NULL OR p.ProductCategoryId = @catId)
   AND (@custId IS NULL OR o.CustomerId = @custId)
@@ -59,8 +59,8 @@ WITH OrderTotals AS (
     SELECT o.Id, o.CustomerId, o.CreatedDate,
            SUM(od.UnitPrice * od.Quantity - od.Discount) AS TotalDetalle,
            o.Discount AS OrderDiscount
-    FROM [dbo].[Orders] o
-    JOIN [dbo].[OrderDetails] od ON od.OrderId = o.Id
+    FROM [dbo].[AppOrders] o
+    JOIN [dbo].[AppOrderDetails] od ON od.OrderId = o.Id
     WHERE o.CreatedDate >= @fi AND o.CreatedDate < @ff
     GROUP BY o.Id, o.CustomerId, o.CreatedDate, o.Discount
 )
@@ -71,7 +71,7 @@ SELECT
     SUM(ot.TotalDetalle - ISNULL(ot.OrderDiscount, 0)) AS OrdersTotal,
     CASE WHEN COUNT(ot.Id) = 0 THEN 0 ELSE SUM(ot.TotalDetalle - ISNULL(ot.OrderDiscount, 0)) * 1.0 / NULLIF(COUNT(ot.Id), 0) END AS AvgPerOrder,
     MAX(ot.CreatedDate) AS LastOrderDate
-FROM [dbo].[Customers] c
+FROM [dbo].[AppCustomers] c
 LEFT JOIN OrderTotals ot ON ot.CustomerId = c.Id
 WHERE (@custId IS NULL OR c.Id = @custId)
 GROUP BY c.Id, c.Name
