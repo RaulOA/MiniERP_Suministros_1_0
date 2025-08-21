@@ -203,7 +203,13 @@ export class ProductsWidgetComponent implements OnInit, OnDestroy {
   private deleteHelper(row: ProductVM) {
     this.service.delete(row.id).subscribe({
       next: () => { this.rowsCache = this.rowsCache.filter(r => r.id !== row.id); this.rows = this.rows.filter(r => r.id !== row.id); },
-      error: err => this.alertService.showMessage('Error', err?.message || 'Error deleting product', MessageSeverity.error)
+      error: err => {
+        const code = err?.error?.code as string | undefined;
+        const gT = (k: string) => this.translation.getTranslation(k) || k;
+        const key = code || 'productsWidget.errors.DeleteUnknown';
+        const msg = gT(key);
+        this.alertService.showStickyMessage(gT('app.alerts.NotificationError') || 'Error', msg, MessageSeverity.error);
+      }
     });
   }
 }

@@ -119,7 +119,12 @@ namespace MiniERP_Suministros.Server.Controllers
             }
             catch (MiniERP_Suministros.Core.Services.Shop.ProductException ex)
             {
-                return Conflict(new { message = ex.Message });
+                // Mapear a códigos entendibles por el cliente para i18n
+                var msg = ex.Message ?? string.Empty;
+                string code = "productsWidget.errors.DeleteUnknown";
+                if (msg.Contains("child", StringComparison.OrdinalIgnoreCase)) code = "productsWidget.errors.DeleteHasChildren";
+                else if (msg.Contains("order", StringComparison.OrdinalIgnoreCase)) code = "productsWidget.errors.DeleteHasOrderDetails";
+                return Conflict(new { code, message = ex.Message });
             }
         }
     }

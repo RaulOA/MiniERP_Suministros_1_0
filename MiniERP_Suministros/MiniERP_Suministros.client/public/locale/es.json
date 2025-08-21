@@ -438,6 +438,11 @@
     },
     "dialog": {
       "DeleteConfirm": "¿Seguro que deseas eliminar el producto?"
+    },
+    "errors": {
+      "DeleteHasChildren": "No se puede eliminar el producto porque tiene productos hijos.",
+      "DeleteHasOrderDetails": "No se puede eliminar el producto porque está vinculado a pedidos.",
+      "DeleteUnknown": "No se puede eliminar el producto por una razón desconocida."
     }
   },
   "ordersWidget": {

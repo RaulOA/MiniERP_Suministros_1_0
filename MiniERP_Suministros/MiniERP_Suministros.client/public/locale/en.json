@@ -434,7 +434,12 @@
       "StockInvalid": "Stock must be 0 or more",
       "CategoryRequired": "Category (Id) is required"
     },
-    "dialog": { "DeleteConfirm": "Are you sure you want to delete the product?" }
+    "dialog": { "DeleteConfirm": "Are you sure you want to delete the product?" },
+    "errors": {
+      "DeleteHasChildren": "Cannot delete the product because it has child products.",
+      "DeleteHasOrderDetails": "Cannot delete the product because it is linked to orders.",
+      "DeleteUnknown": "Cannot delete the product for an unknown reason."
+    }
   },
   "ordersWidget": {
     "management": {

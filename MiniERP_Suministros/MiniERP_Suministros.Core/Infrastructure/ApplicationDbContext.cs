@@ -1,9 +1,9 @@
-﻿
+﻿/*
 
 
 
 
-
+*/
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MiniERP_Suministros.Core.Models;
@@ -85,6 +85,19 @@ namespace MiniERP_Suministros.Core.Infrastructure
             builder.Entity<OrderDetail>().Property(p => p.UnitPrice).HasColumnType(priceDecimalType);
             builder.Entity<OrderDetail>().Property(p => p.Discount).HasColumnType(priceDecimalType);
             builder.Entity<OrderDetail>().ToTable($"{tablePrefix}{nameof(OrderDetails)}");
+
+            // Relaciones explícitas para comportamiento de borrado
+            builder.Entity<OrderDetail>()
+                .HasOne(od => od.Order)
+                .WithMany(o => o.OrderDetails)
+                .HasForeignKey(od => od.OrderId)
+                .OnDelete(DeleteBehavior.Cascade); // Al borrar una orden, borrar sus detalles
+
+            builder.Entity<OrderDetail>()
+                .HasOne(od => od.Product)
+                .WithMany(p => p.OrderDetails)
+                .HasForeignKey(od => od.ProductId)
+                .OnDelete(DeleteBehavior.Restrict); // Evitar cascada al borrar producto; forzar validación en servicio
         }
 
         public override int SaveChanges()
@@ -132,8 +145,8 @@ namespace MiniERP_Suministros.Core.Infrastructure
                 }
                 else
                 {
-                    base.Entry(entity).Property(x => x.CreatedBy).IsModified = false;
-                    base.Entry(entity).Property(x => x.CreatedDate).IsModified = false;
+                    base.Entry(entity).Property(x => x.CreatedBy).IsModified = false; // evitar sobreescritura
+                    base.Entry(entity).Property(x => x.CreatedDate).IsModified = false; // evitar sobreescritura
                 }
 
                 entity.UpdatedDate = now;
