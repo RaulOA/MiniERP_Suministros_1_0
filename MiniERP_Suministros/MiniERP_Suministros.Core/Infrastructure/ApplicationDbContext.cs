@@ -128,6 +128,7 @@ namespace MiniERP_Suministros.Core.Infrastructure
         private void AddAuditInfo()
         {
             var currentUserId = userIdAccessor.GetCurrentUserId();
+            var now = DateTime.UtcNow;
 
             var modifiedEntries = ChangeTracker.Entries()
                 .Where(x => x.Entity is IAuditableEntity &&
@@ -136,21 +137,25 @@ namespace MiniERP_Suministros.Core.Infrastructure
             foreach (var entry in modifiedEntries)
             {
                 var entity = (IAuditableEntity)entry.Entity;
-                var now = DateTime.UtcNow;
 
                 if (entry.State == EntityState.Added)
                 {
-                    entity.CreatedDate = now;
-                    entity.CreatedBy = currentUserId;
+                    // Respetar valores preestablecidos por el seeder o procesos batch
+                    if (entity.CreatedDate == default) entity.CreatedDate = now; // solo si está vacío
+                    if (string.IsNullOrWhiteSpace(entity.CreatedBy)) entity.CreatedBy = currentUserId; // solo si está vacío
+
+                    if (entity.UpdatedDate == default) entity.UpdatedDate = entity.CreatedDate; // inicial por defecto
+                    if (string.IsNullOrWhiteSpace(entity.UpdatedBy)) entity.UpdatedBy = entity.CreatedBy; // inicial por defecto
                 }
-                else
+                else // Modified
                 {
+                    // No permitir sobreescribir creador/fecha de creación
                     base.Entry(entity).Property(x => x.CreatedBy).IsModified = false; // evitar sobreescritura
                     base.Entry(entity).Property(x => x.CreatedDate).IsModified = false; // evitar sobreescritura
-                }
 
-                entity.UpdatedDate = now;
-                entity.UpdatedBy = currentUserId;
+                    entity.UpdatedDate = now; // siempre actualizar marca de tiempo
+                    entity.UpdatedBy = currentUserId ?? entity.UpdatedBy; // mantener si no hay usuario
+                }
             }
         }
     }

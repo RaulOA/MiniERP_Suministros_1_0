@@ -2,6 +2,7 @@
 RUTA: MiniERP_Suministros/MiniERP_Suministros.Core/Infrastructure/DatabaseSeeder.cs
 Descripción: Siembra de base de datos. Crea usuarios/roles por defecto y datos de demostración (categorías, productos, clientes y pedidos). Las órdenes y sus detalles se distribuyen en los últimos 6 meses para generar KPIs realistas por mes.
 */
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MiniERP_Suministros.Core.Models;

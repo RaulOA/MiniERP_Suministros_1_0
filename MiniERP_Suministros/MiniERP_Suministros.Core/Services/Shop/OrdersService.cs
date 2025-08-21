@@ -45,8 +45,11 @@ namespace MiniERP_Suministros.Core.Services.Shop
             var customer = dbContext.Customers.FirstOrDefault(c => c.Id == customerId)
                 ?? throw new KeyNotFoundException($"Customer {customerId} not found");
 
-            // Cargar productos implicados
-            var productIds = items.Select(i => i.ProductId).Distinct().ToArray();
+            // Solución CS8604: Asegurar que 'items' no es null antes de usar Select
+            var productIds = (items ?? throw new ArgumentNullException(nameof(items)))
+                .Select(i => i.ProductId)
+                .Distinct()
+                .ToArray();
             var products = dbContext.Products.Where(p => productIds.Contains(p.Id)).ToDictionary(p => p.Id);
             if (products.Count != productIds.Length) throw new InvalidOperationException("One or more products were not found");
 
