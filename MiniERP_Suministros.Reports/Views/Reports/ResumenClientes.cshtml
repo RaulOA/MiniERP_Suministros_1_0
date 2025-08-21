@@ -1,0 +1,29 @@
+@{
+    ViewBag.Title = "Resumen de Compras por Cliente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Resumen de Compras por Cliente</h2>
+
+<form method="post" action="@Url.Action("ResumenClientesExport", "Reports")" class="row g-3">
+  <div class="col-md-3">
+    <label class="form-label">Fecha inicio</label>
+    <input type="date" name="fechaInicio" class="form-control" required />
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Fecha fin</label>
+    <input type="date" name="fechaFin" class="form-control" required />
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Cliente Id (opcional)</label>
+    <input type="number" name="customerId" class="form-control" />
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Monto mínimo (opcional)</label>
+    <input type="number" step="0.01" name="montoMinimo" class="form-control" />
+  </div>
+  <div class="col-md-12">
+    <button type="submit" class="btn btn-primary">Exportar</button>
+    <span class="text-muted">(Genera PDF si Crystal está habilitado; CSV de prueba si no)</span>
+  </div>
+</form>

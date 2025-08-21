@@ -4,9 +4,12 @@
 
 <main>
     <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
+        <h1 id="title">Reportes</h1>
+        <p class="lead">Acceso rápido a reportes de Ventas y Clientes.</p>
+        <ul>
+            <li><a href="@Url.Action("VentasPeriodoCategoria", "Reports")">Ventas por Período y Categoría</a></li>
+            <li><a href="@Url.Action("ResumenClientes", "Reports")">Resumen de Compras por Cliente</a></li>
+        </ul>
     </section>
 
     <div class="row">
