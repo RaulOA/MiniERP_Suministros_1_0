@@ -48,3 +48,5 @@ YYYY-MM-DD HH-MM| Archivos Modificados | Solicitud o tema | Cambio o Solucion | 
 2025-08-21 09-50 | MiniERP_Suministros.client/src/app/components/customers/customers.component.html | UI: Ocultar demo de tareas en Customers | Se ocultó el componente <app-todo-demo> en la vista de clientes comentando su uso en la plantilla. Mantiene solo <app-customers-widget>. | - | - | angular, ui, customers
 
 2025-08-21 09-55 | MiniERP_Suministros.client/src/app/components/customers/customers.component.ts | Lint TS-998113: import no usado | Se removió TodoDemoComponent de los imports del componente standalone y su importación TS, ya que no se usa en la plantilla. Elimina la advertencia del compilador Angular. | TS-998113 | - | angular, lint, standalone
+
+2025-08-21 10-40 | MiniERP_Suministros.client/src/app/components/widgets/products-widget.component.html | Angular: error template en checkboxes | Corregido binding en (change) de checkboxes usando $any($event.target).checked en lugar de cast TS en plantilla. Evita NG2/NG5002 por tipos de EventTarget. Compilación OK. | NG2, NG5002 | - | angular, template, checkbox, typing

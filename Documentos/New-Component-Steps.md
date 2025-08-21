@@ -67,6 +67,7 @@ Alcance: .NET Core (servicios, DI, AutoMapper, API) + Angular (modelos, servicio
 - [ ] Usar `MessageSeverity` para alerts y limpiar suscripciones en `ngOnDestroy`.
 - [ ] Evitar atributos obsoletos en plantillas y mantener binding consistente con el backend.
 - [ ] Integrar el widget en el componente contenedor correspondiente.
+- [ ] Plantillas Angular: evitar casts TypeScript en expresiones del template. Para checkbox/radio usar `$any($event.target).checked` o `(ngModelChange)` en lugar de `(change)` con cast, para prevenir NG2/NG5002.
 
 4) i18n
 - [ ] Añadir claves nuevas en `public/locale/es.json` y `public/locale/en.json` bajo un namespace del widget (p. ej. `productCategoriesWidget.*`).
@@ -84,7 +85,7 @@ Alcance: .NET Core (servicios, DI, AutoMapper, API) + Angular (modelos, servicio
 ## Buenas prácticas a seguir
 - Reutilizar el patrón de `Customer`/`ProductCategory`/`Orders` para nuevas entidades; acelera y reduce errores.
 - Validar integridad en Core y volver a validar en Server con FluentValidation.
-- Evitar `Delete` si hay dependencias; devolver `409 Conflict` con mensaje claro.
+- Evitar `Delete` si hay dependencias; devolver `409 Conflict` y bloquear `Delete` si hay hijos/dependencias.
 - Preferir `UpdatePartial` a reemplazos completos cuando el cliente envía parches parciales.
 - Consultas de solo lectura con `AsNoTracking()`; usar `AsSingleQuery()` cuando múltiples `Include` lo requieran.
 - Transacciones atómicas en operaciones que afectan stock u otras entidades relacionadas.
@@ -106,6 +107,7 @@ Alcance: .NET Core (servicios, DI, AutoMapper, API) + Angular (modelos, servicio
 - Olvido de registrar servicios en DI o de añadir mapeos en AutoMapper.
 - Falta de `GET {id}` afectando vistas/ediciones puntuales.
 - No restaurar stock al eliminar pedidos; envolver en transacción y revertir efectos.
+- NG2/NG5002 por casts TS en plantillas (checkbox/radio): usar `$any($event.target).checked` o `[(ngModel)]`.
 
 ---
 

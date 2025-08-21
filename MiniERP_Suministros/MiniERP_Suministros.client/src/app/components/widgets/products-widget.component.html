@@ -136,11 +136,11 @@
       </div>
       <div class="col-md-3 d-flex align-items-end gap-3">
         <div class="form-check">
-          <input type="checkbox" class="form-check-input" [checked]="newProduct.isActive ?? true" (change)="newProduct.isActive = ($event.target as HTMLInputElement).checked" id="npActive">
+          <input type="checkbox" class="form-check-input" [checked]="newProduct.isActive ?? true" (change)="newProduct.isActive = $any($event.target).checked" id="npActive">
           <label class="form-check-label" for="npActive">{{'productsWidget.table.Active' | translate}}</label>
         </div>
         <div class="form-check">
-          <input type="checkbox" class="form-check-input" [checked]="newProduct.isDiscontinued ?? false" (change)="newProduct.isDiscontinued = ($event.target as HTMLInputElement).checked" id="npDisc">
+          <input type="checkbox" class="form-check-input" [checked]="newProduct.isDiscontinued ?? false" (change)="newProduct.isDiscontinued = $any($event.target).checked" id="npDisc">
           <label class="form-check-label" for="npDisc">{{'productsWidget.table.Discontinued' | translate}}</label>
         </div>
       </div>
