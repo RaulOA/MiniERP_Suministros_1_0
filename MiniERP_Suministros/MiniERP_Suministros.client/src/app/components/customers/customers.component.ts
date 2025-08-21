@@ -5,7 +5,6 @@ import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { fadeInOut } from '../../services/animations';
-import { TodoDemoComponent } from '../controls/todo-demo.component';
 import { CustomersWidgetComponent } from '../widgets/customers-widget.component'; // Widget de clientes
 
 @Component({
@@ -14,7 +13,7 @@ import { CustomersWidgetComponent } from '../widgets/customers-widget.component'
     templateUrl: './customers.component.html',
     styleUrl: './customers.component.scss',
     animations: [fadeInOut],
-    imports: [TodoDemoComponent, CustomersWidgetComponent, TranslateModule]
+    imports: [CustomersWidgetComponent, TranslateModule] // Quitado TodoDemoComponent (no usado en plantilla)
 })
 export class CustomersComponent {
 

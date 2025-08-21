@@ -411,23 +411,32 @@
   },
   "productsWidget": {
     "management": {
-      "Search": "Buscar categoría...",
-      "Delete": "Eliminar categoría",
-      "NewCategory": "Nueva Categoría"
+      "Search": "Buscar producto...",
+      "Delete": "Eliminar producto",
+      "NewProduct": "Nuevo Producto"
     },
     "table": {
       "Name": "Nombre",
-      "Description": "Descripción",
-      "Icon": "Icono",
+      "Category": "Categoría",
+      "Price": "Precio",
+      "Stock": "Existencias",
+      "Flags": "Estados",
+      "Active": "Activo",
+      "Discontinued": "Descatalogado",
       "Edit": "Doble clic para editar",
-      "NoCategories": "No se encontraron categorías"
+      "NoProducts": "No se encontraron productos"
     },
     "editor": {
       "Add": "Agregar",
-      "Saving": "Guardando..."
+      "Saving": "Guardando...",
+      "NameRequired": "El nombre es obligatorio",
+      "BuyingPriceInvalid": "El precio de compra debe ser mayor o igual a 0",
+      "SellingPriceInvalid": "El precio de venta debe ser mayor o igual a 0",
+      "StockInvalid": "Las existencias deben ser 0 o más",
+      "CategoryRequired": "Debe indicar la categoría (Id)"
     },
     "dialog": {
-      "DeleteConfirm": "¿Seguro que deseas eliminar la categoría?"
+      "DeleteConfirm": "¿Seguro que deseas eliminar el producto?"
     }
   },
   "ordersWidget": {

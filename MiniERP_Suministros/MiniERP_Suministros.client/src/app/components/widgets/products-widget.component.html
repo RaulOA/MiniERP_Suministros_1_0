@@ -1,0 +1,164 @@
+<div class="row">
+  <div class="col-md-6">
+    <app-search-box placeholder="{{'productsWidget.management.Search' | translate}}" (searchChange)="onSearchChanged($event)"></app-search-box>
+  </div>
+  <div class="col-md-6 text-end" *ngIf="isAdmin()">
+    <button class="btn btn-primary btn-sm" (click)="startAddNew()" title="{{'app.New' | translate}}">
+      <i class="fa fa-plus"></i> {{'app.New' | translate}}
+    </button>
+  </div>
+</div>
+
+<div class="table-responsive" [class.ps]= "verticalScrollbar()">
+  <ngx-datatable
+    class="material"
+    [rows]="rows"
+    [loadingIndicator]="loadingIndicator"
+    [columnMode]="'force'"
+    [headerHeight]="50"
+    [footerHeight]="50"
+    rowHeight="auto"
+    [scrollbarV]="true">
+
+    <ngx-datatable-column [width]="220" [canAutoResize]="true" [resizeable]="true" [sortable]="true">
+      <ng-template ngx-datatable-header-template>
+        {{'productsWidget.table.Name' | translate}}
+      </ng-template>
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+        <ng-container *ngIf="editing[row.$$index + '-name']; else nameRead">
+          <input type="text" autofocus appAutofocus class="form-control form-control-sm" [value]="row.name || ''" (blur)="updateValue($event, 'name', row)" />
+        </ng-container>
+        <ng-template #nameRead>
+          <div (dblclick)="editing[row.$$index + '-name'] = isAdmin()">
+            <span [title]="row.description || ''">{{row.name}}</span>
+          </div>
+        </ng-template>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [width]="180">
+      <ng-template ngx-datatable-header-template>
+        {{'productsWidget.table.Category' | translate}}
+      </ng-template>
+      <ng-template ngx-datatable-cell-template let-row="row">
+        <div title="{{row.productCategoryName}}">{{row.productCategoryName}}</div>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [width]="130">
+      <ng-template ngx-datatable-header-template>
+        {{'productsWidget.table.Price' | translate}}
+      </ng-template>
+      <ng-template ngx-datatable-cell-template let-row="row">
+        <div (dblclick)="editing[row.$$index + '-sellingPrice'] = isAdmin()">
+          <ng-container *ngIf="editing[row.$$index + '-sellingPrice']; else priceRead">
+            <input type="number" step="0.01" class="form-control form-control-sm" [value]="row.sellingPrice" (blur)="updateValue($event, 'sellingPrice', row)" />
+          </ng-container>
+          <ng-template #priceRead>
+            {{row.sellingPrice | number:'1.2-2'}}
+          </ng-template>
+        </div>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [width]="120">
+      <ng-template ngx-datatable-header-template>
+        {{'productsWidget.table.Stock' | translate}}
+      </ng-template>
+      <ng-template ngx-datatable-cell-template let-row="row">
+        <div (dblclick)="editing[row.$$index + '-unitsInStock'] = isAdmin()">
+          <ng-container *ngIf="editing[row.$$index + '-unitsInStock']; else stockRead">
+            <input type="number" class="form-control form-control-sm" [value]="row.unitsInStock" (blur)="updateValue($event, 'unitsInStock', row)" />
+          </ng-container>
+          <ng-template #stockRead>
+            {{row.unitsInStock}}
+          </ng-template>
+        </div>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [width]="160">
+      <ng-template ngx-datatable-header-template>
+        {{'productsWidget.table.Flags' | translate}}
+      </ng-template>
+      <ng-template ngx-datatable-cell-template let-row="row">
+        <div class="d-flex gap-3 align-items-center">
+          <label class="form-check-label d-flex align-items-center gap-2">
+            <input type="checkbox" class="form-check-input" [checked]="row.isActive" (change)="updateValue($event, 'isActive', row)" [disabled]="!isAdmin()" />
+            <span>{{'productsWidget.table.Active' | translate}}</span>
+          </label>
+          <label class="form-check-label d-flex align-items-center gap-2">
+            <input type="checkbox" class="form-check-input" [checked]="row.isDiscontinued" (change)="updateValue($event, 'isDiscontinued', row)" [disabled]="!isAdmin()" />
+            <span>{{'productsWidget.table.Discontinued' | translate}}</span>
+          </label>
+        </div>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [width]="100">
+      <ng-template ngx-datatable-cell-template let-row="row">
+        <button class="btn btn-danger btn-sm" title="{{'productsWidget.management.Delete' | translate}}" (click)="delete(row)" [disabled]="!isAdmin()">
+          <i class="fa fa-trash"></i>
+        </button>
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+</div>
+
+<!-- Alta inline -->
+<div class="card mt-3" *ngIf="addingNew && isAdmin()">
+  <div class="card-header">{{'app.New' | translate}}</div>
+  <div class="card-body">
+    <div class="row g-2">
+      <div class="col-md-4">
+        <label class="form-label">{{'productsWidget.table.Name' | translate}}</label>
+        <input type="text" class="form-control form-control-sm" [value]="newProduct.name || ''" (input)="onNewInputChange($event, 'name')" />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">{{'productsWidget.table.Category' | translate}} (Id)</label>
+        <input type="number" class="form-control form-control-sm" [value]="newProduct.productCategoryId || 0" (input)="onNewInputChange($event, 'productCategoryId')" />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">{{'productsWidget.table.Price' | translate}}</label>
+        <input type="number" step="0.01" class="form-control form-control-sm" [value]="newProduct.sellingPrice || 0" (input)="onNewInputChange($event, 'sellingPrice')" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">{{'productsWidget.table.Stock' | translate}}</label>
+        <input type="number" class="form-control form-control-sm" [value]="newProduct.unitsInStock || 0" (input)="onNewInputChange($event, 'unitsInStock')" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Buying</label>
+        <input type="number" step="0.01" class="form-control form-control-sm" [value]="newProduct.buyingPrice || 0" (input)="onNewInputChange($event, 'buyingPrice')" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Parent Id</label>
+        <input type="number" class="form-control form-control-sm" [value]="newProduct.parentId || 0" (input)="onNewInputChange($event, 'parentId')" />
+      </div>
+      <div class="col-md-3 d-flex align-items-end gap-3">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" [checked]="newProduct.isActive ?? true" (change)="newProduct.isActive = ($event.target as HTMLInputElement).checked" id="npActive">
+          <label class="form-check-label" for="npActive">{{'productsWidget.table.Active' | translate}}</label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" [checked]="newProduct.isDiscontinued ?? false" (change)="newProduct.isDiscontinued = ($event.target as HTMLInputElement).checked" id="npDisc">
+          <label class="form-check-label" for="npDisc">{{'productsWidget.table.Discontinued' | translate}}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-end">
+    <button class="btn btn-secondary btn-sm me-2" (click)="cancelAdd()">{{'customersWidget.editor.Cancel' | translate}}</button>
+    <button class="btn btn-success btn-sm" (click)="create()" [disabled]="savingNew">
+      <i class="fa fa-save"></i>
+      <span *ngIf="!savingNew">{{'productsWidget.editor.Add' | translate}}</span>
+      <span *ngIf="savingNew">{{'productsWidget.editor.Saving' | translate}}</span>
+    </button>
+  </div>
+</div>
+
+<ng-template #nameTemplate></ng-template>
+<ng-template #categoryTemplate></ng-template>
+<ng-template #priceTemplate></ng-template>
+<ng-template #stockTemplate></ng-template>
+<ng-template #flagsTemplate></ng-template>
+<ng-template #actionsTemplate></ng-template>

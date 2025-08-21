@@ -411,23 +411,32 @@
   },
   "productsWidget": {
     "management": {
-      "Search": "Search for category...",
-      "Delete": "Delete category",
-      "NewCategory": "New Category"
+      "Search": "Search for product...",
+      "Delete": "Delete product",
+      "NewProduct": "New Product"
     },
     "table": {
       "Name": "Name",
-      "Description": "Description",
-      "Icon": "Icon",
+      "Category": "Category",
+      "Price": "Price",
+      "Stock": "Stock",
+      "Flags": "Flags",
+      "Active": "Active",
+      "Discontinued": "Discontinued",
       "Edit": "Double click to edit",
-      "NoCategories": "No categories found"
+      "NoProducts": "No products found"
     },
     "editor": {
       "Add": "Add",
-      "Saving": "Saving..."
+      "Saving": "Saving...",
+      "NameRequired": "Name is required",
+      "BuyingPriceInvalid": "Buying price must be greater than or equal to 0",
+      "SellingPriceInvalid": "Selling price must be greater than or equal to 0",
+      "StockInvalid": "Stock must be 0 or more",
+      "CategoryRequired": "Category (Id) is required"
     },
     "dialog": {
-      "DeleteConfirm": "Are you sure you want to delete the category?"
+      "DeleteConfirm": "Are you sure you want to delete the product?"
     }
   },
   "ordersWidget": {

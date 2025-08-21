@@ -49,7 +49,13 @@ namespace MiniERP_Suministros.Server.Configuration
                 .ReverseMap();
 
             CreateMap<Product, ProductVM>()
-                .ReverseMap();
+                .ForMember(d => d.ProductCategoryId, m => m.MapFrom(s => s.ProductCategoryId))
+                .ForMember(d => d.ParentId, m => m.MapFrom(s => s.ParentId))
+                .ForMember(d => d.ProductCategoryName, m => m.MapFrom(s => s.ProductCategory != null ? s.ProductCategory.Name : null))
+                .ForMember(d => d.ParentName, m => m.MapFrom(s => s.Parent != null ? s.Parent.Name : null))
+                .ReverseMap()
+                .ForMember(d => d.ProductCategory, m => m.Ignore()) // se asigna por servicio al validar
+                .ForMember(d => d.Parent, m => m.Ignore());
 
             CreateMap<OrderDetail, OrderItemVM>()
                 .ForMember(d => d.ProductName, m => m.MapFrom(s => s.Product.Name));
