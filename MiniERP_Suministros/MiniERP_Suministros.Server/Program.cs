@@ -224,8 +224,13 @@ var app = builder.Build();
 
 /************* CONFIGURAR PIPELINE DE SOLICITUDES *************/
 
-app.UseDefaultFiles();
-app.MapStaticAssets();
+// Solo configurar archivos estáticos si existe wwwroot para evitar warnings en desarrollo
+var wwwrootPath = System.IO.Path.Combine(app.Environment.ContentRootPath, "wwwroot");
+if (System.IO.Directory.Exists(wwwrootPath))
+{
+    app.UseDefaultFiles();
+    app.MapStaticAssets();
+}
 
 if (app.Environment.IsDevelopment())
 {
