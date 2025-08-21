@@ -34,20 +34,20 @@
         </tbody>
       </table>
     </div>
-    <button class="refresh-btn" (click)="randomize();showMessage('kpiWidget.messages.ManualRefresh' | translate)">{{'kpiWidget.Refresh' | translate}}</button>
+    <button class="refresh-btn" (click)="randomize();showMessage(t('kpiWidget.messages.ManualRefresh'))">{{t('kpiWidget.Refresh')}}</button>
     <div class="d-inline-block" ngbDropdown>
       <button id="chartType" ngbDropdownToggle type="button" class="dropdown-toggle"><i class="fa fa-bar-chart"></i></button>
       <div ngbDropdownMenu class="dropdown-menu">
-        <button [class.active]="chartType === 'bar'" (click)="changeChartType('bar')" ngbDropdownItem>{{'kpiWidget.menu.Bar' | translate}}</button>
-        <button [class.active]="chartType === 'pie'" (click)="changeChartType('pie')" ngbDropdownItem>{{'kpiWidget.menu.Pie' | translate}}</button>
-        <button [class.active]="chartType === 'doughnut'" (click)="changeChartType('doughnut')" ngbDropdownItem>{{'kpiWidget.menu.Doughnut' | translate}}</button>
-        <button [class.active]="chartType === 'polarArea'" (click)="changeChartType('polarArea')" ngbDropdownItem>{{'kpiWidget.menu.PolarArea' | translate}}</button>
-        <button [class.active]="chartType === 'radar'" (click)="changeChartType('radar')" ngbDropdownItem>{{'kpiWidget.menu.Radar' | translate}}</button>
+        <button [class.active]="chartType === 'bar'" (click)="changeChartType('bar')" ngbDropdownItem>{{t('kpiWidget.menu.Bar')}}</button>
+        <button [class.active]="chartType === 'pie'" (click)="changeChartType('pie')" ngbDropdownItem>{{t('kpiWidget.menu.Pie')}}</button>
+        <button [class.active]="chartType === 'doughnut'" (click)="changeChartType('doughnut')" ngbDropdownItem>{{t('kpiWidget.menu.Doughnut')}}</button>
+        <button [class.active]="chartType === 'polarArea'" (click)="changeChartType('polarArea')" ngbDropdownItem>{{t('kpiWidget.menu.PolarArea')}}</button>
+        <button [class.active]="chartType === 'radar'" (click)="changeChartType('radar')" ngbDropdownItem>{{t('kpiWidget.menu.Radar')}}</button>
         <div class="dropdown-divider"></div>
-        <button [class.active]="chartType === 'line'" (click)="changeChartType('line')" ngbDropdownItem>{{'kpiWidget.menu.Line' | translate}}</button>
+        <button [class.active]="chartType === 'line'" (click)="changeChartType('line')" ngbDropdownItem>{{t('kpiWidget.menu.Line')}}</button>
       </div>
     </div>
-    <button (click)="showMessage('kpiWidget.messages.MenuClick' | translate)"><i class="fa fa-bars"></i></button>
-    <button (click)="showDialog('kpiWidget.messages.SettingsPrompt' | translate)"><i class="fa fa-cogs"></i></button>
+    <button (click)="showMessage(t('kpiWidget.messages.MenuClick'))"><i class="fa fa-bars"></i></button>
+    <button (click)="showDialog(t('kpiWidget.messages.SettingsPrompt'))"><i class="fa fa-cogs"></i></button>
   </div>
 </div>

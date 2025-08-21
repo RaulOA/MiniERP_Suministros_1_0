@@ -33,13 +33,13 @@ Alcance: .NET Core (servicios, DI, AutoMapper, API) + Angular (modelos, servicio
 - Endpoints/servicio de dominio en `.../services/<entity>-*.ts` alineados al backend.
 - Widget standalone en `.../components/widgets/<entity>-widget.*` con:
 	- Buscador, alta inline, edición inline y eliminación.
-	- Inputs/outputs tipados; evitar `any` (usar tipos o `Record<string, unknown>` cuando aplique).
+	- Inputs/outputs tipados; evitar `any` (usar tipos o `Record<string, unknown>` cuando aplicue).
 	- Limpieza de recursos en `ngOnDestroy`.
 	- Alerts con `MessageSeverity` (enum) del `AlertService`.
 	- Plantillas HTML usando atributos estándar (`title` en lugar de `attr-title`).
 	- ngx-datatable: si `scrollbarV` está habilitado, configurar `rowHeight` con un número (>0) o una función; no usar `auto`.
 	- ngx-datatable: evitar doble scroll. No aplicar overflow al contenedor externo; fijar altura en el propio `<ngx-datatable>` con `[style.height.px]=...` y dejar el scroll interno como único.
-- Integración del widget en el componente contenedor (ej.: `products/products.component.*`).
+	- i18n en componentes standalone: no usar pipes en expresiones de acción (click/submit); usar un método `t(key)` que llame a `AppTranslationService.getTranslation(key)` y renderizar textos con `{{ t('clave') }}`. En acciones usar `showMessage(t('clave'))`.
 
 ### i18n
 - Claves separadas por widget/módulo (namespaces) y paridad entre `public/locale/es.json` y `public/locale/en.json`.
@@ -72,6 +72,7 @@ Alcance: .NET Core (servicios, DI, AutoMapper, API) + Angular (modelos, servicio
 - [ ] Plantillas Angular: evitar casts TypeScript en expresiones del template. Para checkbox/radio usar `$any($event.target).checked` o `(ngModelChange)` en lugar de `(change)` con cast, para prevenir NG2/NG5002.
 - [ ] ngx-datatable: si `scrollbarV` está habilitado, definir `rowHeight` numérico (>0) o función; no usar `auto`.
 - [ ] ngx-datatable: fijar altura en `[style.height.px]` del `<ngx-datatable>` y no en contenedor externo para evitar doble scroll.
+- [ ] i18n en templates: no usar `| translate` en expresiones de acción (click, submit, etc.). Preferir `t('clave')` desde el componente; importar CommonModule solo si se usan pipes comunes (date/number) o el TranslatePipe en vistas, no en acciones.
 
 4) i18n
 - [ ] Añadir claves nuevas en `public/locale/es.json` y `public/locale/en.json` bajo un namespace del widget (p. ej. `productCategoriesWidget.*`).
@@ -99,6 +100,7 @@ Alcance: .NET Core (servicios, DI, AutoMapper, API) + Angular (modelos, servicio
 - Mantener paridad de i18n entre `es` y `en` y separar namespaces por widget.
 - Evitar `rowHeight='auto'` en ngx-datatable cuando `scrollbarV` esté activo; preferir número fijo o función.
 - Evitar doble scroll con ngx-datatable: altura en la tabla, no en el contenedor; un solo scroll interno.
+- i18n en acciones: nunca usar pipes en expresiones de acción; obtener el texto en TS y pasarlo al método/alerta.
 
 ---
 
@@ -116,6 +118,7 @@ Alcance: .NET Core (servicios, DI, AutoMapper, API) + Angular (modelos, servicio
 - NG2/NG5002 por casts TS en plantillas (checkbox/radio): usar `$any($event.target).checked` o `[(ngModel)]`.
 - ngx-datatable: error "Row Height cache initialization failed" cuando `scrollbarV` y `rowHeight='auto'` coexisten.
 - Doble scroll por overflow en contenedor + scroll interno del `<ngx-datatable>`: fijar altura en la tabla y `overflow: hidden` en el contenedor.
+- Pipes en expresiones de acción (click/submit) causan NG5002/NG8004; usar `t()` desde el componente.
 
 ---
 
