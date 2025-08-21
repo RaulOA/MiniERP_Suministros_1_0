@@ -11,7 +11,7 @@
 
 <div class="datatable-holder">
   <ngx-datatable
-    class="material"
+    class="material colored-header sm table-hover"
     [rows]="rows"
     [loadingIndicator]="loadingIndicator"
     [columnMode]="'force'"
@@ -19,7 +19,8 @@
     [footerHeight]="50"
     [rowHeight]="50"
     [style.height.px]="verticalScrollbar() ? 420 : null"
-    [scrollbarV]="verticalScrollbar()">
+    [scrollbarV]="verticalScrollbar()"
+    [sorts]="[{ prop: 'name', dir: 'asc' }]">
 
     <ngx-datatable-column [width]="220" [canAutoResize]="true" [resizeable]="true" [sortable]="true">
       <ng-template ngx-datatable-header-template>
@@ -116,8 +117,11 @@
         <input type="text" class="form-control form-control-sm" [value]="newProduct.name || ''" (input)="onNewInputChange($event, 'name')" />
       </div>
       <div class="col-md-4">
-        <label class="form-label">{{'productsWidget.table.Category' | translate}} (Id)</label>
-        <input type="number" class="form-control form-control-sm" [value]="newProduct.productCategoryId || 0" (input)="onNewInputChange($event, 'productCategoryId')" />
+        <label class="form-label">{{'productsWidget.table.Category' | translate}}</label>
+        <select class="form-select form-select-sm" [value]="newProduct.productCategoryId || 0" (change)="onNewInputChange($event, 'productCategoryId')">
+          <option [value]="0">--</option>
+          <option *ngFor="let c of categories" [value]="c.id">{{c.name}}</option>
+        </select>
       </div>
       <div class="col-md-4">
         <label class="form-label">{{'productsWidget.table.Price' | translate}}</label>
@@ -127,24 +131,7 @@
         <label class="form-label">{{'productsWidget.table.Stock' | translate}}</label>
         <input type="number" class="form-control form-control-sm" [value]="newProduct.unitsInStock || 0" (input)="onNewInputChange($event, 'unitsInStock')" />
       </div>
-      <div class="col-md-3">
-        <label class="form-label">Buying</label>
-        <input type="number" step="0.01" class="form-control form-control-sm" [value]="newProduct.buyingPrice || 0" (input)="onNewInputChange($event, 'buyingPrice')" />
-      </div>
-      <div class="col-md-3">
-        <label class="form-label">Parent Id</label>
-        <input type="number" class="form-control form-control-sm" [value]="newProduct.parentId || 0" (input)="onNewInputChange($event, 'parentId')" />
-      </div>
-      <div class="col-md-3 d-flex align-items-end gap-3">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" [checked]="newProduct.isActive ?? true" (change)="newProduct.isActive = $any($event.target).checked" id="npActive">
-          <label class="form-check-label" for="npActive">{{'productsWidget.table.Active' | translate}}</label>
-        </div>
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" [checked]="newProduct.isDiscontinued ?? false" (change)="newProduct.isDiscontinued = $any($event.target).checked" id="npDisc">
-          <label class="form-check-label" for="npDisc">{{'productsWidget.table.Discontinued' | translate}}</label>
-        </div>
-      </div>
+      <!-- Campos avanzados ocultos para usuarios: buying y parentId -->
     </div>
   </div>
   <div class="card-footer text-end">

@@ -16,6 +16,8 @@ import { Utilities } from '../../services/utilities';
 import { ProductsService } from '../../services/products.service';
 import { ProductVM } from '../../models/product.model';
 import { AccountService } from '../../services/account.service';
+import { ProductCategoriesService } from '../../services/product-categories.service';
+import { ProductCategory } from '../../models/product-category.model';
 
 @Component({
   standalone: true,
@@ -35,6 +37,8 @@ export class ProductsWidgetComponent implements OnInit, OnDestroy {
   savingNew = false;
   newProduct: Partial<ProductVM> = { name: '', description: '', icon: '', buyingPrice: 0, sellingPrice: 0, unitsInStock: 0, isActive: true, isDiscontinued: false, productCategoryId: 0, parentId: null };
 
+  categories: ProductCategory[] = [];
+
   readonly verticalScrollbar = input(false);
 
   readonly nameTemplate = viewChild.required<TemplateRef<unknown>>('nameTemplate');
@@ -50,7 +54,8 @@ export class ProductsWidgetComponent implements OnInit, OnDestroy {
     private service: ProductsService,
     private alertService: AlertService,
     private translation: AppTranslationService,
-    private account: AccountService
+    private account: AccountService,
+    private categoriesService: ProductCategoriesService
   ) {}
 
   ngOnInit(): void {
@@ -59,6 +64,7 @@ export class ProductsWidgetComponent implements OnInit, OnDestroy {
 
     this.loadingIndicator = true;
     this.loadProducts();
+    this.loadCategories();
 
     const gT = (key: string) => this.translation.getTranslation(key) || key;
 
@@ -77,7 +83,8 @@ export class ProductsWidgetComponent implements OnInit, OnDestroy {
   private loadProducts() {
     this.service.getAll().subscribe({
       next: data => {
-        this.rows = data.map((p, idx) => ({ ...p, $$index: idx }));
+        const ordered = [...data].sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+        this.rows = ordered.map((p, idx) => ({ ...p, $$index: idx }));
         this.rowsCache = [...this.rows];
         setTimeout(() => this.loadingIndicator = false, 200);
       },
@@ -85,6 +92,13 @@ export class ProductsWidgetComponent implements OnInit, OnDestroy {
         this.loadingIndicator = false;
         this.alertService.showStickyMessage('Error', err?.message || 'Error loading products', MessageSeverity.error);
       }
+    });
+  }
+
+  private loadCategories() {
+    this.categoriesService.getAll().subscribe({
+      next: data => this.categories = data,
+      error: err => this.alertService.showStickyMessage('Error', err?.message || 'Error loading categories', MessageSeverity.error)
     });
   }
 
@@ -112,7 +126,7 @@ export class ProductsWidgetComponent implements OnInit, OnDestroy {
       case 'sellingPrice': this.newProduct.sellingPrice = isNaN(num) ? 0 : num; break;
       case 'unitsInStock': this.newProduct.unitsInStock = isNaN(num) ? 0 : num; break;
       case 'productCategoryId': this.newProduct.productCategoryId = isNaN(num) ? 0 : num; break;
-      case 'parentId': this.newProduct.parentId = isNaN(num) ? null : num; break;
+      case 'parentId': this.newProduct.parentId = null; break; // forzar null en todos los ámbitos
       default: break;
     }
   }
@@ -144,7 +158,7 @@ export class ProductsWidgetComponent implements OnInit, OnDestroy {
       isActive: this.newProduct.isActive ?? true,
       isDiscontinued: this.newProduct.isDiscontinued ?? false,
       productCategoryId: this.newProduct.productCategoryId!,
-      parentId: this.newProduct.parentId ?? null
+      parentId: null
     };
 
     this.service.create(payload).subscribe({

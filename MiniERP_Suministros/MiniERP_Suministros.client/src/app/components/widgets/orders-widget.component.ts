@@ -13,6 +13,10 @@ import { OrderCreateItemVM, OrderCreateVM, OrderItemVM, OrderVM } from '../../mo
 import { SearchBoxComponent } from '../controls/search-box.component';
 import { AppTranslationService } from '../../services/app-translation.service';
 import { AlertService, MessageSeverity } from '../../services/alert.service';
+import { CustomersService } from '../../services/customers.service';
+import { Customer } from '../../models/customer.model';
+import { ProductsService } from '../../services/products.service';
+import { ProductVM } from '../../models/product.model';
 
 @Component({
   standalone: true,
@@ -32,6 +36,10 @@ export class OrdersWidgetComponent implements OnInit, OnDestroy {
   saving = false;
   editModel: OrderCreateVM = { customerId: 0, discount: 0, comments: '', items: [] };
   editItems: OrderCreateItemVM[] = [];
+  editingId: number | null = null; // null = nuevo, number = editar existente
+
+  customers: Customer[] = [];
+  products: ProductVM[] = [];
 
   readonly verticalScrollbar = input(false);
 
@@ -41,6 +49,8 @@ export class OrdersWidgetComponent implements OnInit, OnDestroy {
   readonly actionsTemplate = viewChild.required<TemplateRef<unknown>>('actionsTemplate');
 
   constructor(private service: OrdersService,
+              private customersService: CustomersService,
+              private productsService: ProductsService,
               private translation: AppTranslationService,
               private alertService: AlertService) {}
 
@@ -56,6 +66,8 @@ export class OrdersWidgetComponent implements OnInit, OnDestroy {
     ];
 
     this.load();
+    this.loadCustomers();
+    this.loadProducts();
   }
 
   ngOnDestroy(): void {}
@@ -75,6 +87,20 @@ export class OrdersWidgetComponent implements OnInit, OnDestroy {
     });
   }
 
+  private loadCustomers() {
+    this.customersService.getAll().subscribe({
+      next: data => this.customers = data,
+      error: err => this.alertService.showStickyMessage('Error', err?.message || 'Error loading customers', MessageSeverity.error)
+    });
+  }
+
+  private loadProducts() {
+    this.productsService.getAll().subscribe({
+      next: data => this.products = data,
+      error: err => this.alertService.showStickyMessage('Error', err?.message || 'Error loading products', MessageSeverity.error)
+    });
+  }
+
   onSearchChanged(value: string) {
     const v = (value || '').toLowerCase();
     this.rows = this.rowsCache.filter(r =>
@@ -89,20 +115,22 @@ export class OrdersWidgetComponent implements OnInit, OnDestroy {
     this.saving = false;
     this.editModel = { customerId: 0, discount: 0, comments: '', items: [] };
     this.editItems = [];
+    this.editingId = null;
   }
 
   edit(row: OrderVM) {
     this.editing = true;
     this.editingTitle = this.translation.getTranslation('ordersWidget.editor.Edit') || 'Edit order';
     this.saving = false;
+    this.editingId = row.id;
     this.editModel = { customerId: row.customerId, discount: row.discount, comments: row.comments || '', items: [] };
-    this.editItems = (row.items || []).map(i => ({ productId: i.productId, quantity: i.quantity, unitPrice: i.unitPrice, discount: i.discount }));
+    this.editItems = (row.items || []).map(i => ({ productId: i.productId, quantity: i.quantity, unitPrice: i.unitPrice, discount: 0 }));
   }
 
   cancelEdit() { this.editing = false; }
 
   onHeaderChange(event: Event, field: 'customerId' | 'discount' | 'comments') {
-    const valueRaw = (event.target as HTMLInputElement).value;
+    const valueRaw = (event.target as HTMLSelectElement | HTMLInputElement).value;
     if (field === 'customerId') this.editModel.customerId = Number(valueRaw);
     if (field === 'discount') this.editModel.discount = Number(valueRaw);
     if (field === 'comments') this.editModel.comments = valueRaw;
@@ -111,20 +139,33 @@ export class OrdersWidgetComponent implements OnInit, OnDestroy {
   addItem() { this.editItems.push({ productId: 0, quantity: 1, unitPrice: 0, discount: 0 }); }
   removeItem(index: number) { this.editItems.splice(index, 1); }
 
-  onItemChange(index: number, field: keyof OrderCreateItemVM, event: Event) {
+  onProductChange(index: number, event: Event) {
+    const productId = Number((event.target as HTMLSelectElement).value);
+    const p = this.products.find(x => x.id === productId);
+    const item = this.editItems[index];
+    item.productId = productId;
+    item.unitPrice = p ? p.sellingPrice : 0; // precio del catálogo; no editable
+  }
+
+  onItemChange(index: number, field: Exclude<keyof OrderCreateItemVM, 'productId' | 'unitPrice'>, event: Event) {
     const valueRaw = (event.target as HTMLInputElement).value;
     const num = Number(valueRaw);
     const item = this.editItems[index];
-    if (field === 'productId') item.productId = num;
-    if (field === 'quantity') item.quantity = num;
-    if (field === 'unitPrice') item.unitPrice = num;
-    if (field === 'discount') item.discount = num;
+    if (field === 'quantity') item.quantity = num > 0 ? num : 1;
   }
 
-  getLineTotal(i: OrderCreateItemVM) { const u = i.unitPrice || 0; const d = i.discount || 0; return (u - d) * (i.quantity || 0); }
+  getLineTotal(i: OrderCreateItemVM) { const u = i.unitPrice || 0; return u * (i.quantity || 0); }
   getSubtotal() { return this.editItems.reduce((s, i) => s + (i.unitPrice || 0) * (i.quantity || 0), 0); }
-  getItemsDiscount() { return this.editItems.reduce((s, i) => s + (i.discount || 0) * (i.quantity || 0), 0); }
-  getTotal() { return this.getSubtotal() - this.getItemsDiscount() - (this.editModel.discount || 0); }
+  getTotal() { return this.getSubtotal() - (this.editModel.discount || 0); }
+
+  private buildPayload(): OrderCreateVM {
+    return {
+      customerId: this.editModel.customerId,
+      discount: this.editModel.discount || 0,
+      comments: this.editModel.comments || '',
+      items: this.editItems.map(i => ({ productId: i.productId, quantity: i.quantity, unitPrice: i.unitPrice, discount: 0 }))
+    };
+  }
 
   saveEdit() {
     // Validación mínima
@@ -133,18 +174,27 @@ export class OrdersWidgetComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.saving = true;
-    const payload: OrderCreateVM = {
-      customerId: this.editModel.customerId,
-      discount: this.editModel.discount || 0,
-      comments: this.editModel.comments || '',
-      items: this.editItems.map(i => ({ productId: i.productId, quantity: i.quantity, unitPrice: i.unitPrice, discount: i.discount }))
-    };
+    // Validar cantidades > 0
+    if (this.editItems.some(i => (i.quantity || 0) <= 0)) {
+      this.alertService.showMessage(this.translation.getTranslation('ordersWidget.editor.Validation') || 'Invalid data', 'Quantity must be > 0', MessageSeverity.warn);
+      return;
+    }
 
-    this.service.create(payload).subscribe({
-      next: () => { this.saving = false; this.editing = false; this.load(); },
-      error: err => { this.saving = false; this.alertService.showStickyMessage('Error', err?.message || 'Error saving order', MessageSeverity.error); }
-    });
+    this.saving = true;
+    if (this.editingId == null) {
+      const payload = this.buildPayload();
+      this.service.create(payload).subscribe({
+        next: () => { this.saving = false; this.editing = false; this.load(); },
+        error: err => { this.saving = false; this.alertService.showStickyMessage('Error', err?.error?.message || err?.message || 'Error saving order', MessageSeverity.error); }
+      });
+    } else {
+      // Update parcial; se envían cabecera + líneas (server debe soportarlo)
+      const payload = this.buildPayload() as unknown as Partial<OrderVM>;
+      this.service.update(this.editingId, payload).subscribe({
+        next: () => { this.saving = false; this.editing = false; this.load(); },
+        error: err => { this.saving = false; this.alertService.showStickyMessage('Error', err?.error?.message || err?.message || 'Error updating order', MessageSeverity.error); }
+      });
+    }
   }
 
   remove(row: OrderVM) {
