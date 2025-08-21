@@ -429,5 +429,37 @@
     "dialog": {
       "DeleteConfirm": "¿Seguro que deseas eliminar la categoría?"
     }
+  },
+  "ordersWidget": {
+    "management": {
+      "Search": "Buscar pedido...",
+      "NewOrder": "Nuevo Pedido",
+      "AddItem": "Agregar línea"
+    },
+    "table": {
+      "NoOrders": "No se encontraron pedidos",
+      "Date": "Fecha",
+      "Customer": "Cliente",
+      "Items": "Ítems",
+      "Total": "Total",
+      "ProductId": "Producto Id",
+      "Quantity": "Cantidad",
+      "UnitPrice": "Precio",
+      "Discount": "Descuento",
+      "LineTotal": "Importe",
+      "Subtotal": "Subtotal",
+      "ItemsDiscount": "Desc. líneas",
+      "OrderDiscount": "Desc. pedido"
+    },
+    "editor": {
+      "Save": "Guardar",
+      "Cancel": "Cancelar",
+      "New": "Nuevo",
+      "Edit": "Editar",
+      "Customer": "Cliente",
+      "Discount": "Descuento",
+      "Comments": "Comentarios",
+      "Validation": "Datos inválidos"
+    }
   }
 }

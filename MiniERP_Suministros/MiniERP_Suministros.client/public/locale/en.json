@@ -429,5 +429,37 @@
     "dialog": {
       "DeleteConfirm": "Are you sure you want to delete the category?"
     }
+  },
+  "ordersWidget": {
+    "management": {
+      "Search": "Search for order...",
+      "NewOrder": "New Order",
+      "AddItem": "Add line"
+    },
+    "table": {
+      "NoOrders": "No orders found",
+      "Date": "Date",
+      "Customer": "Customer",
+      "Items": "Items",
+      "Total": "Total",
+      "ProductId": "Product Id",
+      "Quantity": "Quantity",
+      "UnitPrice": "Unit Price",
+      "Discount": "Discount",
+      "LineTotal": "Line Total",
+      "Subtotal": "Subtotal",
+      "ItemsDiscount": "Items Disc.",
+      "OrderDiscount": "Order Disc."
+    },
+    "editor": {
+      "Save": "Save",
+      "Cancel": "Cancel",
+      "New": "New",
+      "Edit": "Edit",
+      "Customer": "Customer",
+      "Discount": "Discount",
+      "Comments": "Comments",
+      "Validation": "Invalid data"
+    }
   }
 }

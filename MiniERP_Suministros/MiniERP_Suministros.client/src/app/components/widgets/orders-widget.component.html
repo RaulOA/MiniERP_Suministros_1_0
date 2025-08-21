@@ -1,0 +1,106 @@
+<!--
+RUTA: MiniERP_Suministros/MiniERP_Suministros.client/src/app/components/widgets/orders-widget.component.html
+Descripción: Widget de pedidos (lista + editor simple en modal simulado inline).
+-->
+<div class="row control-box">
+  <div class="col-lg-8">
+    <div class="search-box">
+      <app-search-box (searchChange)="onSearchChanged($event)" placeholder="{{'ordersWidget.management.Search' | translate}}" />
+    </div>
+  </div>
+  <div class="col-lg-4 text-end">
+    <button type="button" class="btn btn-primary btn-sm" (click)="startNew()">
+      <i class="fa fa-plus"></i> {{'ordersWidget.management.NewOrder' | translate}}
+    </button>
+  </div>
+</div>
+
+<ngx-datatable class="material colored-header sm table-hover"
+               [loadingIndicator]="loadingIndicator"
+               [rows]="rows"
+               [rowHeight]="35"
+               [headerHeight]="37"
+               [footerHeight]="35"
+               [columns]="columns"
+               [messages]="{ emptyMessage: ('ordersWidget.table.NoOrders' | translate), totalMessage: '', selectedMessage: '' }"
+               [scrollbarV]="verticalScrollbar()"
+               [columnMode]="'force'">
+</ngx-datatable>
+
+@if (editing) {
+  <div class="card card-body bg-light mt-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <strong>{{ editingTitle }}</strong>
+      <div>
+        <button class="btn btn-success btn-sm me-2" (click)="saveEdit()" [disabled]="saving">
+          <i class="fa fa-save"></i> {{'ordersWidget.editor.Save' | translate}}
+        </button>
+        <button class="btn btn-outline-secondary btn-sm" (click)="cancelEdit()">
+          <i class="fa fa-times"></i> {{'ordersWidget.editor.Cancel' | translate}}
+        </button>
+      </div>
+    </div>
+
+    <div class="row g-2 mt-2">
+      <div class="col-md-4">
+        <label class="form-label">{{'ordersWidget.editor.Customer' | translate}}</label>
+        <input type="number" class="form-control" [value]="editModel.customerId" (input)="onHeaderChange($event, 'customerId')" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">{{'ordersWidget.editor.Discount' | translate}}</label>
+        <input type="number" class="form-control" [value]="editModel.discount" (input)="onHeaderChange($event, 'discount')" />
+      </div>
+      <div class="col-md-5">
+        <label class="form-label">{{'ordersWidget.editor.Comments' | translate}}</label>
+        <input type="text" class="form-control" [value]="editModel.comments || ''" (input)="onHeaderChange($event, 'comments')" />
+      </div>
+    </div>
+
+    <div class="table-responsive mt-3">
+      <table class="table table-sm align-middle">
+        <thead>
+          <tr>
+            <th style="width: 15%;">{{'ordersWidget.table.ProductId' | translate}}</th>
+            <th style="width: 15%;">{{'ordersWidget.table.Quantity' | translate}}</th>
+            <th style="width: 15%;">{{'ordersWidget.table.UnitPrice' | translate}}</th>
+            <th style="width: 15%;">{{'ordersWidget.table.Discount' | translate}}</th>
+            <th style="width: 20%;">{{'ordersWidget.table.LineTotal' | translate}}</th>
+            <th style="width: 20%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (let i = 0; i < editItems.length; i++) {
+            <tr>
+              <td><input type="number" class="form-control form-control-sm" [value]="editItems[i].productId" (input)="onItemChange(i, 'productId', $event)" /></td>
+              <td><input type="number" class="form-control form-control-sm" [value]="editItems[i].quantity" (input)="onItemChange(i, 'quantity', $event)" /></td>
+              <td><input type="number" class="form-control form-control-sm" [value]="editItems[i].unitPrice || 0" (input)="onItemChange(i, 'unitPrice', $event)" /></td>
+              <td><input type="number" class="form-control form-control-sm" [value]="editItems[i].discount || 0" (input)="onItemChange(i, 'discount', $event)" /></td>
+              <td>{{ getLineTotal(editItems[i]) | number:'1.2-2' }}</td>
+              <td>
+                <button class="btn btn-outline-danger btn-sm" (click)="removeItem(i)"><i class="fa fa-trash"></i></button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <button class="btn btn-outline-primary btn-sm" (click)="addItem()"><i class="fa fa-plus"></i> {{'ordersWidget.management.AddItem' | translate}}</button>
+      <div>
+        <strong>{{'ordersWidget.table.Subtotal' | translate}}:</strong> {{ getSubtotal() | number:'1.2-2' }}
+        <strong class="ms-3">{{'ordersWidget.table.ItemsDiscount' | translate}}:</strong> {{ getItemsDiscount() | number:'1.2-2' }}
+        <strong class="ms-3">{{'ordersWidget.table.OrderDiscount' | translate}}:</strong> {{ editModel.discount | number:'1.2-2' }}
+        <strong class="ms-3">{{'ordersWidget.table.Total' | translate}}:</strong> {{ getTotal() | number:'1.2-2' }}
+      </div>
+    </div>
+  </div>
+}
+
+<ng-template #customerTemplate let-row="row" let-value="value">{{ row.customerName || row.customerId }}</ng-template>
+<ng-template #dateTemplate let-row="row">{{ row.createdDate | date:'short' }}</ng-template>
+<ng-template #itemsTemplate let-row="row">{{ row.items?.length || 0 }}</ng-template>
+<ng-template #actionsTemplate let-row="row">
+  <button class="btn btn-link btn-sm" (click)="edit(row)"><i class="fa fa-edit"></i></button>
+  <button class="btn btn-link btn-sm text-danger" (click)="remove(row)"><i class="fa fa-trash"></i></button>
+</ng-template>
