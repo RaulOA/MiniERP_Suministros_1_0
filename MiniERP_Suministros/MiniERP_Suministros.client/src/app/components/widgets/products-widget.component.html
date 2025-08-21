@@ -9,7 +9,7 @@
   </div>
 </div>
 
-<div class="table-responsive" [class.ps]= "verticalScrollbar()">
+<div class="datatable-holder">
   <ngx-datatable
     class="material"
     [rows]="rows"
@@ -17,8 +17,9 @@
     [columnMode]="'force'"
     [headerHeight]="50"
     [footerHeight]="50"
-    rowHeight="auto"
-    [scrollbarV]="true">
+    [rowHeight]="50"
+    [style.height.px]="verticalScrollbar() ? 420 : null"
+    [scrollbarV]="verticalScrollbar()">
 
     <ngx-datatable-column [width]="220" [canAutoResize]="true" [resizeable]="true" [sortable]="true">
       <ng-template ngx-datatable-header-template>

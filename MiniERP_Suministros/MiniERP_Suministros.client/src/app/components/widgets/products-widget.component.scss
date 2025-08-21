@@ -4,4 +4,6 @@ Descripción: Estilos mínimos para el widget de productos.
 */
 
 :host { display: block; }
+.datatable-holder { overflow: hidden; }
+/* La clase .table-responsive.ps se mantiene por compatibilidad pero no se usa en este widget */
 .table-responsive.ps { max-height: 420px; overflow-y: auto; }

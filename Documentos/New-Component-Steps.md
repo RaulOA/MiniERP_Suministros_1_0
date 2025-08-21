@@ -37,6 +37,8 @@ Alcance: .NET Core (servicios, DI, AutoMapper, API) + Angular (modelos, servicio
 	- Limpieza de recursos en `ngOnDestroy`.
 	- Alerts con `MessageSeverity` (enum) del `AlertService`.
 	- Plantillas HTML usando atributos estándar (`title` en lugar de `attr-title`).
+	- ngx-datatable: si `scrollbarV` está habilitado, configurar `rowHeight` con un número (>0) o una función; no usar `auto`.
+	- ngx-datatable: evitar doble scroll. No aplicar overflow al contenedor externo; fijar altura en el propio `<ngx-datatable>` con `[style.height.px]=...` y dejar el scroll interno como único.
 - Integración del widget en el componente contenedor (ej.: `products/products.component.*`).
 
 ### i18n
@@ -68,6 +70,8 @@ Alcance: .NET Core (servicios, DI, AutoMapper, API) + Angular (modelos, servicio
 - [ ] Evitar atributos obsoletos en plantillas y mantener binding consistente con el backend.
 - [ ] Integrar el widget en el componente contenedor correspondiente.
 - [ ] Plantillas Angular: evitar casts TypeScript en expresiones del template. Para checkbox/radio usar `$any($event.target).checked` o `(ngModelChange)` en lugar de `(change)` con cast, para prevenir NG2/NG5002.
+- [ ] ngx-datatable: si `scrollbarV` está habilitado, definir `rowHeight` numérico (>0) o función; no usar `auto`.
+- [ ] ngx-datatable: fijar altura en `[style.height.px]` del `<ngx-datatable>` y no en contenedor externo para evitar doble scroll.
 
 4) i18n
 - [ ] Añadir claves nuevas en `public/locale/es.json` y `public/locale/en.json` bajo un namespace del widget (p. ej. `productCategoriesWidget.*`).
@@ -93,6 +97,8 @@ Alcance: .NET Core (servicios, DI, AutoMapper, API) + Angular (modelos, servicio
 - En Angular, componentes `standalone`, tipado estricto, y limpieza en `ngOnDestroy`.
 - Usar `MessageSeverity` y no métodos inexistentes del `AlertService`.
 - Mantener paridad de i18n entre `es` y `en` y separar namespaces por widget.
+- Evitar `rowHeight='auto'` en ngx-datatable cuando `scrollbarV` esté activo; preferir número fijo o función.
+- Evitar doble scroll con ngx-datatable: altura en la tabla, no en el contenedor; un solo scroll interno.
 
 ---
 
@@ -108,6 +114,8 @@ Alcance: .NET Core (servicios, DI, AutoMapper, API) + Angular (modelos, servicio
 - Falta de `GET {id}` afectando vistas/ediciones puntuales.
 - No restaurar stock al eliminar pedidos; envolver en transacción y revertir efectos.
 - NG2/NG5002 por casts TS en plantillas (checkbox/radio): usar `$any($event.target).checked` o `[(ngModel)]`.
+- ngx-datatable: error "Row Height cache initialization failed" cuando `scrollbarV` y `rowHeight='auto'` coexisten.
+- Doble scroll por overflow en contenedor + scroll interno del `<ngx-datatable>`: fijar altura en la tabla y `overflow: hidden` en el contenedor.
 
 ---
 
