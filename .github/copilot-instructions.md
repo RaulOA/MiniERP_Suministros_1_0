@@ -12,7 +12,6 @@ applyTo: "**"
 
 - Reglas de modificacion en #file:'Copilot-Log-Fixes.md': 
         - Registrar solo entradas que aporten lecciones nuevas y relevantes.
-        - Descripcion de  Cambio/Lección puntual que sirva para ser leida como prompt por github copilot y optimizar el procedimientro en futuros casos similares.
         - Formato de entrada: YYYY-MM-DD HH-MM| Archivos Modificados | Solicitud o tema | Cambio o Solucion | Fallo conocido (opc.) | Vars | Etiquetas.
         - Mantener tono operativo, directo y conciso.
 
