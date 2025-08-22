@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using MiniERP_Suministros.Reports.Services;
+using System.Runtime.InteropServices; // Manejo de COMException (Crystal)
 
 namespace MiniERP_Suministros.Reports.Controllers
 {
@@ -26,22 +27,44 @@ namespace MiniERP_Suministros.Reports.Controllers
 
 #if USE_CRYSTAL
             // Requiere instalar Crystal Reports runtimes y referencias.
-            using (var report = new CrystalDecisions.CrystalReports.Engine.ReportDocument())
+            try
             {
-                var rptPath = Server.MapPath("~/Reports/VentasPorPeriodoYCategoria.rpt");
-                report.Load(rptPath);
-                var ds = new System.Data.DataSet("VentasPeriodoCategoria");
-                ds.Tables.Add(table);
-                report.SetDataSource(ds);
-                report.SetParameterValue("FechaInicio", fechaInicio);
-                report.SetParameterValue("FechaFin", fechaFin);
-                report.SetParameterValue("CategoriaId", (object)categoriaId ?? DBNull.Value);
-                report.SetParameterValue("CustomerId", (object)customerId ?? DBNull.Value);
-                using (var stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat))
+                using (var report = new CrystalDecisions.CrystalReports.Engine.ReportDocument())
                 {
-                    stream.Seek(0, SeekOrigin.Begin);
-                    return File(ReadFully(stream), "application/pdf", $"Ventas_{fechaInicio:yyyyMMdd}_{fechaFin:yyyyMMdd}.pdf");
+                    var rptPath = Server.MapPath("~/Reports/VentasPorPeriodoYCategoria.rpt");
+                    report.Load(rptPath);
+                    var ds = new System.Data.DataSet("VentasPeriodoCategoria");
+                    ds.Tables.Add(table);
+                    report.SetDataSource(ds);
+                    report.SetParameterValue("FechaInicio", fechaInicio);
+                    report.SetParameterValue("FechaFin", fechaFin);
+                    report.SetParameterValue("CategoriaId", (object)categoriaId ?? DBNull.Value);
+                    report.SetParameterValue("CustomerId", (object)customerId ?? DBNull.Value);
+                    using (var stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat))
+                    {
+                        stream.Seek(0, SeekOrigin.Begin);
+                        return File(ReadFully(stream), "application/pdf", $"Ventas_{fechaInicio:yyyyMMdd}_{fechaFin:yyyyMMdd}.pdf");
+                    }
                 }
+            }
+            catch (COMException ex) // "Class not registered" u otros errores COM de Crystal
+            {
+                Response.AppendHeader("X-Reports-Fallback", $"Crystal COMException: {ex.Message}"); // Indicador de fallback
+                // Fallback a CSV
+                var csvCom = CsvFromDataTable(table);
+                return File(System.Text.Encoding.UTF8.GetBytes(csvCom), "text/csv", $"Ventas_{fechaInicio:yyyyMMdd}_{fechaFin:yyyyMMdd}.csv");
+            }
+            catch (FileNotFoundException ex)
+            {
+                Response.AppendHeader("X-Reports-Fallback", $"Crystal FileNotFound: {ex.Message}");
+                var csvCom = CsvFromDataTable(table);
+                return File(System.Text.Encoding.UTF8.GetBytes(csvCom), "text/csv", $"Ventas_{fechaInicio:yyyyMMdd}_{fechaFin:yyyyMMdd}.csv");
+            }
+            catch (TypeInitializationException ex)
+            {
+                Response.AppendHeader("X-Reports-Fallback", $"Crystal InitError: {ex.Message}");
+                var csvCom = CsvFromDataTable(table);
+                return File(System.Text.Encoding.UTF8.GetBytes(csvCom), "text/csv", $"Ventas_{fechaInicio:yyyyMMdd}_{fechaFin:yyyyMMdd}.csv");
             }
 #else
             // Fallback: exportación CSV sencilla para validar flujo sin Crystal.
@@ -62,22 +85,43 @@ namespace MiniERP_Suministros.Reports.Controllers
             var table = await _queryService.GetResumenClientesAsync(fechaInicio, fechaFin, customerId, montoMinimo);
 
 #if USE_CRYSTAL
-            using (var report = new CrystalDecisions.CrystalReports.Engine.ReportDocument())
+            try
             {
-                var rptPath = Server.MapPath("~/Reports/ResumenComprasPorCliente.rpt");
-                report.Load(rptPath);
-                var ds = new System.Data.DataSet("ResumenClientes");
-                ds.Tables.Add(table);
-                report.SetDataSource(ds);
-                report.SetParameterValue("FechaInicio", fechaInicio);
-                report.SetParameterValue("FechaFin", fechaFin);
-                report.SetParameterValue("CustomerId", (object)customerId ?? DBNull.Value);
-                report.SetParameterValue("MontoMinimo", (object)montoMinimo ?? DBNull.Value);
-                using (var stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat))
+                using (var report = new CrystalDecisions.CrystalReports.Engine.ReportDocument())
                 {
-                    stream.Seek(0, SeekOrigin.Begin);
-                    return File(ReadFully(stream), "application/pdf", $"ResumenClientes_{fechaInicio:yyyyMMdd}_{fechaFin:yyyyMMdd}.pdf");
+                    var rptPath = Server.MapPath("~/Reports/ResumenComprasPorCliente.rpt");
+                    report.Load(rptPath);
+                    var ds = new System.Data.DataSet("ResumenClientes");
+                    ds.Tables.Add(table);
+                    report.SetDataSource(ds);
+                    report.SetParameterValue("FechaInicio", fechaInicio);
+                    report.SetParameterValue("FechaFin", fechaFin);
+                    report.SetParameterValue("CustomerId", (object)customerId ?? DBNull.Value);
+                    report.SetParameterValue("MontoMinimo", (object)montoMinimo ?? DBNull.Value);
+                    using (var stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat))
+                    {
+                        stream.Seek(0, SeekOrigin.Begin);
+                        return File(ReadFully(stream), "application/pdf", $"ResumenClientes_{fechaInicio:yyyyMMdd}_{fechaFin:yyyyMMdd}.pdf");
+                    }
                 }
+            }
+            catch (COMException ex)
+            {
+                Response.AppendHeader("X-Reports-Fallback", $"Crystal COMException: {ex.Message}");
+                var csvCom = CsvFromDataTable(table);
+                return File(System.Text.Encoding.UTF8.GetBytes(csvCom), "text/csv", $"ResumenClientes_{fechaInicio:yyyyMMdd}_{fechaFin:yyyyMMdd}.csv");
+            }
+            catch (FileNotFoundException ex)
+            {
+                Response.AppendHeader("X-Reports-Fallback", $"Crystal FileNotFound: {ex.Message}");
+                var csvCom = CsvFromDataTable(table);
+                return File(System.Text.Encoding.UTF8.GetBytes(csvCom), "text/csv", $"ResumenClientes_{fechaInicio:yyyyMMdd}_{fechaFin:yyyyMMdd}.csv");
+            }
+            catch (TypeInitializationException ex)
+            {
+                Response.AppendHeader("X-Reports-Fallback", $"Crystal InitError: {ex.Message}");
+                var csvCom = CsvFromDataTable(table);
+                return File(System.Text.Encoding.UTF8.GetBytes(csvCom), "text/csv", $"ResumenClientes_{fechaInicio:yyyyMMdd}_{fechaFin:yyyyMMdd}.csv");
             }
 #else
             var csv = CsvFromDataTable(table);
